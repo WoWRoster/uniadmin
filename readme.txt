@@ -7,7 +7,7 @@ If you don't know what UniUploader is, then... well... you're a bit ahead of you
 
 
 Table of Contents
-==================
+=================
    1 - Requirements
    2 - Recommended Tools
    3 - Installation
