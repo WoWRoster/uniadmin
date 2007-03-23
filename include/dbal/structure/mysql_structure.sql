@@ -19,7 +19,6 @@ CREATE TABLE `uniadmin_addons` (
   `toc` mediumint(9) NOT NULL default '0',
   `required` tinyint(1) NOT NULL default '0',
   `filesize` int(10) unsigned NOT NULL default '0',
-  `full_path` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `addon_name` (`name`)
 );
@@ -62,6 +61,7 @@ CREATE TABLE `uniadmin_logos` (
   `updated` int(11) NOT NULL default '0',
   `logo_num` int(11) NOT NULL default '0',
   `active` tinyint(1) NOT NULL default '0',
+  `download_url` varchar(250) NOT NULL default '',
   `md5` varchar(32) NOT NULL,
   PRIMARY KEY  (`id`)
 );

@@ -156,11 +156,6 @@ function main( )
 				$input_field = '<input class="input" name="'.$setname.'" type="text" value="'.$setvalue.'" size="'.$length[1].'" maxlength="'.$length[0].'" />';
 				break;
 
-			case 'password':
-				$length = explode('|',$input_type[1]);
-				$input_field = '<input class="input" name="'.$setname.'" type="password" value="'.$setvalue.'" size="'.$length[1].'" maxlength="'.$length[0].'" />';
-				break;
-
 			case 'radio':
 				$options = explode('|',$input_type[1]);
 				$rad=0;
@@ -224,7 +219,6 @@ function main( )
 			'INPUT_FIELD' => $input_field,
 			'CHECKED'     => $checked,
 			'ENABLED'     => $enabled,
-			'PROTECT'     => ( $input_type[0] == 'password' ? true : false )
 			)
 		);
 	}
@@ -371,10 +365,7 @@ function process_ini( )
 		$ini_file = $ini_folder.$file_name;
 
 		// Delete ini if it exists
-		if( file_exists($ini_file) )
-		{
-			unlink($ini_file);
-		}
+		@unlink($ini_file);
 
 
 		// Try to move to the addon_temp directory
@@ -393,43 +384,37 @@ function process_ini( )
 
 			foreach( $ini_data as $section => $setting )
 			{
-				if( !in_array($setting,explode(',',UA_REJECT_INI)) )
-				{
-					$tpl->assign_block_vars('section', array(
-						'NAME'  => $section
-						)
-					);
+				$tpl->assign_block_vars('section', array(
+					'NAME'  => $section,
+					)
+				);
 
-					foreach( $setting as $setting_name => $setting_value )
+				foreach( $setting as $setting_name => $setting_value )
+				{
+					if( $setting_value == 'True' )
 					{
-						if( $setting_value == 'True' )
-						{
-							$setting_value = '1';
-						}
-						elseif( $setting_value == 'False' )
-						{
-							$setting_value = '0';
-						}
-						if( !in_array($setting_name,$uniadmin->reject_ini) )
-						{
-							$tpl->assign_block_vars('section.settings_row', array(
-								'ROW_CLASS'   => $uniadmin->switch_row_class(),
-								'SETNAME'     => $setting_name,
-								'SETVALUE'    => $setting_value,
-								'TOOLTIP'     => addslashes($user->lang[$setting_name])
-								)
-							);
-						}
+						$setting_value = '1';
+					}
+					elseif( $setting_value == 'False' )
+					{
+						$setting_value = '0';
+					}
+					if( !in_array($setting_name,$uniadmin->reject_ini) )
+					{
+						$tpl->assign_block_vars('section.settings_row', array(
+							'ROW_CLASS'   => $uniadmin->switch_row_class(),
+							'SETNAME'     => $setting_name,
+							'SETVALUE'    => $setting_value,
+							'TOOLTIP'     => addslashes($user->lang[$setting_name]),
+							)
+						);
 					}
 				}
 			}
 		}
 
 		// Delete ini if it exists
-		if( file_exists($ini_file) )
-		{
-			unlink($ini_file);
-		}
+		@unlink($ini_file);
 
 
 		$uniadmin->set_vars(array(

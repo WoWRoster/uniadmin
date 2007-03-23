@@ -34,6 +34,7 @@ include(UA_INCLUDEDIR.'addon_lib.php');
 
 
 
+
 /**
  * WoWAce Addon Page Functions
  */
@@ -62,19 +63,19 @@ if( !file_exists($ace_file) )
 	$filelist = $uniadmin->get_remote_contents('http://files.wowace.com/descript.ion');
 	$uniadmin->message($user->lang['new_wowace_list']);
 
-	$uniadmin->write_file($ace_file,$filelist);
+	$uniadmin->write_file($ace_file,$filelist) === false;
 }
 else
 {
 	clearstatcache();
 	$file_info = stat($ace_file);
-	if( ($file_info['9'] + (60 * 60 * $uniadmin->config['remote_timeout'])) <= time() )
+	if( ($file_info['9'] + (60 * 60 * 24)) <= time() )
 	{
 		// Download List
 		$filelist = $uniadmin->get_remote_contents('http://files.wowace.com/descript.ion');
 		$uniadmin->message($user->lang['new_wowace_list']);
 
-		$uniadmin->write_file($ace_file,$filelist);
+		$uniadmin->write_file($ace_file,$filelist) === false;
 		clearstatcache();
 		$file_info = stat($ace_file);
 		$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
@@ -112,12 +113,11 @@ if( !empty($filelist) )
 		// Assign template vars
 		$tpl->assign_block_vars('addons_row', array(
 			'ROW_CLASS'   => $uniadmin->switch_row_class(),
-			'ID'          => 'addon_'.$id,
+			'ID'          => $id,
 			'NAME'        => $addon,
 			'DESC'        => $description
 			)
 		);
-		$_SESSION['addon_'.$id] = $addon;
 		$id++;
 	}
 }
@@ -148,9 +148,8 @@ function process_wowace_addons( )
 
 	foreach( $download as $key => $addon )
 	{
-		$addon = $_SESSION[$addon];
-
-		$addoncon = $uniadmin->get_remote_contents("http://files.wowace.com/$addon/$addon.zip");
+		$addoncon = file_get_contents("http://files.wowace.com/$addon/$addon.zip");
+		//$addoncon = $uniadmin->get_remote_contents("http://files.wowace.com/$addon/$addon.zip");
 		$filename = UA_BASEDIR.$uniadmin->config['addon_folder'].DIR_SEP."$addon.zip";
 
 		$write_temp_file = $uniadmin->write_file($filename,$addoncon,'w+');
@@ -165,6 +164,7 @@ function process_wowace_addons( )
 			$toPass['name'] = $addon.'.zip';
 			$toPass['type'] = 'application/zip';
 			$toPass['tmp_name'] = $filename;
+			$toPass['file_name'] = 'http://files.wowace.com/'.$addon.'/'.$addon.'.zip';
 
 			if( is_readable($toPass['tmp_name']) )
 			{
@@ -176,6 +176,8 @@ function process_wowace_addons( )
 			}
 			$toPass['size'] = filesize($toPass['tmp_name']);
 			process_addon($toPass);
+
+			@unlink($toPass['tmp_name']);
 		}
 	}
 }

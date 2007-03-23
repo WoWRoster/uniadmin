@@ -22,64 +22,49 @@ if( !defined('IN_UNIADMIN') )
 }
 
 // Get Operation
-$op = ( isset($_REQUEST['OPERATION']) ? $_REQUEST['OPERATION'] : 'VIEW' );
+$op = ( isset($_REQUEST['OPERATION']) ? $_REQUEST['OPERATION'] : '' );
 
 // Determine what version of UU is accessing this
-$uu_patterns = $juu_patterns = array();
+$ua_compat_mode = false;
+$patterns = array();
+preg_match('|UniUploader 2.0 \\(UU ([0-9].[0-9].[0-9]);|',$user->user_agent,$patterns);
 
-preg_match('|uniuploader(.+)\\(uu ([0-9].[0-9].[0-9])|i',$user->user_agent,$uu_patterns);
-preg_match('|\(juu ([a-z]-[0-9]{2})|i',$user->user_agent,$juu_patterns);
-
-if( isset($uu_patterns[2]) && version_compare($uu_patterns[2],'2.5.0','<') )
+if( isset($patterns[1]) && version_compare($patterns[1],'2.5.0','<') )
 {
-	define('UU_COMPAT', true);
+	$ua_compat_mode = true;
 }
-elseif( isset($juu_patterns[1]) && version_compare($juu_patterns[1],'11','<') )
-{
-	define('UU_COMPAT', true);
-}
-else
-{
-	define('UU_COMPAT', false);
-}
-
-// Include xml builder
-require(UA_INCLUDEDIR.'minixml.inc.php');
 
 
 // Decide What To Do
 switch( $op )
 {
-	case 'GETSETTINGS':
-		update_stats($op);
-		echo output_settings();
-		break;
-
-	case 'GETSETTINGSXML':
-		update_stats($op);
-		echo output_settings_xml();
+	case 'GETADDON':
+		add_stat($op);
+		output_url($_REQUEST['ADDON']);
 		break;
 
 	case 'GETADDONLIST':
-		update_stats($op);
-		echo output_addon_xml();
+		add_stat($op);
+		output_xml();
 		break;
 
-	case 'GETADDON':
-		update_stats($op);
-		echo output_addon_url($_REQUEST['ADDON']);
+	case 'GETSETTINGS':
+		add_stat($op);
+		output_settings();
 		break;
 
 	case 'GETUAVER':
+		add_stat($op);
 		echo $uniadmin->config['UAVer'];
 		break;
 
 	case 'GETFILEMD5':
-		echo output_logo_md5($_REQUEST['FILENAME']);
+		output_logo_md5($_REQUEST['FILENAME']);
 		break;
 
 	default:
-		update_stats($op);
+		$op = 'VIEW';
+		add_stat($op);
 		echo $user->lang['interface_ready'];
 		break;
 }
@@ -95,11 +80,85 @@ $db->close_db();
  */
 
 
+/**
+ * Echos a logo's md5 hash
+ *
+ * @param string $filename
+ */
+function output_logo_md5( $filename )
+{
+	global $db;
+
+	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `filename` = '".$db->escape($filename)."';";
+	$result = $db->query($sql);
+	if( $db->num_rows($result) > 0 )
+	{
+		$row = $db->fetch_record($result);
+		echo $row['md5'];
+	}
+	$db->free_result($result);
+}
+
+/**
+ * Echo's all of UniAdmin's settings for UniUploader
+ */
+function output_settings( )
+{
+	global $db, $ua_compat_mode;
+
+	if( $ua_compat_mode )
+	{
+		$eq_sep = '=';
+		$pipe_sep = '|';
+	}
+	else
+	{
+		$eq_sep = '[=]';
+		$pipe_sep = '[|]';
+	}
+
+	// logos
+	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `active` = '1';";
+	$result = $db->query($sql);
+	if( $db->num_rows($result) > 0 )
+	{
+		while( $row = $db->fetch_record($result) )
+		{
+			echo 'LOGO'.$row['logo_num'].$eq_sep.$row['download_url'].$pipe_sep;
+		}
+	}
+	$db->free_result($result);
+
+	// settings
+	$sql = "SELECT * FROM `".UA_TABLE_SETTINGS."` WHERE `enabled` = '1';";
+	$result = $db->query($sql);
+	if( $db->num_rows($result) > 0 )
+	{
+		while( $row = $db->fetch_record($result) )
+		{
+			echo $row['set_name'].$eq_sep.$row['set_value'].$pipe_sep;
+		}
+	}
+	$db->free_result($result);
+
+	// sv list
+	$sql = "SELECT * FROM `".UA_TABLE_SVLIST."`;";
+	$result = $db->query($sql);
+	if( $db->num_rows($result) > 0 )
+	{
+		echo 'SVLIST'.$eq_sep;
+		while( $row = $db->fetch_record($result) )
+		{
+			echo $row['sv_name'].$pipe_sep;
+		}
+	}
+	$db->free_result($result);
+}
 
 /**
  * Adds viewer's stats for the UniAdmin stats page
  */
-function update_stats( $op )
+function add_stat( $op )
 {
 	global $db, $user;
 
@@ -112,249 +171,87 @@ function update_stats( $op )
 }
 
 /**
- * Echo's all of UniAdmin's settings for UniUploader
- */
-function output_settings( )
-{
-	global $db, $uniadmin;
-
-	// Set delimiters correctly if UU_COMPAT is true
-	if( UU_COMPAT )
-	{
-		$eq_sep = '=';
-		$pipe_sep = '|';
-	}
-	else
-	{
-		$eq_sep = '[=]';
-		$pipe_sep = '[|]';
-	}
-
-	$output_string = '';
-
-	// logos
-	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `active` = '1' ORDER BY `logo_num` ASC;";
-	$result = $db->query($sql);
-	if( $db->num_rows($result) > 0 )
-	{
-		while( $row = $db->fetch_record($result) )
-		{
-			$output_string .= 'LOGO'.$row['logo_num'].$eq_sep.$uniadmin->url_path.$uniadmin->config['logo_folder'].'/'.$row['filename'].$pipe_sep;
-		}
-	}
-	$db->free_result($result);
-
-	// settings
-	$sql = "SELECT * FROM `".UA_TABLE_SETTINGS."` WHERE `enabled` = '1' ORDER BY `set_name` ASC;";
-	$result = $db->query($sql);
-	if( $db->num_rows($result) > 0 )
-	{
-		while( $row = $db->fetch_record($result) )
-		{
-			$output_string .= $row['set_name'].$eq_sep.$row['set_value'].$pipe_sep;
-		}
-	}
-	$db->free_result($result);
-
-	// sv list
-	$sql = "SELECT * FROM `".UA_TABLE_SVLIST."` ORDER BY `sv_name` ASC;";
-	$result = $db->query($sql);
-	if( $db->num_rows($result) > 0 )
-	{
-		$output_string .= 'SVLIST'.$eq_sep;
-		while( $row = $db->fetch_record($result) )
-		{
-			$output_string .= $row['sv_name'].$pipe_sep;
-		}
-	}
-	$db->free_result($result);
-
-	return $output_string;
-}
-
-/**
- * Echo's all of UniAdmin's settings for UniUploader
- * This output the settings in xml format
- */
-function output_settings_xml( )
-{
-	global $db, $uniadmin;
-
-	$xmlDoc = new MiniXMLDoc();
-	$xmlRoot =& $xmlDoc->getRoot();
-
-	$uaElement =& $xmlRoot->createChild('uasettings');
-
-
-	// logos
-	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `active` = '1' ORDER BY `logo_num` ASC;";
-	$result = $db->query($sql);
-	if( $db->num_rows($result) > 0 )
-	{
-		$logosElement =& $uaElement->createChild('logos');
-
-		while( $row = $db->fetch_record($result) )
-		{
-			$childElement =& $logosElement->createChild('logo');
-			$childElement->attribute('id', $row['logo_num']);
-			$childElement->text($uniadmin->url_path.$uniadmin->config['logo_folder'].'/'.$row['filename']);
-		}
-	}
-	$db->free_result($result);
-
-
-	// settings
-	$sql = "SELECT * FROM `".UA_TABLE_SETTINGS."` WHERE `enabled` = '1' ORDER BY `set_name` ASC;";
-	$result = $db->query($sql);
-	if( $db->num_rows($result) > 0 )
-	{
-		$settingsElement =& $uaElement->createChild('settings');
-
-		while( $row = $db->fetch_record($result) )
-		{
-			$childElement =& $settingsElement->createChild($row['set_name']);
-			$childElement->text($row['set_value']);
-		}
-	}
-	$db->free_result($result);
-
-
-	// sv list
-	$sql = "SELECT * FROM `".UA_TABLE_SVLIST."` ORDER BY `sv_name` ASC;";
-	$result = $db->query($sql);
-	if( $db->num_rows($result) > 0 )
-	{
-		$svlistElement =& $uaElement->createChild('svlist');
-
-		while( $row = $db->fetch_record($result) )
-		{
-			$childElement =& $svlistElement->createChild('savedvariable');
-			$childElement->text($row['sv_name']);
-		}
-	}
-	$db->free_result($result);
-
-	$output = $xmlDoc->toString();
-
-	header('Content-Type: text/xml');
-	header('Content-Length: ' . strlen($output) );
-	return $output;
-}
-
-/**
  * Echos XML for the addons UniAdmin provides
  */
-function output_addon_xml( )
+function output_xml( )
 {
-	global $db, $uniadmin;
+	global $db, $ua_compat_mode;
 
-	// Don't get optional addons if UU_COMPAT is true
-	if( UU_COMPAT )
+	$xml = '<addons>';
+
+	// Don't get optional addons is UU is lower than 2.5.0
+	if( $ua_compat_mode )
 	{
-		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `enabled` = '1' AND `required` = '1' ORDER BY `name` ASC;";
+		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `enabled` = '1' AND `required` = '1';";
 	}
 	else
 	{
-		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `enabled` = '1' ORDER BY `required` DESC, `name` ASC;";
+		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `enabled` = '1';";
 	}
 	$result = $db->query($sql);
 
-
 	if( $db->num_rows($result) > 0 )
 	{
-		$xmlDoc = new MiniXMLDoc();
-		$xmlRoot =& $xmlDoc->getRoot();
-		$addonsElement =& $xmlRoot->createChild('addons');
-
 		while( $row = $db->fetch_record($result) )
 		{
-			$addonElement =& $addonsElement->createChild('addon');
+			$id = $row['id'];
+			$name     = addslashes($row['name']);
+			$version  = addslashes($row['version']);
+			$required = addslashes($row['required']);
+			$homepage = addslashes($row['homepage']);
+			$addon_filename = addslashes($row['file_name']);
+			$toc      = addslashes($row['toc']);
 
-			$addonElement->attribute('name', htmlspecialchars($row['name']));
-			$addonElement->attribute('version', htmlspecialchars($row['version']));
-			$addonElement->attribute('required', $row['required']);
-			$addonElement->attribute('homepage', $row['homepage']);
-			$addonElement->attribute('filename', $uniadmin->url_path.$uniadmin->config['addon_folder'].'/'.$row['file_name']);
-			$addonElement->attribute('toc', $row['toc']);
-			$addonElement->attribute('full_path', $row['full_path']);
-			$addonElement->attribute('notes', htmlspecialchars($row['notes']));
+			$xml .= "\n\t<addon name=\"$name\" version=\"$version\" required=\"$required\" homepage=\"$homepage\" filename=\"$addon_filename\" toc=\"$toc\">";
 
-			$sql = "SELECT * FROM `".UA_TABLE_FILES."` WHERE `addon_id` = '".$row['id']."';";
+			$sql = "SELECT * FROM `".UA_TABLE_FILES."` WHERE `addon_id` = '$id';";
 			$result2 = $db->query($sql);
 
 			if( $db->num_rows($result2) > 0 )
 			{
 				while( $row2 = $db->fetch_record($result2) )
 				{
-					$childElement =& $addonElement->createChild('file');
-
-					$childElement->attribute('name', $row2['filename']);
-					$childElement->attribute('md5sum', $row2['md5sum']);
+					$filename = addslashes($row2['filename']);
+					$md5 = addslashes($row2['md5sum']);
+					if ($filename != 'index.htm' && $filename != 'index.html' && $filename != '.svn')
+					{
+						$xml .= "\n\t\t<file name=\"$filename\" md5sum=\"$md5\" />";
+					}
 				}
 			}
 			$db->free_result($result2);
+
+			$xml .= "\n\t</addon>";
 		}
-		$db->free_result($result);
-
-		$output = $xmlDoc->toString();
-
-		header('Content-Type: text/xml');
-		header('Content-Length: ' . strlen($output) );
-		return $output;
 	}
-	else
-	{
-		$db->free_result($result);
-		return;
-	}
+	$db->free_result($result);
+
+	$xml .= "\n</addons>";
+
+	echo $xml;
 }
 
 /**
  * Echos an addon's download URL
  */
-function output_addon_url( $addonName )
+function output_url( $addonName )
 {
 	global $db, $uniadmin;
 
 	$sql = "SELECT `name`, `file_name` FROM `".UA_TABLE_ADDONS."` WHERE `name` LIKE '".$db->escape($addonName)."';";
 	$result = $db->query($sql);
-
 	if( $db->num_rows($result) > 0 )
 	{
 		$row = $db->fetch_record($result);
-
-		$download = $uniadmin->url_path.$uniadmin->config['addon_folder'].'/'.$row['file_name'];
-
-		$db->free_result($result);
-		return $download;
+		if(substr($row['file_name'], 0, 7) == 'http://')
+		{
+			$download = $row['file_name'];
+		}
+		else
+		{
+			$download = $uniadmin->url_path.$uniadmin->config['addon_folder'].'/'.$row['file_name'];
+		}
+		echo $download;
 	}
-	else
-	{
-		return '';
-	}
-}
-
-/**
- * Echos a logo's md5 hash
- *
- * @param string $filename
- */
-function output_logo_md5( $filename )
-{
-	global $db;
-
-	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `filename` = '".$db->escape($filename)."';";
-	$result = $db->query($sql);
-
-	if( $db->num_rows($result) > 0 )
-	{
-		$row = $db->fetch_record($result);
-
-		$db->free_result($result);
-		return $row['md5'];
-	}
-	else
-	{
-		return '';
-	}
+	$db->free_result($result);
 }

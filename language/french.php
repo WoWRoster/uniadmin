@@ -270,9 +270,6 @@ $lang['full'] = 'Complet';
 $lang['edit'] = 'Editer';
 $lang['cancel'] = 'Annuler';
 $lang['status'] = 'Statut';
-$lang['automatic'] = 'Automatique';
-$lang['delete_all_addons'] = 'Supprimer tous les Addons';
-$lang['unscanned_addons'] = 'Un-Scanned AddOns';
 
 
 // Pagination
@@ -291,10 +288,8 @@ $lang['interface_ready'] = 'Interface de Mise à Jour UniUploader...';
 
 // Addon Management
 $lang['addon_required_tip'] = 'Quand coché, UniUploader exigera le téléchargement de cet addon';
-$lang['addon_fullpath_tip'] = 'Ce paramètre est pour les addons qui extraient directement dans le répertoire de World of Warcraft<br /><br />- [oui] Extraire addon dans WoW/<br />- [non] Extraire dans WoW/Interface/AddOns/<br />- [Automatique]Détection automatique de l\'emplacement';
+$lang['addon_fullpath_tip'] = 'Ce paramètre est pour les addons qui extraient directement dans le répertoire de World of Warcraft<br /><br />- [oui] Extraire addon dans WoW/<br />- [non] Extraire dans WoW/Interface/AddOns/';
 $lang['addon_selectfile_tip'] = 'Selectionner un addon à charger';
-$lang['confirm_addons_delete'] = 'Ceci supprimera TOUS les addons de la base de donnée et du serveur web. Etes-vous sûr ?';
-$lang['all_addons_delete'] = 'Tous les addons ont été supprimés de la base de donnée et du serveur web';
 
 
 // WoWAce
@@ -340,7 +335,7 @@ $lang['ADDVARNAME1'] = 'Nom de la Variable Additionnelle 1 (defaut-&gt;username)
 $lang['ADDVARVAL1'] = 'Valeur de la Variable Additionnelle 1';
 $lang['ADDVAR2CH'] = 'Variable Additionelle 2';
 $lang['ADDVARNAME2'] = 'Nom de la Variable Additionnelle 2 (defaut-&gt;password)';
-$lang['ADDVARVAL2'] = 'Valeur de la Variable Additionnelle 2<br />Cette valeur est en général un mot de passe et de ce fait masquée';
+$lang['ADDVARVAL2'] = 'Valeur de la Variable Additionnelle 2';
 $lang['ADDVAR3CH'] = 'Variable Additionelle 3';
 $lang['ADDVARNAME3'] = 'Nom de la Variable Additionnelle 3';
 $lang['ADDVARVAL3'] = 'Valeur de la Variable Additionnelle 3';
@@ -385,7 +380,6 @@ $lang['admin']['default_style'] = 'Style par Défaut|Le style d\'affichage par dé
 $lang['admin']['enable_gzip'] = 'Compression Gzip|Activer la compression gzip pour l\'affichage des pages UniAdmin';
 $lang['admin']['interface_url'] = 'URL Interface|Specifier le lieu de interface.php ici<br /><br />Utiliser %url% pour insérer l\'url de base<br />Par défaut  "%url%?p=interface" ou "%url%interface.php"';
 $lang['admin']['logo_folder'] = 'Dossier Logo|Specifier le dossier ou les logos UniUploader seront sauvés';
-$lang['admin']['remote_timeout'] = 'Temps d\'attente du fichier distant dépassé|Délais d\'attente d\'UniAdmin du fichier distant<br />Intervalle de mise à jour en heures<br />24 par défaut';
 $lang['admin']['temp_analyze_folder'] = 'Dossier Analyse Temporaire AddOn|Specifier le dossier ou les archives zip d\'addons seront décompressées et analysées';
 $lang['admin']['UAVer'] = 'Version UniAdmin|Version actuelle d\'UniAdmin<br />Vous ne pouvez pas changer ce paramètre';
 $lang['admin']['ua_debug'] = 'Mode Debug|Debuggage pour UniAdmin<br /><br />- [non] Pas de débuggage<br />- [demi] Affiche le nombre de requêtes et le temps de rendu dans le pied de page<br />- [complet] Montre le nombre de requête, temps de rendu, et la requête SQL dans le pied de page';
@@ -413,7 +407,6 @@ $lang['error_no_files_addon'] = 'Aucun fichier detecté dans l\'AddOn chargé';
 $lang['error_no_toc_file'] = 'Aucun fichier \'.toc\' détecté dans l\'AddOn chargé';
 $lang['error_unzip'] = 'Erreur de Manipulation Zip';
 $lang['error_pclzip'] = 'PCLZip Erreur Irrécupérable: [%1$s]';
-$lang['error_unsafe_file'] = 'Fichier Peu sûr Rejeté: [%1$s]';
 $lang['error_addon_process'] = 'Erreur Traitement AddOn';
 $lang['error_zip_file'] = 'L\'Addon chargé <u>doit</u> être un fichier zip';
 $lang['error_addon_not_exist'] = 'AddOn avec ID:%1$s n\'exist pas';
@@ -426,10 +419,9 @@ $lang['error_mkdir'] = 'mkdir [%1$s] Impossible<br />mkdir Manuellement et/ou vé
 $lang['error_unlink'] = 'unlink(delete) [%1$s] Impossible<br />Supprimer Manuellement et/ou vérifier les permissions de fichiers';
 $lang['error_move_uploaded_file'] = 'Impossible de de déplacer [%1$s] vers [%2$s]<br />Vérifier les paramètres de chargement php et les permissions de fichiers';
 $lang['error_write_file'] = 'Ne peut écrire [%1$s]<br />Vérifier les permissions';
-$lang['error_download_file'] = 'Impossible de charger [%1$s]<br />Echec de $uniadmin->get_remote_contents()';
 
 $lang['error_no_uploaded_logo'] = 'Aucun Logo Chargé';
-$lang['error_logo_format'] = 'Le fichier chargé <u>doit</u> être une image';
+$lang['error_logo_format'] = 'Le fichier chargé <u>doit</u> être une image GIF';
 
 $lang['error_name_required'] = 'Nom requis';
 $lang['error_pass_required'] = 'Mot de Passe requis';
@@ -439,9 +431,6 @@ $lang['error_pass_mismatch_edit'] = 'Les Mots de Passe ne concordaient pas<br />
 $lang['error_no_wowace_addons'] = 'Pas d\'Addon WoWAce dans la liste téléchargée';
 
 $lang['error_upgrade_needed'] = 'UniAdmin est en cours de mise à jour<br />Se connecter avec un compte admin pour continuer';
-
-$lang['error_invalid_module_name'] = 'Nom du module éronné';
-$lang['error_invalid_module'] = 'Module inéxistant';
 
 // SQL Error Messages
 $lang['sql_error'] = 'Erreur SQL';

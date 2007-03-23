@@ -55,52 +55,20 @@ function process_addon( $fileArray )
 			return;
 		}
 
-		$addon_zip_folder = UA_BASEDIR.$uniadmin->config['addon_folder'].DIR_SEP;
+		$addon_zip_folder = UA_BASEDIR.$uniadmin->config['addon_folder'];
 		$temp_folder = UA_BASEDIR.$uniadmin->config['temp_analyze_folder'];
 
 		// Check if this addon is required
 		$required = ( isset($_POST['required']) ? 1 : 0 );
 
-		// See if we are auto detecting the path or are we overriding it
-		$full_path = false;
-		$auto_path = true;
-		if( isset($_POST['fullpath_addon']) && $_POST['fullpath_addon'] != '' )
-		{
-			switch($_POST['fullpath_addon'])
-			{
-				case '0': // Force false
-					$full_path = false;
-					$auto_path = false;
-					break;
-
-				case '1': // Force true
-					$full_path = true;
-					$auto_path = false;
-					break;
-
-				case '2': // Auto-detect mode
-					$full_path = false;
-					$auto_path = true;
-					break;
-
-				default: // Default is false and auto-detect
-					$full_path = false;
-					$auto_path = true;
-					break;
-			}
-		}
-
 		// Name and location of the zip file
-		$zip_file = $addon_zip_folder.$addon_file_name;
+		$zip_file = $addon_zip_folder.DIR_SEP.$addon_file_name;
 
 		// Do the following actions only if we are not processing an existing addon
 		if( is_uploaded_file($temp_file_name) )
 		{
 			// Delete Addon if it exists
-			if( file_exists($zip_file) )
-			{
-				unlink($zip_file);
-			}
+			@unlink($zip_file);
 
 			// Try to move to the addon_temp directory
 			$try_move = move_uploaded_file($temp_file_name,$zip_file);
@@ -109,13 +77,13 @@ function process_addon( $fileArray )
 				$uniadmin->error(sprintf($user->lang['error_move_uploaded_file'],$temp_file_name,$zip_file));
 				return;
 			}
+			@unlink($temp_file_name);
 		}
 
-
 		// Try to set write access on the uploaded file
-		if( !is_writeable($zip_file) || !is_readable($zip_file) )
+		if( !is_writeable($zip_file) )
 		{
-			$try_chmod = chmod($zip_file,0777);
+			$try_chmod = @chmod($zip_file,0777);
 			if( !$try_chmod )
 			{
 				$uniadmin->error(sprintf($user->lang['error_chmod'],$zip_file));
@@ -124,10 +92,10 @@ function process_addon( $fileArray )
 		}
 
 		// Get the file size
-		$file_size = filesize($zip_file);
+		$file_size = @filesize($zip_file);
 
 		// Unzip the file
-		$files = $uniadmin->unzip($zip_file,$temp_folder.DIR_SEP);
+		$uniadmin->unzip($zip_file,$temp_folder.DIR_SEP);
 
 		$files = $uniadmin->ls($temp_folder);
 
@@ -138,26 +106,17 @@ function process_addon( $fileArray )
 
 		if( is_array($files) )
 		{
-			foreach( $files as $index => $file )
+			foreach( $files as $file )
 			{
 				if( $uniadmin->get_file_ext($file) == 'toc' )
 				{
 					$toc_files[] = $file;
 					continue;
 				}
-				elseif( strpos($file, 'changelog-r') !== false && $uniadmin->get_file_ext($file) == 'txt' )
+				elseif( strpos($file, 'changelog-r') && $uniadmin->get_file_ext($file) == 'txt' )
 				{
 					$revision_files[] = $file;
 					continue;
-				}
-
-				if( $auto_path )
-				{
-					// Check if the file has 'Interface/AddOns/', if so set full_path to true
-					if( stristr($file, 'Interface/AddOns') || stristr($file, 'Interface\\AddOns') )
-					{
-						$full_path = true;
-					}
 				}
 			}
 
@@ -208,11 +167,7 @@ function process_addon( $fileArray )
 					$homepage = get_toc_val($file, 'X-Website', get_toc_val($file, 'URL', ''));
 					$notes = get_toc_val($file, 'Notes', '');
 
-
-					$addon_file_check = strtolower(str_replace('.zip','',$addon_file_name));
-					$toc_file_check = strtolower( str_replace( array(' ','.toc'), array('_',''), basename($toc_file_name) ) );
-
-					if( strpos($addon_file_check, $toc_file_check) !== false )
+					if( strpos(strtolower($addon_file_name), strtolower(str_replace(' ','_',$toc_file_name))) !== false )
 					{
 						break;
 					}
@@ -224,7 +179,7 @@ function process_addon( $fileArray )
 			}
 			else
 			{
-				$try_unlink = unlink($zip_file);
+				$try_unlink = @unlink($zip_file);
 				if( !$try_unlink )
 				{
 					$uniadmin->error(sprintf($user->lang['error_unlink'],$zip_file));
@@ -236,7 +191,7 @@ function process_addon( $fileArray )
 		}
 		else
 		{
-			$try_unlink = unlink($zip_file);
+			$try_unlink = @unlink($zip_file);
 			if( !$try_unlink )
 			{
 				$uniadmin->error(sprintf($user->lang['error_unlink'],$zip_file));
@@ -246,10 +201,14 @@ function process_addon( $fileArray )
 			return;
 		}
 
+		if( isset($fileArray['file_name']) && substr($fileArray['file_name'], 0, 7) == 'http://' )
+		{
+			$addon_file_name = $fileArray['file_name'];
+		}
+
 		// See if AddOn exists in the database and do stuff to it
 		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `name` = '".$db->escape($real_addon_name)."';";
 		$result = $db->query($sql);
-
 
 		if( $db->num_rows($result) > 0 )
 		{
@@ -279,15 +238,15 @@ function process_addon( $fileArray )
 			$db->query($sql);
 
 			// Update Main Addon data
-			$sql = "UPDATE `".UA_TABLE_ADDONS."` SET `time_uploaded` = '".time()."', `version` = '".$db->escape($version)."', `enabled` = '$enabled', `name` = '".$db->escape($real_addon_name)."', `file_name` = '".$db->escape($addon_file_name)."', `homepage` = '".$db->escape($homepage)."', `notes` = '".$db->escape($notes)."', `toc` = '$toc_number', `required` = '$required', `filesize` = '$file_size', `full_path` = '".intval($full_path)."'
+			$sql = "UPDATE `".UA_TABLE_ADDONS."` SET `time_uploaded` = '".time()."', `version` = '".$db->escape($version)."', `enabled` = '$enabled', `name` = '".$db->escape($real_addon_name)."', `file_name` = '".$db->escape($addon_file_name)."', `homepage` = '".$db->escape($homepage)."', `notes` = '".$db->escape($notes)."', `toc` = '$toc_number', `required` = '$required', `filesize` = '$file_size'
 				WHERE `id` = '".$addon_id."';";
 			$db->query($sql);
 		}
 		else
 		{
 			// Insert Main Addon data
-			$sql = "INSERT INTO `".UA_TABLE_ADDONS."` ( `time_uploaded` , `version` , `enabled` , `name`, `file_name`, `homepage`, `notes`, `toc`, `required`, `filesize`, `full_path` )
-				VALUES ( '".time()."', '".$db->escape($version)."', '1', '".$db->escape($real_addon_name)."', '".$db->escape($addon_file_name)."', '".$db->escape($homepage)."', '".$db->escape($notes)."', '$toc_number', '$required', '$file_size', '".intval($full_path)."' );";
+			$sql = "INSERT INTO `".UA_TABLE_ADDONS."` ( `time_uploaded` , `version` , `enabled` , `name`, `file_name`, `homepage`, `notes`, `toc`, `required`, `filesize` )
+				VALUES ( '".time()."', '".$db->escape($version)."', '1', '".$db->escape($real_addon_name)."', '".$db->escape($addon_file_name)."', '".$db->escape($homepage)."', '".$db->escape($notes)."', '$toc_number', '$required', '$file_size' );";
 			$db->query($sql);
 
 			// Get the insert id of the addon just inserted
@@ -326,7 +285,7 @@ function process_addon( $fileArray )
 
 			if( $file_name != 'index.htm' && $file_name != 'index.html' && $file_name != '.svn' )
 			{
-				if( $full_path == false )
+				if( isset($_POST['fullpath_addon']) && $_POST['fullpath_addon'] == '0' )
 				{
 					$file_name = '\Interface\AddOns'.$file_name;
 				}
@@ -358,7 +317,7 @@ function process_addon( $fileArray )
 			}
 
 			// We have obtained the md5 and inserted the row into the database, now delete the temp file
-			$try_unlink = unlink($file);
+			$try_unlink = @unlink($file);
 			if( !$try_unlink )
 			{
 				$uniadmin->error(sprintf($user->lang['error_unlink'],$file));
@@ -446,12 +405,14 @@ function arrayToLi( $array, &$string, $baseName='', $call=false )
 	//Reset the array loop pointer
 	reset ($array);
 
-	//Use list() and each() to loop over each key/value pair of the array
+	//Use list() and each() to loop over each key/value
+	//pair of the array
 	while (list($key, $value) = each($array))
 	{
 		if (is_array($value))
 		{
-			//The value is another array, so simply call another instance of this function to handle it
+			//The value is another array, so simply call
+			//another instance of this function to handle it
 			arrayToLi($value, $string, $key, true);
 			if( $call )
 			{

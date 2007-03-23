@@ -207,8 +207,6 @@ function process_logo( )
 		$logo_id = $row['id'];
 		$logo_num = '1';
 		$file_field = 'logo1';
-
-		$db->free_result($result);
 	}
 	elseif( isset($_FILES['logo2']) && $_FILES['logo2']['name'] != '' )
 	{
@@ -220,8 +218,6 @@ function process_logo( )
 		$logo_id = $row['id'];
 		$logo_num = '2';
 		$file_field = 'logo2';
-
-		$db->free_result($result);
 	}
 	else
 	{
@@ -229,32 +225,23 @@ function process_logo( )
 		return;
 	}
 
-	$logo_ext = $uniadmin->get_file_ext($_FILES[$file_field]['name']);
-
-	// Only allow certain image types
-	if( in_array($logo_ext,explode(',',UA_LOGO_TYPES)) )
+	if( $uniadmin->get_file_ext($_FILES[$file_field]['name']) == 'gif' )
 	{
-		$logo_location = $logo_folder.DIR_SEP.stripslashes('logo'.$logo_num.'.'.$logo_ext);
+		$logo_location = $logo_folder.DIR_SEP.stripslashes('logo'.$logo_num.'.gif');
+		@unlink($logo_folder.DIR_SEP.'logo'.$logo_num.'.gif');
 
-		// Remove all types we allow
-		foreach( explode(',',UA_LOGO_TYPES) as $logo_del )
-		{
-			if( file_exists($logo_folder.DIR_SEP.'logo'.$logo_num.'.'.$logo_del) )
-			{
-				unlink($logo_folder.DIR_SEP.'logo'.$logo_num.'.'.$logo_del);
-			}
-		}
-
-		$try_move = move_uploaded_file($_FILES[$file_field]['tmp_name'],$logo_location);
+		$try_move = @move_uploaded_file($_FILES[$file_field]['tmp_name'],$logo_location);
 		if( !$try_move )
 		{
 			$uniadmin->error(sprintf($user->lang['error_move_uploaded_file'],$_FILES[$file_field]['tmp_name'],$logo_location));
 			return;
 		}
 
-		if( !is_writeable($logo_location) || !is_readable($logo_location) )
+		$md5 = md5_file($logo_location);
+
+		if( !is_writeable($logo_location) )
 		{
-			$try_chmod = chmod($logo_location,0777);
+			$try_chmod = @chmod($logo_location,0777);
 			if( !$try_chmod )
 			{
 				$uniadmin->error(sprintf($user->lang['error_chmod'],$logo_location));
@@ -262,13 +249,11 @@ function process_logo( )
 			}
 		}
 
-		$md5 = md5_file($logo_location);
-
 		$sql = "DELETE FROM `".UA_TABLE_LOGOS."` WHERE `id` = '$logo_id'";
 		$result = $db->query($sql);
 
 
-		$sql = "INSERT INTO `".UA_TABLE_LOGOS."` ( `filename` , `updated` , `logo_num` , `active` , `md5` ) VALUES ( 'logo$logo_num.$logo_ext', '".time()."', '$logo_num', '1', '$md5' );";
+		$sql = "INSERT INTO `".UA_TABLE_LOGOS."` ( `filename` , `updated` , `logo_num` , `active` , `download_url` , `md5` ) VALUES ( 'logo$logo_num.gif', '".time()."', '$logo_num', '1', '".$uniadmin->url_path.$uniadmin->config['logo_folder']."/logo$logo_num.gif', '$md5' );";
 		$result = $db->query($sql);
 		if( !$db->affected_rows() )
 		{

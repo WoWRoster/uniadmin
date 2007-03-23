@@ -87,7 +87,7 @@ If the setting is a 1 or zero that means it is a check mark in UU that should be
 
 array(	'header' => 'Statistics',
 'text'   => '
-<p>Basically this shows who is accessing UniAdmin</p>
+<p>Basicly this shows who is accessing UniAdmin</p>
 <p>The table shows each access</p>
 <ul>
 	<li> &quot;Action&quot; - What the client is asking for</li>
@@ -270,9 +270,6 @@ $lang['full'] = 'Full';
 $lang['edit'] = 'Edit';
 $lang['cancel'] = 'Cancel';
 $lang['status'] = 'Status';
-$lang['automatic'] = 'Automatic';
-$lang['delete_all_addons'] = 'Delete All Addons';
-$lang['unscanned_addons'] = 'Un-Scanned AddOns';
 
 
 // Pagination
@@ -291,10 +288,8 @@ $lang['interface_ready'] = 'UniUploader Update Interface Ready...';
 
 // Addon Management
 $lang['addon_required_tip'] = 'When checked, UniUploader will require this addon for download';
-$lang['addon_fullpath_tip'] = 'This is for addons that extract directly to the World of Warcraft directory<br /><br />- [yes] Extract addon to WoW/<br />- [no] Extract to WoW/Interface/AddOns/<br />- [Automatic] Auto-detect location';
+$lang['addon_fullpath_tip'] = 'This is for addons that extract directly to the World of Warcraft directory<br /><br />- [yes] Extract addon to WoW/<br />- [no] Extract to WoW/Interface/AddOns/';
 $lang['addon_selectfile_tip'] = 'Select an addon to upload';
-$lang['confirm_addons_delete'] = 'This will remove ALL addons from the database and the web server. Are you sure?';
-$lang['all_addons_delete'] = 'All addons have been removed from the database and the web server';
 
 
 // WoWAce
@@ -340,7 +335,7 @@ $lang['ADDVARNAME1'] = 'Additional variable 1 name (default-&gt;username)';
 $lang['ADDVARVAL1'] = 'Additional variable 1 value';
 $lang['ADDVAR2CH'] = 'Additional variable 2';
 $lang['ADDVARNAME2'] = 'Additional variable 2 name (default-&gt;password)';
-$lang['ADDVARVAL2'] = 'Additional variable 2 value<br />This value is usually a password and so is hidden';
+$lang['ADDVARVAL2'] = 'Additional variable 2 value';
 $lang['ADDVAR3CH'] = 'Additional variable 3';
 $lang['ADDVARNAME3'] = 'Additional variable 3 name';
 $lang['ADDVARVAL3'] = 'Additional variable 3 value';
@@ -385,7 +380,6 @@ $lang['admin']['default_style'] = 'Default Style|The default display style';
 $lang['admin']['enable_gzip'] = 'Gzip Compression|Enable gzip compression when displaying UniAdmin Pages';
 $lang['admin']['interface_url'] = 'Interface URL|Specify the location of interface.php here<br /><br />Use %url% to insert the base url<br />Default is &quot;%url%?p=interface&quot; or &quot;%url%interface.php&quot;';
 $lang['admin']['logo_folder'] = 'Logo Folder|Specify the folder UniUploader logos will be saved';
-$lang['admin']['remote_timeout'] = 'Remote File Timeout|This sets the timeout period to download remote files in UniAdmin<br />This setting is how many hours to wait before getting a new file<br />Default is 24 hours';
 $lang['admin']['temp_analyze_folder'] = 'AddOn Analyze Temp Folder|Specify the folder addon zip archives will be extracted to and anaylized';
 $lang['admin']['UAVer'] = 'UniAdmin Version|Current UniAdmin version<br />You cannot change this setting';
 $lang['admin']['ua_debug'] = 'Debug Mode|Debugging for UniAdmin<br /><br />- [no] No debugging<br />- [half] Show query count and rendertime in the footer<br />- [full] Show query count, rendertime, and SQL query window in the footer';
@@ -413,7 +407,6 @@ $lang['error_no_files_addon'] = 'No files were detected in the uploaded AddOn';
 $lang['error_no_toc_file'] = 'No \'.toc\' file was detected in the uploaded AddOn';
 $lang['error_unzip'] = 'Zip Handling Error';
 $lang['error_pclzip'] = 'PCLZip Unrecoverable Error: [%1$s]';
-$lang['error_unsafe_file'] = 'Unsafe File Rejected: [%1$s]';
 $lang['error_addon_process'] = 'AddOn Processing Error';
 $lang['error_zip_file'] = 'The uploaded addon <u>must</u> be a zip file';
 $lang['error_addon_not_exist'] = 'AddOn with ID:%1$s does not exist';
@@ -426,10 +419,9 @@ $lang['error_mkdir'] = 'Could not mkdir [%1$s]<br />mkdir Manually and/or check 
 $lang['error_unlink'] = 'Could not unlink(delete) [%1$s]<br />Delete Manually and/or check file persmissions';
 $lang['error_move_uploaded_file'] = 'Could not move [%1$s] to [%2$s]<br />Check php upload settings and file persmissions';
 $lang['error_write_file'] = 'Could not write [%1$s]<br />Check persmissions';
-$lang['error_download_file'] = 'Could not download [%1$s]<br />$uniadmin-&gt;get_remote_contents() failed';
 
 $lang['error_no_uploaded_logo'] = 'No Logo Uploaded';
-$lang['error_logo_format'] = 'The uploaded file <u>must</u> be an image';
+$lang['error_logo_format'] = 'The uploaded file <u>must</u> be a GIF image';
 
 $lang['error_name_required'] = 'Name is required';
 $lang['error_pass_required'] = 'Password is required';
@@ -439,9 +431,6 @@ $lang['error_pass_mismatch_edit'] = 'Passwords did not match<br />Old password u
 $lang['error_no_wowace_addons'] = 'No WoWAce AddOns in Downloaded List';
 
 $lang['error_upgrade_needed'] = 'UniAdmin is currently being upgraded<br />Log in with an admin account to continue';
-
-$lang['error_invalid_module_name'] = 'Invalid characters in module name';
-$lang['error_invalid_module'] = 'Invalid Module';
 
 // SQL Error Messages
 $lang['sql_error'] = 'SQL Error';

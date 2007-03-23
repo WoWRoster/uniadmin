@@ -1,34 +1,6 @@
 <!-- INCLUDE overall_header.html -->
 
-<!-- IF S_ADDON_ADD_DEL -->
-<!-- IF S_ORPHAN_ADDONS -->
-<form id="ua_orphan_addon" name="ua_orphan_addon" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
-<input type="hidden" name="{A_OPERATION}" value="{A_ORPHAN}" />
-<table class="ua_table" style="float:right;width:250px;">
-	<thead>
-		<tr>
-			<th class="table_header"><div style="float:right;">
-			<img id="orphan_body_img" src="{TEMPLATE_PATH}/images/plus.png" style="cursor:pointer;" alt="" onclick="toggleShow('orphan_body','orphan_body_img','{TEMPLATE_PATH}/images/minus.png','{TEMPLATE_PATH}/images/plus.png')" />
-			</div>{L_UNSCANNED}</th>
-		</tr>
-	</thead>
-	<tbody id="orphan_body" style="display:none;">
-	<!-- BEGIN orphan_addons_row -->
-		<tr>
-			<td class="data{orphan_addons_row.ROW_CLASS}"><input type="checkbox" id="{orphan_addons_row.ID}" name="{orphan_addons_row.ID}" />
-					<label for="{orphan_addons_row.ID}">{orphan_addons_row.NAME}</label></td>
-		</tr>
-	<!-- END orphan_addons_row -->
-		<tr>
-			<th><input class="submit" type="submit" value="{L_ADD}" /></th>
-		</tr>
-	</tbody>
-</table>
-</form>
-<!-- ENDIF -->
-<!-- ENDIF -->
-
-<table class="ua_table rowstyle-data2 no-arrow paginate-15" align="center">
+<table class="ua_table sortable-onload-1 rowstyle-data2 no-arrow<!-- IF S_BELOW_15 --> paginate-15<!-- ENDIF -->" align="center">
 	<thead>
 		<tr>
 			<th class="table_header" colspan="6">{L_ADDON_MANAGE}</th>
@@ -39,27 +11,18 @@
 			<th class="sortable">{L_TOC}</th>
 			<th class="sortable">{L_VERSION}</th>
 			<th class="sortable">{L_UPLOADED}</th>
+			<th class="sortable">{L_FILES}</th>
 			<th>{L_MANAGE}</th>
 		</tr>
 	</thead>
-	<!-- IF S_ADDON_ADD_DEL -->
-	<tfoot>
-		<tr>
-			<th colspan="6">{L_DELETE_ALL}
-				<form name="ua_delete_all_addons" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}" onsubmit="return confirm('{L_CONFIRM_DELETE}');">
-					<input type="hidden" name="{A_OPERATION}" value="{A_DELETEALL}" />
-					<input class="icon" src="{TEMPLATE_PATH}/images/delete.png" type="image" value="{L_DELETE_ALL}" alt="" onmouseover="return overlib('{L_DELETE_ALL}');" onmouseout="return nd();" />
-				</form></th>
-		</tr>
-	</tfoot>
-	<!-- ENDIF -->
 	<tbody>
 	<!-- BEGIN addons_row -->
 		<tr>
-			<td<!-- IF addons_row.NOTE != '' --> onmouseover="return overlib('{addons_row.NOTE}',CAPTION,'{L_NOTES}',WRAP);" onmouseout="return nd();"<!-- ENDIF -->><a href="{UA_FORMACTION}&amp;{A_DETAIL}={addons_row.ID}" class="addon_name">{addons_row.ADDONNAME}</a></td>
+			<td><a href="{UA_FORMACTION}&amp;{A_DETAIL}={addons_row.ID}" class="addon_name"<!-- IF addons_row.NOTE != '' --> onmouseover="return overlib('{addons_row.NOTE}',CAPTION,'{L_NOTES}',WRAP);" onmouseout="return nd();"<!-- ENDIF -->>{addons_row.ADDONNAME}</a></td>
 			<td>{addons_row.TOC}</td>
 			<td>{addons_row.VERSION}</td>
 			<td>{addons_row.TIME}</td>
+			<td>{addons_row.NUMFILES}</td>
 			<td>
 				<a href="{addons_row.DOWNLOAD}"><img src="{TEMPLATE_PATH}/images/download_mini.png" class="icon" alt="" onmouseover="return overlib('{L_DOWNLOAD}-[{addons_row.FILESIZE}]');" onmouseout="return nd();" /></a>
 				<a href="{UA_FORMACTION}&amp;{A_DETAIL}={addons_row.ID}"><img src="{TEMPLATE_PATH}/images/details_mini.png" class="icon" alt="" onmouseover="return overlib('{L_ADDON_DETAILS}');" onmouseout="return nd();" /></a>
@@ -129,15 +92,13 @@
 	</thead>
 <!-- ENDIF -->
 </table>
-
-<br />
 <br />
 
 <!-- IF S_ADDON_ADD_DEL -->
 <form id="ua_updateaddon" name="ua_updateaddon" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
 	<table class="ua_table" align="center">
 		<tr>
-			<th class="table_header" colspan="2">{L_ADD_UPDATE}</th>
+			<th class="table_header" colspan="2">{L_ADDON_MANAGE}</th>
 		</tr>
 		<tr>
 			<td><img src="{TEMPLATE_PATH}/images/help_mini.png" alt="" onmouseover="return overlib('{L_REQUIRED_TIP}',CAPTION,'{L_REQUIRED}');" onmouseout="return nd();" />
@@ -147,9 +108,7 @@
 		<tr>
 			<td class="data2"><img src="{TEMPLATE_PATH}/images/help_mini.png" alt="" onmouseover="return overlib('{L_FULLPATH_TIP}',CAPTION,'{L_FULLPATH}');" onmouseout="return nd();" />
 				{L_FULLPATH}:</td>
-			<td class="data2">
-				<input type="radio" id="fullpath_addon_auto" name="fullpath_addon" value="2" checked="checked" /><label for="fullpath_addon_auto">{L_AUTOMATIC}</label>
-				<input type="radio" id="fullpath_addon_no" name="fullpath_addon" value="0" /><label for="fullpath_addon_no">{L_NO}</label>
+			<td class="data2"><input type="radio" id="fullpath_addon_no" name="fullpath_addon" value="0" checked="checked" /><label for="fullpath_addon_no">{L_NO}</label>
 				<input type="radio" id="fullpath_addon_yes" name="fullpath_addon" value="1" /><label for="fullpath_addon_yes">{L_YES}</label></td>
 		</tr>
 		<tr>
@@ -164,6 +123,5 @@
 	<input type="hidden" name="{A_OPERATION}" value="{A_PROCESS}" />
 </form>
 <!-- ENDIF -->
-
 
 <!-- INCLUDE overall_footer.html -->
