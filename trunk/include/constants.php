@@ -71,11 +71,8 @@ define('UA_FORMACTION',   UA_INDEX.( isset($_GET[UA_URI_PAGE]) && ($_GET[UA_URI_
 //Reject certain settings in UU since we don't need them, or want them displayed
 define('UA_REJECT_INI'   , 'CHECKEDADDONS,CHECKEDSVLIST,EXELOC,FILELOCATION,SELECTEDACCT,EXE1,EXE1LOCATION,EXE2,EXE2LOCATION,EXE3,EXE3LOCATION,EXEUULAUNCH,EXEWOWLAUNCH,USERAGENT');
 
-//File types to allow when scanning addons
-define('UA_ADDON_WHITELIST',  'lua,toc,txt,tga,blp,ttf,xml,wav,mp3,nopatch,bak,jpeg,jpg,gif,png,xsd');
-
 //File types to ignore when scanning addons
-define('UA_ADDON_BLACKLIST', 'exe,com,jar,vbs,bat,cmd');
+define('UA_ADDON_BLACKLIST', 'ade,adp,bas,bat,chm,cmd,com,cpl,crt,doc,eml,emf,exe,hlp,hta,inf,ins,isp,jar,js,jse,lnk,mdb,mde,msc,msi,msp,mst,pcd,pif,ppt,py,rar,reg,scr,sct,shs,url,vbs,vbe,wsf,wsh,wsc,xsl');
 
 //Allowed logo image types
 define('UA_LOGO_TYPES'  , 'jpg,jpeg,png,ico,gif');
