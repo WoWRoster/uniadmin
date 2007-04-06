@@ -1,4 +1,4 @@
-UniAdmin 0.7.7 (updated 25th March 2007)
+UniAdmin 0.7.7 (updated 6th April 2007)
 ===============================================
 UniAdmin is a back-end web-based tool for managing the configuration of and logos in UniUploader and
 auto-updating WoW addons.
@@ -190,11 +190,16 @@ v0.7.7
 ~ Addon processing now checks if the addon zip exists before trying to unlink it
 ~ UA does not attempt to delete temp upload file, move_uploaded_file already does this
 ~ addon xml output htmlspecialchars() encoded
+~ Addon file XML output now outputs <addon /> where there are no addons
 ! Now using a blacklist for invalid files
     ade,adp,bas,bat,chm,cmd,com,cpl,crt,doc,eml,emf,exe,hlp,hta,inf,ins,isp,jar,js,jse,lnk,
     mdb,mde,msc,msi,msp,mst,pcd,pif,ppt,py,rar,reg,scr,sct,shs,url,vbs,vbe,wsf,wsh,wsc,xsl
 ! Returned to old method for figuring out file extention
 ! Paginate tpl variable was removed from addon page
+! uniadmin_settings.enabled is now a tinyint(1) field
+! New look for the SV file management section
++ Addon removal settings
++ Two new settings for jUU HOMEURL and FORUMURL
 
 
 v0.7.6

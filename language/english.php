@@ -177,6 +177,7 @@ $lang['ip_address'] = 'IP Address';
 $lang['date_time'] = 'Date/Time';
 $lang['user_agent'] = 'User Agent';
 $lang['host_name'] = 'Host Name';
+$lang['addon'] = 'AddOn';
 
 
 
@@ -296,6 +297,9 @@ $lang['addon_selectfile_tip'] = 'Select an addon to upload';
 $lang['confirm_addons_delete'] = 'This will remove ALL addons from the database and the web server. Are you sure?';
 $lang['all_addons_delete'] = 'All addons have been removed from the database and the web server';
 
+$lang['addon_delete'] = 'AddOn Deletion Control';
+$lang['addon_delete_add'] = 'Add AddOns for UniUploader to Remove';
+$lang['addon_delete_none'] = 'No AddOns are set for UniUploader to delete';
 
 // WoWAce
 $lang['new_wowace_list'] = 'New list downloaded from WoWAce.com';
@@ -330,6 +334,7 @@ $lang['UUUPDATERCHECK'] = 'Check for UniUploader updates/upgrades';
 $lang['SYNCHROURL'] = 'URL for synchronization with UniAdmin';
 $lang['ADDONAUTOUPDATE'] = 'AddOn auto-update';
 $lang['UUSETTINGSUPDATER'] = 'Sync UniUploader settings with UniAdmin';
+$lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Auto upload on SavedVariable file changes';
@@ -355,6 +360,8 @@ $lang['ADDURL3CH'] = 'Additional URL 3';
 $lang['ADDURL3'] = 'Additional URL 3 location';
 $lang['ADDURL4CH'] = 'Additional URL 4';
 $lang['ADDURL4'] = 'Additional URL 4 location';
+$lang['HOMEURL'] = 'URL location for homepage';
+$lang['FORUMURL'] = 'URL location for forums';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'Auto-Launch WoW';
@@ -461,6 +468,9 @@ $lang['sql_error_logo_insert'] = 'Could not insert logo in the database';
 $lang['sql_error_settings_update'] = 'Could not update setting =&gt; %1$s, value =&gt; %2$s, enabled =&gt; %3$d';
 $lang['sql_error_settings_sv_insert'] = 'Could not insert savedvariable filename &quot;%1$s&quot;';
 $lang['sql_error_settings_sv_remove'] = 'Could not remove savedvariable filename &quot;%1$s&quot;';
+
+$lang['sql_error_settings_addondel_insert'] = 'Could not insert addon delete directory name &quot;%1$s&quot;';
+$lang['sql_error_settings_addondel_remove'] = 'Could not remove addon delete directory id &quot;%1$s&quot;';
 
 $lang['sql_error_user_add'] = 'Could not add user &quot;%1$s&quot;';
 $lang['sql_error_user_delete'] = 'Could not delete user &quot;%1$s&quot;';

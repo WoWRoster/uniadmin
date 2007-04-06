@@ -16,38 +16,30 @@
 		<!-- IF S_MANAGE -->
 		<td class="data{sv_list.ROW_CLASS}">
 			<form name="ua_removesv_{sv_list.ID}" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
-				<input class="submit" type="submit" value="{L_REMOVE}" />
-				<input type="hidden" value="{sv_list.ID}" name="{A_ID}" />
 				<input type="hidden" value="{A_DELETE}" name="{A_OPERATION}" />
+				<input type="hidden" value="{sv_list.ID}" name="{A_ID}" />
+				<input class="icon" src="{TEMPLATE_PATH}/images/delete_mini.png" type="image" value="{L_REMOVE}" alt="" onmouseover="return overlib('{L_REMOVE}');" onmouseout="return nd();" />
 			</form>
+
 		</td>
 		<!-- ENDIF -->
 	</tr>
 	<!-- END sv_list -->
+	<!-- IF S_MANAGE -->
+	<tr>
+		<th colspan="2">{L_ADD_SV}</th>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><form name="ua_addsv" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+				<input type="hidden" value="{A_ADD}" name="{A_OPERATION}" />
+				<input class="input_m" type="text" name="{A_SVNAME}" /> <b>.lua</b>
+				<input class="icon" src="{TEMPLATE_PATH}/images/plus_big.png" type="image" value="{L_ADD}" alt="" onmouseover="return overlib('{L_ADD}');" onmouseout="return nd();" />
+			</form></td>
+	</tr>
+	<!-- ENDIF -->
 </table>
 
 <br />
-
-<!-- IF S_MANAGE -->
-<form name="ua_addsv" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
-	<table class="ua_table" align="center" width="40%">
-		<tr>
-			<th colspan="2" class="table_header">{L_ADD_SV}</th>
-		</tr>
-		<tr>
-			<th>{L_FILENAME}</th>
-			<th width="10%">{L_ADD}</th>
-		</tr>
-		<tr>
-			<td><input class="input_m" type="text" name="{A_SVNAME}" /> <b>.lua</b></td>
-			<td><input class="submit" type="submit" value="{L_ADD}" /></td>
-		</tr>
-	</table>
-	<input type="hidden" value="{A_ADD}" name="{A_OPERATION}" />
-</form>
-
-<br />
-<!-- ENDIF -->
 
 <!-- IF S_INI -->
 <table class="ua_table" align="center">

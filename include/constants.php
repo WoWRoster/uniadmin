@@ -22,7 +22,7 @@ if( !defined('IN_UNIADMIN') )
 }
 
 //UniAdmin Version
-define('UA_VER', '0.7.6');
+define('UA_VER', '0.7.7');
 define('NO_CACHE', true);
 
 //Directories
@@ -39,29 +39,32 @@ define('UA_ID_POWER', 2);
 define('UA_ID_ADMIN', 3);
 
 //URI Parameters
-define('UA_URI_OP',         'op');
-define('UA_URI_ID',         'id');
-define('UA_URI_ADD',        'add');
-define('UA_URI_DELETE',     'delete');
-define('UA_URI_DELETE_ALL', 'deleteall');
-define('UA_URI_DISABLE',    'disable');
-define('UA_URI_ENABLE',     'enable');
-define('UA_URI_OPT',        'optional');
-define('UA_URI_REQ',        'require');
-define('UA_URI_PROCESS',    'process');
-define('UA_URI_SVNAME',     'svname');
-define('UA_URI_NAME',       'name');
-define('UA_URI_LEVEL',      'level');
-define('UA_URI_PASS',       'password');
-define('UA_URI_NEW',        'new');
-define('UA_URI_UPINI',      'upini');
-define('UA_URI_GETINI',     'getini');
-define('UA_URI_DETAIL',     'detail');
-define('UA_URI_EDIT',       'edit');
-define('UA_URI_ORPHAN',     'orphan');
+define('UA_URI_OP',           'op');
+define('UA_URI_ID',           'id');
+define('UA_URI_ADD',          'add');
+define('UA_URI_DELETE',       'delete');
+define('UA_URI_DELETE_ALL',   'deleteall');
+define('UA_URI_DISABLE',      'disable');
+define('UA_URI_ENABLE',       'enable');
+define('UA_URI_OPT',          'optional');
+define('UA_URI_REQ',          'require');
+define('UA_URI_PROCESS',      'process');
+define('UA_URI_SVNAME',       'svname');
+define('UA_URI_NAME',         'name');
+define('UA_URI_LEVEL',        'level');
+define('UA_URI_PASS',         'password');
+define('UA_URI_NEW',          'new');
+define('UA_URI_UPINI',        'upini');
+define('UA_URI_GETINI',       'getini');
+define('UA_URI_DETAIL',       'detail');
+define('UA_URI_EDIT',         'edit');
+define('UA_URI_ORPHAN',       'orphan');
+define('UA_URI_ADDONDEL_ADD', 'addondel_add');
+define('UA_URI_ADDONDEL_REM', 'addondel_remove');
+define('UA_URI_ADDONDEL_NAME','addondel_name');
 
 //URL parameters
-define('UA_INDEX',        'index.php');
+define('UA_INDEX',        '');
 define('UA_URI_PAGE',     'p');
 define('UA_INDEXPAGE',    UA_INDEX.'?'.UA_URI_PAGE.'=');
 define('UA_URI_THEME',    'theme');
@@ -78,11 +81,12 @@ define('UA_ADDON_BLACKLIST', 'ade,adp,bas,bat,chm,cmd,com,cpl,crt,doc,eml,emf,ex
 define('UA_LOGO_TYPES'  , 'jpg,jpeg,png,ico,gif');
 
 //Database Table names
-define('UA_TABLE_ADDONS',   ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'addons');
-define('UA_TABLE_CONFIG',   ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'config');
-define('UA_TABLE_FILES',    ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'files');
-define('UA_TABLE_LOGOS',    ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'logos');
-define('UA_TABLE_SETTINGS', ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'settings');
-define('UA_TABLE_STATS',    ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'stats');
-define('UA_TABLE_USERS',    ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'users');
-define('UA_TABLE_SVLIST',   ( isset($config['table_prefix']) ? $config['table_prefix'] : '' ) . 'svlist');
+define('UA_TABLE_ADDONDEL', ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'addondel');
+define('UA_TABLE_ADDONS',   ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'addons');
+define('UA_TABLE_CONFIG',   ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'config');
+define('UA_TABLE_FILES',    ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'files');
+define('UA_TABLE_LOGOS',    ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'logos');
+define('UA_TABLE_SETTINGS', ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'settings');
+define('UA_TABLE_STATS',    ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'stats');
+define('UA_TABLE_USERS',    ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'users');
+define('UA_TABLE_SVLIST',   ( isset($config['table_prefix']) ? $config['table_prefix'] : 'uniadmin_' ) . 'svlist');

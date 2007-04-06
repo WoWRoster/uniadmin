@@ -65,6 +65,11 @@ switch( $op )
 		echo output_addon_xml();
 		break;
 
+	case 'GETDELETEADDONS':
+		update_stats($op);
+		echo output_addondel_xml();
+		break;
+
 	case 'GETADDON':
 		update_stats($op);
 		echo output_addon_url($_REQUEST['ADDON']);
@@ -260,12 +265,12 @@ function output_addon_xml( )
 	$result = $db->query($sql);
 
 
+	$xmlDoc = new MiniXMLDoc();
+	$xmlRoot =& $xmlDoc->getRoot();
+	$addonsElement =& $xmlRoot->createChild('addons');
+
 	if( $db->num_rows($result) > 0 )
 	{
-		$xmlDoc = new MiniXMLDoc();
-		$xmlRoot =& $xmlDoc->getRoot();
-		$addonsElement =& $xmlRoot->createChild('addons');
-
 		while( $row = $db->fetch_record($result) )
 		{
 			$addonElement =& $addonsElement->createChild('addon');
@@ -295,18 +300,12 @@ function output_addon_xml( )
 			$db->free_result($result2);
 		}
 		$db->free_result($result);
-
-		$output = $xmlDoc->toString();
-
-		header('Content-Type: text/xml');
-		header('Content-Length: ' . strlen($output) );
-		return $output;
 	}
-	else
-	{
-		$db->free_result($result);
-		return;
-	}
+
+	$output = $xmlDoc->toString();
+	header('Content-Type: text/xml');
+	header('Content-Length: ' . strlen($output) );
+	return $output;
 }
 
 /**
@@ -357,4 +356,42 @@ function output_logo_md5( $filename )
 	{
 		return '';
 	}
+}
+
+
+/**
+ * Echos XML UniAdmin delete addons list
+ */
+function output_addondel_xml( )
+{
+	global $db, $uniadmin;
+
+	// Don't get optional addons if UU_COMPAT is true
+	$sql = "SELECT * FROM `".UA_TABLE_ADDONDEL."` WHERE `enabled` = '1';";
+	$result = $db->query($sql);
+
+	$xmlDoc = new MiniXMLDoc();
+	$xmlRoot =& $xmlDoc->getRoot();
+	$addonsElement =& $xmlRoot->createChild('addons');
+
+	if( $db->num_rows($result) > 0 )
+	{
+		while( $row = $db->fetch_record($result) )
+		{
+			$addonElement =& $addonsElement->createChild('addon');
+
+			$addonElement->attribute('dirname', htmlspecialchars($row['name']));
+		}
+		$db->free_result($result);
+	}
+	else
+	{
+		$db->free_result($result);
+		return;
+	}
+
+	$output = $xmlDoc->toString();
+	header('Content-Type: text/xml');
+	header('Content-Length: ' . strlen($output) );
+	return $output;
 }
