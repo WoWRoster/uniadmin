@@ -112,19 +112,19 @@ function main( )
 	{
 		$tpl->assign_var('S_MANAGE',true);
 		$tpl->assign_var('S_INI',true);
-		$sql .= " ORDER BY `id` ASC;";
+		$sql .= " ORDER BY `section` ASC;";
 		$tpl->assign_var('ONLOAD'," onload=\"initARC('ua_mainsettings','radioOn', 'radioOff','checkboxOn', 'checkboxOff');\"");
 	}
 	elseif( $user->data['level'] >= UA_ID_POWER )
 	{
 		$tpl->assign_var('S_MANAGE',true);
-		$sql .= " ORDER BY `id` ASC;";
+		$sql .= " ORDER BY `section` ASC;";
 		$tpl->assign_var('ONLOAD'," onload=\"initARC('ua_mainsettings','radioOn', 'radioOff','checkboxOn', 'checkboxOff');\"");
 	}
 	elseif( $user->data['level'] == UA_ID_ANON )
 	{
 		$tpl->assign_var('L_MANAGE_SV',$user->lang['svfiles']);
-		$sql .= " WHERE `enabled` = '1' ORDER BY `id` ASC;";
+		$sql .= " WHERE `enabled` = '1' ORDER BY `section` ASC;";
 	}
 
 	$section = '';

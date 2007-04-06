@@ -26,6 +26,19 @@ CREATE TABLE `uniadmin_addons` (
 
 
 # --------------------------------------------------------
+### Table structure for addondel
+
+
+DROP TABLE IF EXISTS `uniadmin_addondel`;
+CREATE TABLE `uniadmin_addondel` (
+  `id` int(11) NOT NULL auto_increment,
+  `dir_name` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `dir_name` (`dir_name`)
+);
+
+
+# --------------------------------------------------------
 ### Table structure for config
 
 DROP TABLE IF EXISTS `uniadmin_config`;
@@ -76,7 +89,7 @@ CREATE TABLE `uniadmin_settings` (
   `id` int(11) NOT NULL auto_increment,
   `set_name` varchar(250) NOT NULL default '',
   `set_value` varchar(250) NOT NULL default '',
-  `enabled` varchar(11) NOT NULL default '',
+  `enabled` tinyint(1) NOT NULL default '0',
   `section` varchar(64) NOT NULL,
   `form_type` mediumtext,
   PRIMARY KEY  (`id`)

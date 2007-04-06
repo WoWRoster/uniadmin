@@ -30,7 +30,7 @@ if( $uniadmin->config['UAVer'] >= UA_VER )
 class Upgrade
 {
 	var $db = null;
-	var $versions = array('0.7.5');
+	var $versions = array('0.7.5','0.7.6');
 
 	function upgrade()
 	{
@@ -83,9 +83,15 @@ class Upgrade
 	// Upgrade methods
 	//--------------------------------------------------------------
 
+	function upgrade_076($index)
+	{
+		$this->standard_upgrader($index);
+		$this->finalize($index);
+	}
+
 	function upgrade_075($index)
 	{
-		$this->standard_upgrader('075');
+		$this->standard_upgrader($index);
 		$this->finalize($index);
 	}
 

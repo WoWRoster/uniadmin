@@ -177,6 +177,7 @@ $lang['ip_address'] = 'Adresse IP';
 $lang['date_time'] = 'Date/Heure';
 $lang['user_agent'] = 'User Agent';
 $lang['host_name'] = 'Nom d\'Hôte';
+$lang['addon'] = 'AddOn';
 
 
 
@@ -296,6 +297,9 @@ $lang['addon_selectfile_tip'] = 'Selectionner un addon à charger';
 $lang['confirm_addons_delete'] = 'Ceci supprimera TOUS les addons de la base de donnée et du serveur web. Etes-vous sûr ?';
 $lang['all_addons_delete'] = 'Tous les addons ont été supprimés de la base de donnée et du serveur web';
 
+$lang['addon_delete'] = 'AddOn Deletion Control';
+$lang['addon_delete_add'] = 'Add AddOns for UniUploader to Remove';
+$lang['addon_delete_none'] = 'No AddOns are set for UniUploader to delete';
 
 // WoWAce
 $lang['new_wowace_list'] = 'Nouvelle liste téléchargée de WoWAce.com';
@@ -330,6 +334,7 @@ $lang['UUUPDATERCHECK'] = 'Vérifier les mises à jour d\'UniUploader';
 $lang['SYNCHROURL'] = 'URL de synchronisation avec UniAdmin';
 $lang['ADDONAUTOUPDATE'] = 'Mise à jour automatique des AddOns';
 $lang['UUSETTINGSUPDATER'] = 'Synchroniser les réglages UniUploader avec UniAdmin';
+$lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Charger Automatiquement les fichiers SavedVariable lorsqu\'ils sont modifiés';
@@ -355,6 +360,8 @@ $lang['ADDURL3CH'] = 'URL Additionnelle 1';
 $lang['ADDURL3'] = 'Adresse de l\'URL Additionnelle 3';
 $lang['ADDURL4CH'] = 'URL Additionnelle 1';
 $lang['ADDURL4'] = 'Adresse de l\'URL Additionnelle 4';
+$lang['HOMEURL'] = 'URL location for homepage';
+$lang['FORUMURL'] = 'URL location for forums';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'Lancer WoW automatiquement';
@@ -461,6 +468,9 @@ $lang['sql_error_logo_insert'] = 'Impossible d\'insérer le logo dans la base de 
 $lang['sql_error_settings_update'] = 'Impossible de mettre à jour le paramètre =&gt; %1$s, valeur =&gt; %2$s, activé =&gt; %3$d';
 $lang['sql_error_settings_sv_insert'] = 'Impossible d\'insérer le nom de fichier savedvariable &quot;%1$s&quot;';
 $lang['sql_error_settings_sv_remove'] = 'Impossible de supprimer le nom de fichier savedvariable &quot;%1$s&quot;';
+
+$lang['sql_error_settings_addondel_insert'] = 'Could not insert addon delete directory name &quot;%1$s&quot;';
+$lang['sql_error_settings_addondel_remove'] = 'Could not remove addon delete directory id &quot;%1$s&quot;';
 
 $lang['sql_error_user_add'] = 'Impossible d\'ajouter l\'utilisateur &quot;%1$s&quot;';
 $lang['sql_error_user_delete'] = 'Impossible de supprimer l\'utilisateur &quot;%1$s&quot;';

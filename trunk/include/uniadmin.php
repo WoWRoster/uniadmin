@@ -464,7 +464,10 @@ class UniAdmin
 			'A_GETINI'         => UA_URI_GETINI,
 			'A_DETAIL'         => UA_URI_DETAIL,
 			'A_EDIT'           => UA_URI_EDIT,
-			'A_ORPHAN'         => UA_URI_ORPHAN
+			'A_ORPHAN'         => UA_URI_ORPHAN,
+			'A_ADDONDEL_ADD'   => UA_URI_ADDONDEL_ADD,
+			'A_ADDONDEL_REM'   => UA_URI_ADDONDEL_REM,
+			'A_ADDONDEL_NAME'  => UA_URI_ADDONDEL_NAME
 			)
 		);
 

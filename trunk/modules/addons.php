@@ -70,6 +70,16 @@ switch($op)
 			process_orphan_addons();
 		break;
 
+	case UA_URI_ADDONDEL_ADD:
+		if( $user->data['level'] >= UA_ID_ADMIN )
+			add_addon_del($_POST[UA_URI_ADDONDEL_NAME]);
+		break;
+
+	case UA_URI_ADDONDEL_REM:
+		if( $user->data['level'] >= UA_ID_ADMIN )
+			remove_addon_del($id);
+		break;
+
 	default:
 		break;
 }
@@ -140,6 +150,11 @@ function main( )
 		'L_FULLPATH_TIP'   => $user->lang['addon_fullpath_tip'],
 		'L_SELECTFILE_TIP' => $user->lang['addon_selectfile_tip'],
 
+		'L_REMOVE'         => $user->lang['remove'],
+		'L_ADDON'          => $user->lang['addon'],
+		'L_ADD_ADDONDEL'   => $user->lang['addon_delete_add'],
+		'L_NO_DEL_ADDONS'  => $user->lang['addon_delete_none'],
+
 		'S_ADDONS'         => true,
 		'S_ADDON_ADD_DEL'  => false
 		)
@@ -158,7 +173,7 @@ function main( )
 		$tpl->assign_var('L_ADDON_MANAGE',$user->lang['view_addons']);
 	}
 
-	$sql = 'SELECT * FROM `'.UA_TABLE_ADDONS.'` ORDER BY name ASC;';
+	$sql = 'SELECT * FROM `'.UA_TABLE_ADDONS.'` ORDER BY `name` ASC;';
 
 	$result = $db->query($sql);
 
@@ -204,6 +219,27 @@ function main( )
 	else // Set var to display "No Addons"
 	{
 		$tpl->assign_var('S_ADDONS',false);
+	}
+
+	$tpl->assign_var('S_ADDON_DEL',false);
+
+	// Build the addon delete list table
+	$sql = "SELECT * FROM `".UA_TABLE_ADDONDEL."`;";
+	$result = $db->query($sql);
+
+	if( $db->num_rows($result) > 0 )
+	{
+		$tpl->assign_var('S_ADDON_DEL',true);
+
+		while( $row = $db->fetch_record($result) )
+		{
+			$tpl->assign_block_vars('addondel_list', array(
+				'ROW_CLASS' => $uniadmin->switch_row_class(),
+				'ID'        => $row['id'],
+				'NAME'      => $row['dir_name']
+				)
+			);
+		}
 	}
 
 	$db->free_result($result);
@@ -543,5 +579,42 @@ function process_orphan_addons( )
 		}
 		$toPass['size'] = filesize($toPass['tmp_name']);
 		process_addon($toPass);
+	}
+}
+
+/**
+ * Adds an addon delete dirname
+ *
+ * @param string $svname
+ */
+function add_addon_del( $name )
+{
+	global $db, $user, $uniadmin;
+
+	if( !empty($name) )
+	{
+		$sql = "INSERT INTO `".UA_TABLE_ADDONDEL."` ( `dir_name` ) VALUES ( '".$db->escape($name)."' );";
+		$db->query($sql);
+		if( !$db->affected_rows() )
+		{
+			$uniadmin->error(sprintf($user->lang['sql_error_settings_addondel_insert'],$name));
+		}
+	}
+}
+
+/**
+ * Removes an addon delete dirname
+ *
+ * @param int $id
+ */
+function remove_addon_del( $id )
+{
+	global $db, $user, $uniadmin;
+
+	$sql = "DELETE FROM `".UA_TABLE_ADDONDEL."` WHERE `id` = ".$db->escape($id)." LIMIT 1;";
+	$db->query($sql);
+	if( !$db->affected_rows() )
+	{
+		$uniadmin->error(sprintf($user->lang['sql_error_settings_addondel_remove'],$id));
 	}
 }

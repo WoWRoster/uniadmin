@@ -165,5 +165,52 @@
 </form>
 <!-- ENDIF -->
 
+<br />
+
+<table class="ua_table" align="center" width="40%">
+	<tr>
+		<th colspan="2" class="table_header">{L_ADD_ADDONDEL}</th>
+	</tr>
+	<tr>
+		<th>{L_ADDON}</th>
+		<!-- IF S_ADDON_ADD_DEL -->
+		<th width="10%">{L_REMOVE}</th>
+		<!-- ENDIF -->
+	</tr>
+	<!-- IF S_ADDON_DEL -->
+	<!-- BEGIN addondel_list -->
+	<tr>
+		<td class="data{addondel_list.ROW_CLASS}">{addondel_list.NAME}</td>
+		<!-- IF S_ADDON_ADD_DEL -->
+		<td class="data{addondel_list.ROW_CLASS}">
+			<form name="ua_remove_addondel_{addondel_list.ID}" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+				<input type="hidden" value="{A_ADDONDEL_REM}" name="{A_OPERATION}" />
+				<input type="hidden" value="{addondel_list.ID}" name="{A_ID}" />
+				<input class="icon" src="{TEMPLATE_PATH}/images/delete_mini.png" type="image" value="{L_REMOVE}" alt="" onmouseover="return overlib('{L_REMOVE}');" onmouseout="return nd();" />
+			</form>
+
+		</td>
+		<!-- ENDIF -->
+	</tr>
+	<!-- END addondel_list -->
+	<!-- ELSE -->
+	<tr>
+		<td colspan="2" align="center">{L_NO_DEL_ADDONS}</td>
+	</tr>
+	<!-- ENDIF -->
+	<tr>
+	<!-- IF S_ADDON_ADD_DEL -->
+		<th colspan="2">{L_ADD_ADDONDEL}</th>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><form name="ua_add_addondel" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+				<input type="hidden" value="{A_ADDONDEL_ADD}" name="{A_OPERATION}" />
+				<input class="input_m" type="text" name="{A_ADDONDEL_NAME}" />
+				<input class="icon" src="{TEMPLATE_PATH}/images/plus_big.png" type="image" value="{L_ADD}" alt="" onmouseover="return overlib('{L_ADD}');" onmouseout="return nd();" />
+			</form></td>
+	</tr>
+	<!-- ENDIF -->
+</table>
+
 
 <!-- INCLUDE overall_footer.html -->
