@@ -1,4 +1,4 @@
-UniAdmin 0.7.7 (updated 6th April 2007)
+UniAdmin 0.7.8 (updated 7th April 2007)
 ===============================================
 UniAdmin is a back-end web-based tool for managing the configuration of and logos in UniUploader and
 auto-updating WoW addons.
@@ -185,6 +185,11 @@ Solution: After you upload an addon zip, edit the info on the addon details page
 ~ Fixed
 + Added
 ! Changed
+
+v0.7.8
+~ Upgrader had a typo
+~ GETDELETEADDONS wasn't quite working correctly, it should be ok now
+
 
 v0.7.7
 ~ Addon processing now checks if the addon zip exists before trying to unlink it
