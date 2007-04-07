@@ -367,7 +367,7 @@ function output_addondel_xml( )
 	global $db, $uniadmin;
 
 	// Don't get optional addons if UU_COMPAT is true
-	$sql = "SELECT * FROM `".UA_TABLE_ADDONDEL."` WHERE `enabled` = '1';";
+	$sql = "SELECT * FROM `".UA_TABLE_ADDONDEL."`;";
 	$result = $db->query($sql);
 
 	$xmlDoc = new MiniXMLDoc();

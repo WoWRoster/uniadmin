@@ -85,13 +85,13 @@ class Upgrade
 
 	function upgrade_076($index)
 	{
-		$this->standard_upgrader($index);
+		$this->standard_upgrader('076');
 		$this->finalize($index);
 	}
 
 	function upgrade_075($index)
 	{
-		$this->standard_upgrader($index);
+		$this->standard_upgrader('075');
 		$this->finalize($index);
 	}
 
