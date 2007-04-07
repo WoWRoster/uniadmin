@@ -380,7 +380,7 @@ function output_addondel_xml( )
 		{
 			$addonElement =& $addonsElement->createChild('addon');
 
-			$addonElement->attribute('dirname', htmlspecialchars($row['name']));
+			$addonElement->attribute('dirname', htmlspecialchars($row['dir_name']));
 		}
 		$db->free_result($result);
 	}

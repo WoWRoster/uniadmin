@@ -30,7 +30,7 @@ if( $uniadmin->config['UAVer'] >= UA_VER )
 class Upgrade
 {
 	var $db = null;
-	var $versions = array('0.7.5','0.7.6');
+	var $versions = array('0.7.5','0.7.6','0.7.7');
 
 	function upgrade()
 	{
@@ -83,6 +83,12 @@ class Upgrade
 	// Upgrade methods
 	//--------------------------------------------------------------
 
+	function upgrade_077($index)
+	{
+		$this->standard_upgrader('077');
+		$this->finalize($index);
+	}
+
 	function upgrade_076($index)
 	{
 		$this->standard_upgrader('076');
@@ -131,8 +137,7 @@ class Upgrade
 
 		foreach ( $this->versions as $version )
 		{
-			// This will never happen if common.php's been upgraded already; I'm a re-re!
-			$selected = ( $version == UA_VER ) ? ' selected="selected"' : '';
+			$selected = ( $version == $uniadmin->config['UAVer'] ) ? ' selected="selected"' : '';
 
 			$tpl->assign_block_vars('version_row', array(
 				'VALUE'    => str_replace('.', '', $version),
