@@ -49,6 +49,7 @@ UU remplacera alors l\'addon par la nouvelle copie de l\'addon depuis ce système
 
 	array(	'header' => 'AddOns',
 			'text'   => '
+<strong>Uploading AddOns</strong>
 <p>L\'addon chargé doit être au format zip seulement.<br />
 Le fichier zip doit avoir l\'arborescence de répertoires suivante: [dossier],{fichier}, et non littéralement &quot;nomAddon&quot; ou &quot;fichierAddon&quot;<br />
 Le Nom de l\'Addon est le même que le nom du dossier dans lequel les fichiers de l\'Addon se trouvent</p>
@@ -66,7 +67,10 @@ or
                {fichierAddon}
                {fichierAddon}
 [Fonts]
-     font.ttf</pre>'),
+     font.ttf</pre>
+<strong>Addon Deletion</strong><br />
+<p>With this you can set addon directories to be removed when UniUploader syncs with UniAdmin<br />
+Specify the directory name you wish to have removed</p>'),
 
 array(	'header' => 'WoWAce',
 'text'   => '
