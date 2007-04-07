@@ -189,6 +189,7 @@ Solution: After you upload an addon zip, edit the info on the addon details page
 v0.7.8
 ~ Upgrader had a typo
 ~ GETDELETEADDONS wasn't quite working correctly, it should be ok now
+    I changed some of the variables around and didn't test, I'm sorry
 
 
 v0.7.7

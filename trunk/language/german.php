@@ -49,6 +49,7 @@ Der UU wird im Anschluss daran jedes Addon mit der neuen Aktualisierung auf dein
 
 	array(	'header' => 'Addons',
 			'text'   => '
+<strong>Uploading AddOns</strong>
 <p>Das hochgeladene Addon darf nur im ZIP-Format vorliegen.<br />
 Die ZIP-Datei darf nur folgende Verzeichnisstruktur beinhalten: [Verzeichnis],{Datei}, und nicht buchstäblich &quot;addonName&quot; oder &quot;addon-datei&quot;<br />
 Der Addon-Name ist der gleiche wie der des Addon-Verzeichnisses in dem Die Addon-Dateien liegen.</p>
@@ -66,7 +67,10 @@ oder
                {Addon-datei}
                {Addon-datei}
 [Fonts]
-     font.ttf</pre>'),
+     font.ttf</pre>
+<strong>Addon Deletion</strong><br />
+<p>With this you can set addon directories to be removed when UniUploader syncs with UniAdmin<br />
+Specify the directory name you wish to have removed</p>'),
 
 array(	'header' => 'WoWAce',
 'text'   => '
