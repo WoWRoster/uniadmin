@@ -26,10 +26,14 @@ if( $user->data['level'] == UA_ID_ANON )
 	ua_die($user->lang['access_denied']);
 }
 
-include(UA_INCLUDEDIR.'addon_lib.php');
+include(UA_INCLUDEDIR . 'addon_lib.php');
+require_once(UA_INCLUDEDIR . 'minixml.inc.php');
+require_once(UA_INCLUDEDIR . 'xmlparser.class.php');
 
 
-
+$ace_error = false;
+$ace_file = UA_CACHEDIR . 'latest.xml';
+$ace_url = 'http://files.wowace.com/latest.xml';
 
 
 
@@ -40,29 +44,51 @@ include(UA_INCLUDEDIR.'addon_lib.php');
 
 if( isset($_POST[UA_URI_OP]) )
 {
-	process_wowace_addons();
+	switch( $_POST[UA_URI_OP] )
+	{
+		case UA_URI_PROCESS:
+			process_wowace_addons();
+			break;
+
+		case UA_URI_RELOAD:
+			if( file_exists($ace_file) )
+			{
+				$try_unlink = unlink($ace_file);
+				if( !$try_unlink )
+				{
+					$uniadmin->error(sprintf($user->lang['error_unlink'],$ace_file));
+				}
+			}
+			clearstatcache();
+			break;
+	}
 }
 
 // Assign template vars
 $tpl->assign_vars(array(
-	'L_WOWACE_ADDONS'  => $user->lang['get_wowace_addons'],
-	'L_NOLIST'         => $user->lang['error_no_wowace_addons'],
-	'L_NAME'           => $user->lang['name'],
-	'L_DOWNLOAD'       => $user->lang['download'],
-	'L_GO'             => $user->lang['go'],
-	'L_NOTES'          => $user->lang['notes']
+	'L_WOWACE_ADDONS'   => $user->lang['get_wowace_addons'],
+	'L_NOLIST'          => $user->lang['error_no_wowace_addons'],
+	'L_NAME'            => $user->lang['name'],
+	'L_DOWNLOAD'        => $user->lang['download'],
+	'L_GO'              => $user->lang['go'],
+	'L_NOTES'           => $user->lang['notes'],
+	'L_VERSION'         => $user->lang['version'],
+	'L_DATETIME'        => $user->lang['date_time'],
+	'L_LASTUPDATED'     => $user->lang['last_updated'],
+	'L_FORCERELOAD'     => $user->lang['force_reload'],
+	'L_FORCERELOAD_TIP' => $user->lang['wowace_reload']
 	)
 );
 
-$ace_error = false;
-$ace_file = UA_CACHEDIR.'descript.ion';
-
 if( !file_exists($ace_file) )
 {
-	$filelist = $uniadmin->get_remote_contents('http://files.wowace.com/descript.ion');
+	$filelist = $uniadmin->get_remote_contents($ace_url);
 	$uniadmin->message($user->lang['new_wowace_list']);
 
 	$uniadmin->write_file($ace_file,$filelist);
+	clearstatcache();
+	$file_info = stat($ace_file);
+	$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
 }
 else
 {
@@ -71,7 +97,7 @@ else
 	if( ($file_info['9'] + (60 * 60 * $uniadmin->config['remote_timeout'])) <= time() )
 	{
 		// Download List
-		$filelist = $uniadmin->get_remote_contents('http://files.wowace.com/descript.ion');
+		$filelist = $uniadmin->get_remote_contents($ace_url);
 		$uniadmin->message($user->lang['new_wowace_list']);
 
 		$uniadmin->write_file($ace_file,$filelist);
@@ -92,32 +118,52 @@ if( !empty($filelist) )
 	$tpl->assign_var('S_ACELIST', true);
 	$tpl->assign_var('ONLOAD'," onload=\"initARC('ua_wowace','radioOn', 'radioOff','checkboxOn', 'checkboxOff');\"");
 
-	preg_match_all("/(.*?)\t(.*)/", $filelist, $results);
-
-	$count = count($results[0]);
-
-	for($i = 0; $i < $count; $i++)
+	$waaddons = array();
+	if( function_exists('xml_parse') )
 	{
-		$waaddons[$results[1][$i]] = $results[2][$i];
+		$xmlParser =& new XmlParser();
+		$xmlParser->Parse(file_get_contents($ace_file));
+
+		$items = $xmlParser->data['rss'][0]['child']['channel'][0]['child']['item'];
+
+		foreach( $items as $item )
+		{
+			$title = $item['child']['title'][0]['data'];
+			$description = ( isset($item['child']['description'][0]['data']) ? $item['child']['description'][0]['data'] : $title );
+			$version = $item['child']['wowaddon:version'][0]['data'];
+			$datetime = $item['child']['pubDate'][0]['data'];
+
+			$waaddons[$title]['description'] = $description;
+			$waaddons[$title]['version'] = $version;
+			$waaddons[$title]['datetime'] = strtotime($datetime);
+
+			$url = $item['child']['enclosure'][0]['attribs']['url'];
+			$waaddons[$title]['url'] = ( !empty($url) ? str_replace('http://www.wowace.com/files', 'http://files.wowace.com', $url) : 'http://files.wowace.com/' . $title . '/' . $title . '.zip' );
+		}
+	}
+	else
+	{
+		ua_die('php XML parsing functions are required for the WoWAce module');
 	}
 
 	uksort($waaddons, 'strnatcasecmp');
 
-	$checkboxes = '';
-
 	$id = 0;
-	foreach( $waaddons as $addon => $description )
+	foreach( $waaddons as $addon => $data )
 	{
-		$description = preg_replace('/\|c[a-f0-9]{2}([a-f0-9]{6})(.+?)\|r/i','<span style="color:#$1;">$2</span>',htmlentities($description));
+		$data['description'] = preg_replace('/\|c[a-f0-9]{2}([a-f0-9]{6})(.+?)\|r/i','<span style="color:#$1;">$2</span>',htmlentities($data['description']));
 		// Assign template vars
 		$tpl->assign_block_vars('addons_row', array(
 			'ROW_CLASS'   => $uniadmin->switch_row_class(),
-			'ID'          => 'addon_'.$id,
+			'ID'          => 'addon_' . $id,
 			'NAME'        => $addon,
-			'DESC'        => $description
+			'DESC'        => $data['description'],
+			'VERSION'     => $data['version'],
+			'TIMESTAMP'   => date($user->lang['time_format'],$data['datetime'])
 			)
 		);
-		$_SESSION['addon_'.$id] = $addon;
+		$_SESSION['addon_' . $id] = $addon;
+		$_SESSION['addon_' . $id . '_url'] = $data['url'];
 		$id++;
 	}
 }
@@ -148,10 +194,11 @@ function process_wowace_addons( )
 
 	foreach( $download as $key => $addon )
 	{
+		$url = $_SESSION[$addon . '_url'];
 		$addon = $_SESSION[$addon];
 
-		$addoncon = $uniadmin->get_remote_contents("http://files.wowace.com/$addon/$addon.zip");
-		$filename = UA_BASEDIR.$uniadmin->config['addon_folder'].DIR_SEP."$addon.zip";
+		$addoncon = $uniadmin->get_remote_contents($url);
+		$filename = UA_BASEDIR . $uniadmin->config['addon_folder'] . DIR_SEP . "$addon.zip";
 
 		$write_temp_file = $uniadmin->write_file($filename,$addoncon,'w+');
 
@@ -162,7 +209,7 @@ function process_wowace_addons( )
 		else
 		{
 			$toPass = array();
-			$toPass['name'] = $addon.'.zip';
+			$toPass['name'] = $addon . '.zip';
 			$toPass['type'] = 'application/zip';
 			$toPass['tmp_name'] = $filename;
 

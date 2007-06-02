@@ -62,6 +62,7 @@ define('UA_URI_ORPHAN',       'orphan');
 define('UA_URI_ADDONDEL_ADD', 'addondel_add');
 define('UA_URI_ADDONDEL_REM', 'addondel_remove');
 define('UA_URI_ADDONDEL_NAME','addondel_name');
+define('UA_URI_RELOAD',       'reload');
 
 //URL parameters
 define('UA_INDEX',        '');

@@ -275,6 +275,8 @@ $lang['full'] = 'Complet';
 $lang['edit'] = 'Editer';
 $lang['cancel'] = 'Annuler';
 $lang['status'] = 'Statut';
+$lang['reload'] = 'Reload';
+$lang['force_reload'] = 'Force Reload';
 $lang['automatic'] = 'Automatique';
 $lang['delete_all_addons'] = 'Supprimer tous les Addons';
 $lang['unscanned_addons'] = 'Un-Scanned AddOns';
@@ -292,6 +294,7 @@ $lang['syncro_url'] = 'URL de Synchronisation';
 $lang['verify_syncro_url'] = 'cliquer pour vérifier';
 $lang['guest_access'] = 'Accès Invité';
 $lang['interface_ready'] = 'Interface de Mise à Jour UniUploader...';
+$lang['last_updated'] = 'Last Updated';
 
 
 // Addon Management
@@ -307,6 +310,7 @@ $lang['addon_delete_none'] = 'No AddOns are set for UniUploader to delete';
 
 // WoWAce
 $lang['new_wowace_list'] = 'Nouvelle liste téléchargée de WoWAce.com';
+$lang['wowace_reload'] = 'This forces a reload of the WoWAce addon listing<br />You can also change the timeout period in UniAdmin Config';
 
 
 // Upgrader
