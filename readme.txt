@@ -74,10 +74,11 @@ Read the help page for additional info.
 
 5 - Thanks
 ==========
-sturmy     - French localization
-fubu2k     -|
-Carasak    - German localization
-Shadowsong -|
+sturmy     -|
+fubu2k     - French localization
+Carasak    -|
+Shadowsong - German localization
+Exerladan  - WoWAce file list XML format parsing
 Zajsoft    - Great modifications to AddOn uploading, providing a better .toc file scanner
 Zeryl      - Thanks for help with parsing strings into multi-dimensional arrays
              o Thanks for the WoWAce module code
@@ -185,6 +186,13 @@ Solution: After you upload an addon zip, edit the info on the addon details page
 [~] Fixed
 [+] Added
 [!] Changed
+
+
+v0.7.9
+[~] WoWAce addon list works again
+    WoWAce changed the addon list format to XML and removed the old format
+[+] Force addon list reload to WoWAce module
+
 
 v0.7.8
 [~] Upgrader had a typo
