@@ -1,27 +1,25 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * Database layer
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UADataBase
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
 	exit('Detected invalid access to this file!');
 }
 
-switch ( $config['dbtype'] )
+switch( $config['dbtype'] )
 {
 	case 'mysql':
 		include_once(UA_INCLUDEDIR . 'dbal' . DIR_SEP . 'mysql.php');
@@ -33,7 +31,7 @@ switch ( $config['dbtype'] )
 }
 
 $db = new SQL_DB($config['host'], $config['database'], $config['username'], $config['password'], false);
-if ( !$db->link_id )
+if( !$db->link_id )
 {
 	print("Cannot connect to the database<br />\n");
 	print('MySQL Said: ' . mysql_error() );

@@ -1,23 +1,21 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * Main access file
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+*/
 
 // Include the initialization file
-include(dirname(__FILE__).DIRECTORY_SEPARATOR.'set_env.php');
+include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'set_env.php');
 
 // Determine the module request
 $page = ( isset($_GET[UA_URI_PAGE]) && !empty($_GET[UA_URI_PAGE]) ) ? $_GET[UA_URI_PAGE] : 'help';
@@ -25,7 +23,7 @@ $page = ( isset($_GET[UA_URI_PAGE]) && !empty($_GET[UA_URI_PAGE]) ) ? $_GET[UA_U
 define('UA_CURRENT_PAGE', $page);
 unset($page);
 
-if(preg_match('/[^a-z0-9_]/i', UA_CURRENT_PAGE))
+if( preg_match('/[^a-z0-9_]/i', UA_CURRENT_PAGE) )
 {
 	ua_die($user->lang['error_invalid_module_name']);
 }

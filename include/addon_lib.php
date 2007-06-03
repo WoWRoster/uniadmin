@@ -1,20 +1,18 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * Addon parsing functions
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
@@ -41,7 +39,7 @@ function process_addon( $fileArray )
 {
 	global $db, $user, $uniadmin;
 
-	//$uniadmin->error('<pre>'.print_r($fileArray,true).'</pre>');
+	//$uniadmin->error('<pre>' . print_r($fileArray,true) . '</pre>');
 
 	$temp_file_name = ( isset($fileArray['tmp_name']) ? $fileArray['tmp_name'] : '' );
 
@@ -55,8 +53,8 @@ function process_addon( $fileArray )
 			return;
 		}
 
-		$addon_zip_folder = UA_BASEDIR.$uniadmin->config['addon_folder'].DIR_SEP;
-		$temp_folder = UA_BASEDIR.$uniadmin->config['temp_analyze_folder'];
+		$addon_zip_folder = UA_BASEDIR . $uniadmin->config['addon_folder'] . DIR_SEP;
+		$temp_folder = UA_BASEDIR . $uniadmin->config['temp_analyze_folder'];
 
 		// Check if this addon is required
 		$required = ( isset($_POST['required']) ? 1 : 0 );
@@ -66,7 +64,7 @@ function process_addon( $fileArray )
 		$auto_path = true;
 		if( isset($_POST['fullpath_addon']) && $_POST['fullpath_addon'] != '' )
 		{
-			switch($_POST['fullpath_addon'])
+			switch( $_POST['fullpath_addon'] )
 			{
 				case '0': // Force false
 					$full_path = false;
@@ -91,7 +89,7 @@ function process_addon( $fileArray )
 		}
 
 		// Name and location of the zip file
-		$zip_file = $addon_zip_folder.$addon_file_name;
+		$zip_file = $addon_zip_folder . $addon_file_name;
 
 		// Do the following actions only if we are not processing an existing addon
 		if( is_uploaded_file($temp_file_name) )
@@ -127,7 +125,7 @@ function process_addon( $fileArray )
 		$file_size = filesize($zip_file);
 
 		// Unzip the file
-		$files = $uniadmin->unzip($zip_file,$temp_folder.DIR_SEP);
+		$files = $uniadmin->unzip($zip_file,$temp_folder . DIR_SEP);
 
 		$files = $uniadmin->ls($temp_folder);
 
@@ -247,7 +245,7 @@ function process_addon( $fileArray )
 		}
 
 		// See if AddOn exists in the database and do stuff to it
-		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `name` = '".$db->escape($real_addon_name)."';";
+		$sql = "SELECT * FROM `" . UA_TABLE_ADDONS . "` WHERE `name` = '" . $db->escape($real_addon_name) . "';";
 		$result = $db->query($sql);
 
 
@@ -275,19 +273,19 @@ function process_addon( $fileArray )
 			$enabled = $row['enabled'];
 
 			// Remove files from database since we'll be updating them all
-			$sql = "DELETE FROM `".UA_TABLE_FILES."` WHERE `addon_id` = '".$addon_id."';";
+			$sql = "DELETE FROM `" . UA_TABLE_FILES . "` WHERE `addon_id` = '" . $addon_id . "';";
 			$db->query($sql);
 
 			// Update Main Addon data
-			$sql = "UPDATE `".UA_TABLE_ADDONS."` SET `time_uploaded` = '".time()."', `version` = '".$db->escape($version)."', `enabled` = '$enabled', `name` = '".$db->escape($real_addon_name)."', `file_name` = '".$db->escape($addon_file_name)."', `homepage` = '".$db->escape($homepage)."', `notes` = '".$db->escape($notes)."', `toc` = '$toc_number', `required` = '$required', `filesize` = '$file_size', `full_path` = '".intval($full_path)."'
-				WHERE `id` = '".$addon_id."';";
+			$sql = "UPDATE `" . UA_TABLE_ADDONS . "` SET `time_uploaded` = '" . time() . "', `version` = '" . $db->escape($version) . "', `enabled` = '$enabled', `name` = '" . $db->escape($real_addon_name) . "', `file_name` = '" . $db->escape($addon_file_name) . "', `homepage` = '" . $db->escape($homepage) . "', `notes` = '" . $db->escape($notes) . "', `toc` = '$toc_number', `required` = '$required', `filesize` = '$file_size', `full_path` = '" . intval($full_path) . "'"
+				 . " WHERE `id` = '" . $addon_id . "';";
 			$db->query($sql);
 		}
 		else
 		{
 			// Insert Main Addon data
-			$sql = "INSERT INTO `".UA_TABLE_ADDONS."` ( `time_uploaded` , `version` , `enabled` , `name`, `file_name`, `homepage`, `notes`, `toc`, `required`, `filesize`, `full_path` )
-				VALUES ( '".time()."', '".$db->escape($version)."', '1', '".$db->escape($real_addon_name)."', '".$db->escape($addon_file_name)."', '".$db->escape($homepage)."', '".$db->escape($notes)."', '$toc_number', '$required', '$file_size', '".intval($full_path)."' );";
+			$sql = "INSERT INTO `" . UA_TABLE_ADDONS . "` ( `time_uploaded` , `version` , `enabled` , `name`, `file_name`, `homepage`, `notes`, `toc`, `required`, `filesize`, `full_path` )"
+				 . " VALUES ( '" . time() . "', '" . $db->escape($version) . "', '1', '" . $db->escape($real_addon_name) . "', '" . $db->escape($addon_file_name) . "', '" . $db->escape($homepage) . "', '" . $db->escape($notes) . "', '$toc_number', '$required', '$file_size', '" . intval($full_path) . "' );";
 			$db->query($sql);
 
 			// Get the insert id of the addon just inserted
@@ -297,14 +295,14 @@ function process_addon( $fileArray )
 		if( !$db->affected_rows() )
 		{
 			// Clear up the addons table
-			$sql = "DELETE FROM `".UA_TABLE_ADDONS."` WHERE `id` = '$addon_id'";
+			$sql = "DELETE FROM `" . UA_TABLE_ADDONS . "` WHERE `id` = '$addon_id'";
 			$db->query($sql);
 			if( !$db->affected_rows() )
 			{
 			    $uniadmin->error(sprintf($user->lang['sql_error_addons_delete'],$addon_id));
 			}
 
-			$sql = "DELETE FROM `".UA_TABLE_FILES."` WHERE `addon_id` = '$addon_id';";
+			$sql = "DELETE FROM `" . UA_TABLE_FILES . "` WHERE `addon_id` = '$addon_id';";
 			$db->query($sql);
 			if( !$db->affected_rows() )
 			{
@@ -328,23 +326,23 @@ function process_addon( $fileArray )
 			{
 				if( $full_path == false )
 				{
-					$file_name = '\Interface\AddOns'.$file_name;
+					$file_name = '\Interface\AddOns' . $file_name;
 				}
 
-				$sql = "INSERT INTO `".UA_TABLE_FILES."` ( `addon_id` , `filename` , `md5sum` )
-					VALUES ( '".$addon_id."', '".$db->escape($file_name)."', '".$db->escape($md5)."' );";
+				$sql = "INSERT INTO `" . UA_TABLE_FILES . "` ( `addon_id` , `filename` , `md5sum` ) "
+					 . " VALUES ( '" . $addon_id . "', '" . $db->escape($file_name) . "', '" . $db->escape($md5) . "' );";
 				$db->query($sql);
 				if( !$db->affected_rows() )
 				{
 					// Clear up the addons table
-					$sql = "DELETE FROM `".UA_TABLE_ADDONS."` WHERE `id` = '$addon_id'";
+					$sql = "DELETE FROM `" . UA_TABLE_ADDONS . "` WHERE `id` = '$addon_id'";
 					$db->query($sql);
 					if( !$db->affected_rows() )
 					{
 					    $uniadmin->error(sprintf($user->lang['sql_error_addons_delete'],$addon_id));
 					}
 
-					$sql = "DELETE FROM `".UA_TABLE_FILES."` WHERE `addon_id` = '$addon_id';";
+					$sql = "DELETE FROM `" . UA_TABLE_FILES . "` WHERE `addon_id` = '$addon_id';";
 					$db->query($sql);
 					if( !$db->affected_rows() )
 					{
@@ -384,7 +382,7 @@ function process_addon( $fileArray )
  * @param string $def_val	Default Value
  * @return string
  */
-function get_toc_val( $file, $var, $def_val )
+function get_toc_val( $file , $var , $def_val )
 {
 	$lines = file($file);
 
@@ -393,7 +391,7 @@ function get_toc_val( $file, $var, $def_val )
 	$val = $def_val;
 	foreach( $lines as $line )
 	{
-		$found = preg_match('/## \\b'.$var.'\\b: (.+)/',$line,$matches);
+		$found = preg_match('/## \\b' . $var . '\\b: (.+)/',$line,$matches);
 
 		if( $found )
 		{
@@ -427,7 +425,7 @@ function get_toc_val( $file, $var, $def_val )
  * @param string $string
  * @param bool $call
  */
-function arrayToLi( $array, &$string, $baseName='', $call=false )
+function arrayToLi( $array , &$string , $baseName='' , $call=false )
 {
 	// Write out the initial definition
 	if( $call )
@@ -490,6 +488,7 @@ function addToList( $str , $md5 , &$array )
 
 /**
  * Part two of addToList()
+ * A very, very dirty way to make an array
  *
  * @param array $things		Array to convert
  * @param string $md5		MD5 hash
@@ -499,7 +498,7 @@ function addToArray( $things , $md5 ,  &$array )
 {
 	$count = count($things);
 
-	switch ($count)
+	switch( $count )
 	{
 		case 1:
 			$array[$things['0']] = $md5;

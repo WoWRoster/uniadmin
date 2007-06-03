@@ -1,20 +1,19 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * Database layer
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UADataBase
+ * @subpackage MySQL
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
@@ -28,6 +27,13 @@ if( !defined('IN_UNIADMIN') )
 
 define('DBTYPE', 'mysql');
 
+/**
+ * MySQL database layer
+ *
+ * @package    UADataBase
+ * @subpackage MySQL
+ *
+ */
 class SQL_DB
 {
 	var $link_id     = 0;                   // Connection link ID       @var link_id

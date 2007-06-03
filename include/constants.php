@@ -1,20 +1,18 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * Constants
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
@@ -26,11 +24,11 @@ define('UA_VER', '0.7.8');
 define('NO_CACHE', true);
 
 //Directories
-define('UA_INCLUDEDIR', UA_BASEDIR.'include'.DIR_SEP);
-define('UA_LANGDIR',    UA_BASEDIR.'language'.DIR_SEP);
-define('UA_THEMEDIR',   UA_BASEDIR.'styles'.DIR_SEP);
-define('UA_MODULEDIR',  UA_BASEDIR.'modules'.DIR_SEP);
-define('UA_CACHEDIR',   UA_BASEDIR.'cache'.DIR_SEP);
+define('UA_INCLUDEDIR', UA_BASEDIR . 'include' . DIR_SEP);
+define('UA_LANGDIR',    UA_BASEDIR . 'language' . DIR_SEP);
+define('UA_THEMEDIR',   UA_BASEDIR . 'styles' . DIR_SEP);
+define('UA_MODULEDIR',  UA_BASEDIR . 'modules' . DIR_SEP);
+define('UA_CACHEDIR',   UA_BASEDIR . 'cache' . DIR_SEP);
 
 //User Levels
 define('UA_ID_ANON',  0);
@@ -67,9 +65,9 @@ define('UA_URI_RELOAD',       'reload');
 //URL parameters
 define('UA_INDEX',        '');
 define('UA_URI_PAGE',     'p');
-define('UA_INDEXPAGE',    UA_INDEX.'?'.UA_URI_PAGE.'=');
+define('UA_INDEXPAGE',    UA_INDEX . '?' . UA_URI_PAGE . '=');
 define('UA_URI_THEME',    'theme');
-define('UA_FORMACTION',   UA_INDEX.( isset($_GET[UA_URI_PAGE]) && ($_GET[UA_URI_PAGE] != '') ? '?'.UA_URI_PAGE.'='.$_GET[UA_URI_PAGE] : '') );
+define('UA_FORMACTION',   UA_INDEX . ( isset($_GET[UA_URI_PAGE]) && ($_GET[UA_URI_PAGE] != '') ? '?' . UA_URI_PAGE . '=' . $_GET[UA_URI_PAGE] : '') );
 
 
 //Reject certain settings in UU since we don't need them, or want them displayed

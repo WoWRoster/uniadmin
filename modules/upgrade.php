@@ -15,6 +15,21 @@
  * $Id$
  *
  ******************************/
+/**
+ * WoWRoster.net UniAdmin
+ *
+ * UniAdmin Upgrader
+ *
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
+ *
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+ * @subpackage Upgrader
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
@@ -27,6 +42,12 @@ if( $uniadmin->config['UAVer'] >= UA_VER )
 }
 
 
+/**
+ * UniAdmin Upgrader
+ *
+ * @package    UniAdmin
+ * @subpackage Upgrader
+ */
 class Upgrade
 {
 	var $db = null;

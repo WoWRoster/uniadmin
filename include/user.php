@@ -1,20 +1,19 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * User class
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+ * @subpackage User
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
@@ -41,7 +40,7 @@ class User
 	/**
 	 * Initialize user object
 	 */
-	function User( )
+	function User()
 	{
 		global $uniadmin, $tpl;
 
@@ -105,7 +104,7 @@ class User
  *
  * @return string
  */
-function get_username( )
+function get_username()
 {
 	if( isset($_COOKIE['UA']) )
 	{
@@ -130,7 +129,7 @@ function get_user_info( $name='' )
 
 	$username = ( $name == '' ? get_username() : $name );
 
-	$sql = "SELECT * FROM `".UA_TABLE_USERS."` WHERE `name` = '$username';";
+	$sql = "SELECT * FROM `" . UA_TABLE_USERS . "` WHERE `name` = '$username';";
 	$result = $db->query($sql);
 	$row = mysql_fetch_assoc($result);
 
@@ -142,7 +141,7 @@ function get_user_info( $name='' )
  *
  * @return mixed
  */
-function is_ua_admin( )
+function is_ua_admin()
 {
 	global $user;
 	return (is_object($user) && isset($user->data['level']) && $user->data['level'] >= UA_ID_ADMIN) ? $user->data['name'] : false;

@@ -190,7 +190,7 @@ img { border:0; }
 
 .copyright { font-size:10px; }
 
-.last_updated { color:#FFF;font-size:10px;font-weight:bold;float:right;display:inline;position:absolute; }
+.last_updated { color:#FFF;font-size:10px;font-weight:bold;float:left;display:inline;position:absolute; }
 
 .ua_loginbox, .ua_loginbox table { font-size:9px; }
 .ua_loginbox, .ua_loginbox table td,

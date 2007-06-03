@@ -1,4 +1,25 @@
 <?php
+/**
+ * WoWRoster.net UniAdmin
+ *
+ * Light weight Xml Parser class using php's xml handling functions
+ *
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
+ *
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+ * @subpackage XmlParser
+*/
+
+if( !defined('IN_UNIADMIN') )
+{
+	exit('Detected invalid access to this file!');
+}
+
 class XmlParser
 {
 	var $parser;

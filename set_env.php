@@ -1,20 +1,18 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * Initialization file
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+*/
 
 if( eregi(basename(__FILE__),$_SERVER['PHP_SELF']) )
 {
@@ -30,13 +28,15 @@ if( intval(ini_get('register_globals')) != 0 )
 	foreach( $_REQUEST AS $key => $val )
 	{
 		if( isset($$key) )
+		{
 			unset($$key);
+		}
 	}
 }
 
 // Disable magic quotes and add slashes to global arrays
 set_magic_quotes_runtime(0);
-if ( get_magic_quotes_gpc() == 0 )
+if( get_magic_quotes_gpc() == 0 )
 {
     $_GET = slash_global_data($_GET);
     $_POST = slash_global_data($_POST);
@@ -60,37 +60,37 @@ if( !defined('DIR_SEP') )
 	define('DIR_SEP',DIRECTORY_SEPARATOR);
 }
 
-define('UA_BASEDIR',dirname(__FILE__).DIR_SEP);
+define('UA_BASEDIR',dirname(__FILE__) . DIR_SEP);
 
 
-if( file_exists(UA_BASEDIR.'config.php') )
+if( file_exists(UA_BASEDIR . 'config.php') )
 {
-	include( UA_BASEDIR.'config.php' );
+	include( UA_BASEDIR . 'config.php' );
 }
 
 
 if( !defined('UA_INSTALLED') )
 {
 	define( 'IN_UNIADMIN',true );
-	include(UA_BASEDIR.'include'.DIR_SEP.'constants.php');
+	include(UA_BASEDIR . 'include' . DIR_SEP . 'constants.php');
     require(UA_MODULEDIR . 'install.php');
     die();
 }
 
-define( 'IN_UNIADMIN',true );
+define('IN_UNIADMIN',true);
 
 // Start our session
 session_start();
 
 
-include(UA_BASEDIR.'include'.DIR_SEP.'constants.php');
+include(UA_BASEDIR . 'include' . DIR_SEP . 'constants.php');
 
-include(UA_INCLUDEDIR.'uadebug.php');
+include(UA_INCLUDEDIR . 'uadebug.php');
 
-include(UA_INCLUDEDIR.'dbal.php');
-include(UA_INCLUDEDIR.'uniadmin.php');
-include(UA_INCLUDEDIR.'user.php');
-include(UA_INCLUDEDIR.'template.php');
+include(UA_INCLUDEDIR . 'dbal.php');
+include(UA_INCLUDEDIR . 'uniadmin.php');
+include(UA_INCLUDEDIR . 'user.php');
+include(UA_INCLUDEDIR . 'template.php');
 
 
 $tpl = new Template;
@@ -98,7 +98,7 @@ $uniadmin = new UniAdmin();
 $user = new User();
 
 
-include(UA_INCLUDEDIR.'login.php');
+include(UA_INCLUDEDIR . 'login.php');
 
 
 // Check to run upgrader
