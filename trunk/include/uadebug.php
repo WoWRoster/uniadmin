@@ -1,20 +1,19 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * Error handler
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+ * @subpackage ErrorHandler
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
@@ -26,6 +25,12 @@ if( !defined('E_STRICT') )
 	define('E_STRICT', 2048);
 }
 
+/**
+ * Error handler
+ * @package    UniAdmin
+ * @subpackage ErrorHandler
+ *
+ */
 class ua_debugger
 {
 	// Define variables that store the old error reporting and logging states
@@ -37,6 +42,12 @@ class ua_debugger
 	var $active = false;
 	var $error_level;
 
+	/**
+	 * Constructor that starts our error handler
+	 *
+	 * @param int $error_level
+	 * @return ua_debugger
+	 */
 	function ua_debugger( $error_level=E_ALL )
 	{
 		if( !$this->active )
@@ -57,7 +68,12 @@ class ua_debugger
 		}
 	}
 
-	function stop( )
+	/**
+	 * Call this to return error handling back to php
+	 *
+	 * @return array
+	 */
+	function stop()
 	{
 		if ($this->active)
 		{
@@ -76,7 +92,15 @@ class ua_debugger
 		}
 	}
 
-	// user defined error handling function
+	/**
+	 * Custom error handling function
+	 *
+	 * @param int $errno
+	 * @param string $errmsg
+	 * @param string $filename
+	 * @param string $linenum
+	 * @param array $vars
+	 */
 	function handler( $errno , $errmsg , $filename , $linenum , $vars='' )
 	{
 		$errortype = array (
@@ -97,7 +121,7 @@ class ua_debugger
 		{
 			if( is_admin() )
 			{
-				ua_die($errortype[$errno]." - [$filename]<br />Line: $linenum<br />".$errmsg);
+				ua_die($errortype[$errno] . " - [$filename]<br />Line: $linenum<br />" . $errmsg);
 			}
 			else
 			{
@@ -108,7 +132,7 @@ class ua_debugger
 		// set of errors for which a trace will be saved
 		if( $errno & $this->error_level )
 		{
-			$this->report[$filename][] = $errortype[$errno]." line $linenum: ".$errmsg;
+			$this->report[$filename][] = $errortype[$errno] . " line $linenum: " . $errmsg;
 		}
 	}
 }

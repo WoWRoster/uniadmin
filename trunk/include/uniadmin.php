@@ -1,30 +1,32 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * UniAdmin class
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+ * @subpackage UniAdmin
+*/
 
 if( !defined('IN_UNIADMIN') )
 {
 	exit('Detected invalid access to this file!');
 }
 
+
 /**
  * Available to all pages as $uniadmin
+ *
+ * @package    UniAdmin
+ * @subpackage UniAdmin
  */
-
 class UniAdmin
 {
 	// General vars
@@ -34,7 +36,7 @@ class UniAdmin
 	var $messages   = array();                  // Messages array           @var messages
 	var $error      = array();                  // Error messages array     @var error
 	var $languages  = array();                  // Available Languages      @var languages
-	var $styles  = array();                     // Available Styles         @var styles
+	var $styles     = array();                  // Available Styles         @var styles
 	var $reject_ini = array();                  // ini variable to not scan @var reject_ini
 
 	// Output vars
@@ -59,9 +61,9 @@ class UniAdmin
 		$this->timer_start = $mc_split[0] + $mc_split[1];
 		unset($mc_split);
 
-		$url = explode('/','http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
+		$url = explode('/','http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
 		array_pop($url);
-		$url = implode('/',$url).'/';
+		$url = implode('/',$url) . '/';
 
 		$this->root_path = UA_BASEDIR;
 		$this->url_path = $url;
@@ -76,7 +78,7 @@ class UniAdmin
 	 *
 	 * @return bool
 	 */
-	function config( )
+	function config()
 	{
 		global $db;
 
@@ -85,8 +87,7 @@ class UniAdmin
 			die('Database object not initialized');
 		}
 
-		$sql = 'SELECT `config_name`, `config_value`
-				FROM `' . UA_TABLE_CONFIG . '`;';
+		$sql = 'SELECT `config_name`, `config_value` FROM `' . UA_TABLE_CONFIG . '`;';
 
 		if( !($result = $db->query($sql)) )
 		{
@@ -109,7 +110,7 @@ class UniAdmin
 		{
 			while( false !== ($file = readdir($handle)) )
 			{
-				if( $file != '.' && $file != '..' && $file != '.svn' && !is_dir(UA_LANGDIR.$file) )
+				if( $file != '.' && $file != '..' && $file != '.svn' && !is_dir(UA_LANGDIR . $file) )
 				{
 					$this->languages[] = substr($file,0,-4);
 				}
@@ -117,7 +118,7 @@ class UniAdmin
 		}
 		else
 		{
-			print('Cannot read the directory ['.UA_LANGDIR.']');
+			print('Cannot read the directory [' . UA_LANGDIR . ']');
 			die();
 		}
 
@@ -127,7 +128,7 @@ class UniAdmin
 		{
 			while( false !== ($file = readdir($handle)) )
 			{
-				if( $file != '.' && $file != '..' && $file != '.svn' && is_dir(UA_THEMEDIR.$file) )
+				if( $file != '.' && $file != '..' && $file != '.svn' && is_dir(UA_THEMEDIR . $file) )
 				{
 					$this->styles[] = $file;
 				}
@@ -135,7 +136,7 @@ class UniAdmin
 		}
 		else
 		{
-			print('Cannot read the directory ['.UA_THEMEDIR.']');
+			print('Cannot read the directory [' . UA_THEMEDIR . ']');
 			die();
 		}
 
@@ -166,9 +167,7 @@ class UniAdmin
 			}
 			else
 			{
-				$sql = 'UPDATE `' . UA_TABLE_CONFIG . "`
-						SET `config_value` = '".strip_tags($config_value)."'
-						WHERE `config_name` = '".$config_name."';";
+				$sql = 'UPDATE `' . UA_TABLE_CONFIG . "` SET `config_value` = '" . strip_tags($config_value) . "' WHERE `config_name` = '" . $config_name . "';";
 				$db->query($sql);
 
 				return true;
@@ -225,7 +224,7 @@ class UniAdmin
 	{
 		global $user;
 
-		require_once(UA_INCLUDEDIR.'pclzip.lib.php');
+		require_once(UA_INCLUDEDIR . 'pclzip.lib.php');
 
 		$archive = new PclZip($file);
 		$list = $archive->extract(PCLZIP_OPT_PATH, $path,
@@ -268,7 +267,7 @@ class UniAdmin
 	{
 		if( strlen($string) > $desired_length )
 		{
-			$string = substr($string,0,$desired_length).$suffix;
+			$string = substr($string,0,$desired_length) . $suffix;
 			return $string;
 		}
 		return $string;
@@ -291,7 +290,7 @@ class UniAdmin
 		{
 			if( !in_array($readdir,$no_scan) )
 			{
-				$path = $dir.DIR_SEP.$readdir;
+				$path = $dir . DIR_SEP . $readdir;
 				if( $sub_dir && is_dir($path) )
 				{
 					$array = $this->ls($path, $array);
@@ -710,7 +709,7 @@ class UniAdmin
 			// If there were errors
 			if (curl_errno($ch))
 			{
-				$this->error('Error: '.curl_error($ch));
+				$this->error('Error: ' . curl_error($ch));
 				return false;
 			}
 
@@ -801,7 +800,7 @@ function lang_select( $select_option='' )
 	foreach( $uniadmin->languages as $lang )
 	{
 		$selected = ( $lang == $select_option ? ' selected="selected"' : '' );
-		$retval .= "\n\t".'<option value="'.$lang.'"'.$selected.'>'.$lang.'</option>';
+		$retval .= "\n\t" . '<option value="' . $lang . '"' . $selected . '>' . $lang . '</option>';
 	}
 	$retval .= '
 			</select>';
@@ -830,7 +829,7 @@ function style_select( $select_option='' )
 		if( $style != 'install' )
 		{
 			$selected = ( $style == $select_option ? ' selected="selected"' : '' );
-			$retval .= "\n\t".'<option value="'.$style.'"'.$selected.'>'.$style.'</option>';
+			$retval .= "\n\t" . '<option value="' . $style . '"' . $selected . '>' . $style . '</option>';
 		}
 	}
 	$retval .= '
@@ -852,9 +851,9 @@ function level_select( $select_option='' )
 	$selected = ' selected="selected"';
 
 	$retval = '<select class="select" name="level">
-	<option value="'.UA_ID_USER.'"'.( UA_ID_USER == $select_option ? $selected : '' ).'>'.$user->lang['basic_user_level_1'].'</option>
-	<option value="'.UA_ID_POWER.'"'.( UA_ID_POWER == $select_option ? $selected : '' ).'>'.$user->lang['power_user_level_2'].'</option>
-	<option value="'.UA_ID_ADMIN.'"'.( UA_ID_ADMIN == $select_option ? $selected : '' ).'>'.$user->lang['admin_level_3'].'</option>
+	<option value="' . UA_ID_USER . '"' . ( UA_ID_USER == $select_option ? $selected : '' ) . '>' . $user->lang['basic_user_level_1'] . '</option>
+	<option value="' . UA_ID_POWER . '"' . ( UA_ID_POWER == $select_option ? $selected : '' ) . '>' . $user->lang['power_user_level_2'] . '</option>
+	<option value="' . UA_ID_ADMIN . '"' . ( UA_ID_ADMIN == $select_option ? $selected : '' ) . '>' . $user->lang['admin_level_3'] . '</option>
 </select>';
 
 	return $retval;

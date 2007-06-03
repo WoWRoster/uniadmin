@@ -1,22 +1,20 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
+/**
+ * WoWRoster.net UniAdmin
  *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
+ * UniUploader Settings Sync Interface
  *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
+ * LICENSE: Licensed under the Creative Commons
+ *          "Attribution-NonCommercial-ShareAlike 2.5" license
  *
- * $Id$
- *
- ******************************/
+ * @copyright  2002-2007 WoWRoster.net
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.5   Creative Commons "Attribution-NonCommercial-ShareAlike 2.5"
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    UniAdmin
+*/
 
 // This is just an interface file for UniUploader versions lower than 2.5.0
 
 $_GET['p'] = 'interface';
-include(dirname(__FILE__).DIRECTORY_SEPARATOR.'index.php');
+include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'index.php');
