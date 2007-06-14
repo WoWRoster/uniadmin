@@ -446,6 +446,7 @@ class UniAdmin
 			'UA_INTERFACE_URL' => $this->config['interface_url'],
 
 			'A_OPERATION'      => UA_URI_OP,
+			'A_ACTION'         => UA_URI_ACTION,
 			'A_ID'             => UA_URI_ID,
 			'A_ADD'            => UA_URI_ADD,
 			'A_DELETE'         => UA_URI_DELETE,

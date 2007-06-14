@@ -1,5 +1,5 @@
 /*
-        TableSort revisited v3.1 by frequency-decoder.com
+        TableSort revisited v3.7 by frequency-decoder.com
 
         Released under a creative commons Attribution-ShareAlike 2.5 license (http://creativecommons.org/licenses/by-sa/2.5/)
 
@@ -46,15 +46,25 @@ var fdTableSort = {
         /*@end
         @*/
 
-        addEvent: function(obj, type, fn) {
+        addEvent: function(obj, type, fn, tmp) {
+                tmp || (tmp = true);
                 if( obj.attachEvent ) {
                         obj["e"+type+fn] = fn;
                         obj[type+fn] = function(){obj["e"+type+fn]( window.event );};
                         obj.attachEvent( "on"+type, obj[type+fn] );
-                } else
-                        obj.addEventListener( type, fn, false );
+                } else {
+                        obj.addEventListener( type, fn, true );
+                };
         },
-
+        removeEvent: function(obj, type, fn, tmp) {
+                tmp || (tmp = true);
+                if( obj.detachEvent ) {
+                        obj.detachEvent( "on"+type, obj[type+fn] );
+                        obj[type+fn] = null;
+                } else {
+                        obj.removeEventListener( type, fn, true );
+                };
+        },
         stopEvent: function(e) {
                 e = e || window.event;
 
@@ -69,12 +79,15 @@ var fdTableSort = {
                 /*@end@*/
                 return false;
         },
+        initEvt: function(e) {
+                fdTableSort.init(false);
+        },
+        init: function(tableId) {
+                if (!document.getElementsByTagName || !document.createElement || !document.getElementById) return;
 
-        init: function() {
-                if (!document.getElementsByTagName) return;
-
-                var tables = document.getElementsByTagName("table");
+                var tables = tableId && document.getElementById(tableId) ? new Array(document.getElementById(tableId)) : document.getElementsByTagName("table");
                 var workArr, sortable, headers, thtext, aclone, a, span, columnNum, noArrow, colCnt, cel, allRowArr, rowArr, sortableTable, celCount, colspan, rowspan, rowLength;
+                var onLoadTables = [];
 
                 a               = document.createElement("a");
                 a.href          = "#";
@@ -84,8 +97,13 @@ var fdTableSort = {
 
                 for(var k = 0, tbl; tbl = tables[k]; k++) {
 
+                        //if(tableId && tbl.id && tableId != tbl.id) continue;
+
                         // Remove any old dataObj for this table (tables created from an ajax callback require this)
-                        if(tbl.id && tbl.id in fdTableSort.tableCache) delete fdTableSort.tableCache[tbl.id];
+                        if(tbl.id) fdTableSort.removeTableCache(tbl.id);
+
+                        // Remove any old tmpCache object for this table
+                        if(tbl.id) fdTableSort.removeTmpCache(tbl.id);
 
                         allRowArr = tbl.getElementsByTagName('thead').length ? tbl.getElementsByTagName('thead')[0].getElementsByTagName('tr') : tbl.getElementsByTagName('tr');
                         rowArr = [];
@@ -97,8 +115,8 @@ var fdTableSort = {
                                 rowArr[rowArr.length] = tr.getElementsByTagName('th');
                                 for(var j = 0, th; th = rowArr[rowArr.length - 1][j]; j++) {
                                         if(th.className.search(/sortable/) != -1) sortableTable = true;
-                                }
-                        }
+                                };
+                        };
 
                         if(!sortableTable) continue;
 
@@ -143,7 +161,7 @@ var fdTableSort = {
                         for(var c = 0;c < workArr.length;c++) {
                                 for(var i = 0;i < workArr[c].length;i++){
 
-                                        if(workArr[c][i].className.search("fd-column-") == -1) workArr[c][i].className = workArr[c][i].className + " fd-column-" + i;
+                                        if(workArr[c][i].className.search("fd-column-") == -1 && workArr[c][i].className.search("sortable") != -1) workArr[c][i].className = workArr[c][i].className + " fd-column-" + i;
 
                                         if(workArr[c][i].className.match('sortable')) {
                                                 workArr[c][i].className = workArr[c][i].className.replace(/forwardSort|reverseSort/, "");
@@ -151,13 +169,17 @@ var fdTableSort = {
                                                 if(i == columnNum) sortable = workArr[c][i];
                                                 thtext = fdTableSort.getInnerText(workArr[c][i]);
 
+                                                if(workArr[c][i].getElementsByTagName && workArr[c][i].getElementsByTagName('a').length) {
+                                                        workArr[c][i].getElementsByTagName('a')[0].onclick = workArr[c][i].getElementsByTagName('a')[0].onkeypress = null;
+                                                }
+
                                                 while(workArr[c][i].firstChild) workArr[c][i].removeChild(workArr[c][i].firstChild);
 
                                                 // Create the link
                                                 aclone = a.cloneNode(true);
                                                 aclone.appendChild(document.createTextNode(thtext));
-                                                aclone.title = "Sort on " + thtext;
-                                                a.onclick = workArr[c][i].onclick = fdTableSort.clickWrapper;
+                                                aclone.title = "Sort on \u201c" + thtext + "\u201d";
+                                                aclone.onclick = workArr[c][i].onclick = fdTableSort.clickWrapper;
                                                 workArr[c][i].appendChild(aclone);
 
                                                 // Add the span if needs be
@@ -165,21 +187,27 @@ var fdTableSort = {
 
                                                 workArr[c][i].className = workArr[c][i].className.replace(/fd-identical|fd-not-identical/, "");
                                                 fdTableSort.disableSelection(workArr[c][i]);
+                                                aclone = null;
                                         };
                                 };
                         };
 
                         fdTableSort.tmpCache[tbl.id] = {cols:rowLength, headers:workArr};
 
+                        workArr = null;
+
                         if(sortable) {
-                                fdTableSort.thNode = sortable;
-                                fdTableSort.initSort();
-                                if(reverse) {
-                                        fdTableSort.thNode = sortable;
-                                        fdTableSort.initSort();
-                                };
+                                onLoadTables[onLoadTables.length] = sortable;
+                                if(reverse) { onLoadTables[onLoadTables.length] = sortable; };
                         };
                 };
+
+                for(var i = 0, thNode; thNode = onLoadTables[i]; i++) {
+                        fdTableSort.thNode = thNode;
+                        fdTableSort.initSort(false);
+                };
+
+                aclone = a.onkeypress = a = span = workArr = sortable = thNode = onLoadTables = tbl = allRowArr = rowArr = null;
         },
 
         disableSelection: function(element) {
@@ -193,10 +221,11 @@ var fdTableSort = {
         clickWrapper: function(e) {
                 e = e || window.event;
                 if(fdTableSort.thNode == null) {
-                        fdTableSort.thNode = this;
+                        var targ = this;
+                        while(targ.tagName.toLowerCase() != "th") targ = targ.parentNode;
+                        fdTableSort.thNode = targ;
                         fdTableSort.addSortActiveClass();
-                        setTimeout("fdTableSort.initSort()",5);
-
+                        setTimeout(fdTableSort.initSort,5,false);
                 };
                 return fdTableSort.stopEvent(e);
         },
@@ -207,11 +236,9 @@ var fdTableSort = {
                 if(kc == 13) {
                         var targ = this;
                         while(targ.tagName.toLowerCase() != "th") targ = targ.parentNode;
-
                         fdTableSort.thNode = targ;
                         fdTableSort.addSortActiveClass();
-                        setTimeout("fdTableSort.initSort()",5);
-
+                        setTimeout(fdTableSort.initSort,5,false);
                         return fdTableSort.stopEvent(e);
                 };
                 return true;
@@ -220,19 +247,20 @@ var fdTableSort = {
         jsWrapper: function(tableid, colNum) {
                 if(!fdTableSort.tmpCache[tableid] || fdTableSort.tmpCache[tableid].headers[0].length <= colNum || fdTableSort.tmpCache[tableid].headers[0][colNum].className.search(/fd-column/) == -1) return false;
                 fdTableSort.thNode = fdTableSort.tmpCache[tableid].headers[0][colNum];
-                fdTableSort.addSortActiveClass();
-                fdTableSort.initSort();
+                fdTableSort.initSort(true);
         },
 
         addSortActiveClass: function() {
                 if(fdTableSort.thNode == null) return;
                 fdTableSort.addClass(fdTableSort.thNode, "sort-active");
                 fdTableSort.addClass(document.getElementsByTagName('body')[0], "sort-active");
-                if("sortInitiatedCallback" in window) {
-                        var tableElem   = fdTableSort.thNode;
-                        while(tableElem.tagName.toLowerCase() != 'table' && tableElem.parentNode) {
-                                tableElem = tableElem.parentNode;
-                        };
+                var tableElem = fdTableSort.thNode;
+                while(tableElem.tagName.toLowerCase() != 'table' && tableElem.parentNode) {
+                        tableElem = tableElem.parentNode;
+                };
+                if("sortInitiatedCallback-" + tableElem.id in window) {
+                        window["sortInitiatedCallback-" + tableElem.id]();
+                } else if("sortInitiatedCallback" in window) {
                         sortInitiatedCallback(tableElem.id);
                 };
         },
@@ -240,11 +268,13 @@ var fdTableSort = {
         removeSortActiveClass: function() {
                 fdTableSort.removeClass(fdTableSort.thNode, "sort-active");
                 fdTableSort.removeClass(document.getElementsByTagName('body')[0], "sort-active");
-                if("sortCompleteCallback" in window) {
-                        var tableElem   = fdTableSort.thNode;
-                        while(tableElem.tagName.toLowerCase() != 'table' && tableElem.parentNode) {
-                                tableElem = tableElem.parentNode;
-                        };
+                var tableElem = fdTableSort.thNode;
+                while(tableElem.tagName.toLowerCase() != 'table' && tableElem.parentNode) {
+                        tableElem = tableElem.parentNode;
+                };
+                if("sortCompleteCallback-" + tableElem.id in window) {
+                        window["sortCompleteCallback-" + tableElem.id]();
+                } else if("sortCompleteCallback" in window) {
                         sortCompleteCallback(tableElem.id);
                 };
         },
@@ -274,6 +304,8 @@ var fdTableSort = {
                 var identical = new Array(numberOfCols);
                 var identVal  = new Array(numberOfCols);
 
+                for(var tmp = 0; tmp < numberOfCols; tmp++) identical[tmp] = true;
+
                 var tr, td, th, txt, tds, col, row;
 
                 var re = new RegExp(/fd-column-([0-9]+)/);
@@ -291,8 +323,7 @@ var fdTableSort = {
 
                         tr              = trs[row];
 
-                        // Have we any th tags or are we in a tfoot ?
-                        if(tr.getElementsByTagName('th').length > 0 || (tr.parentNode && tr.parentNode.tagName.toLowerCase() == "tfoot")) continue;
+                        if(tr.parentNode != start || tr.getElementsByTagName("th").length || (tr.parentNode.tagName && tr.parentNode.tagName.toLowerCase() == "tfoot")) continue;
 
                         data[rowCnt]    = [];
                         tds             = tr.getElementsByTagName('td');
@@ -313,12 +344,12 @@ var fdTableSort = {
                                         if(isNaN(txt)) txt = "";
                                 } else if(th.className.search(/sortable-text/) != -1) {
                                         txt = txt.toLowerCase();
+                                } else if (th.className.search(/sortable-keep/) != -1) {
+                                        txt = rowCnt;
                                 } else if(th.className.search(/sortable-([a-zA-Z\_]+)/) != -1) {
                                         if((th.className.match(/sortable-([a-zA-Z\_]+)/)[1] + "PrepareData") in window) {
                                                 txt = window[th.className.match(/sortable-([a-zA-Z\_]+)/)[1] + "PrepareData"](td, txt);
                                         };
-                                } else if (th.className.search(/sortable-keep/) != -1) {
-                                        txt = rowCnt;
                                 } else {
                                         if(txt != "") {
                                                 fdTableSort.removeClass(th, "sortable");
@@ -336,7 +367,7 @@ var fdTableSort = {
                                         };
                                 };
 
-                                if(rowCnt > 0 && identVal[col] != txt) {
+                                if(rowCnt > 0 && identical[col] && identVal[col] != txt) {
                                         identical[col] = false;
                                 };
 
@@ -357,9 +388,60 @@ var fdTableSort = {
 
                 // Cache the data object for this table
                 fdTableSort.tableCache[table.id] = { data:data, identical:identical, colStyle:colStyle, rowStyle:rowStyle, noArrow:table.className.search(/no-arrow/) != -1 };
+
+                sortableColumnNumbers = data = tr = td = th = trs = identical = identVal = null;
         },
 
-        initSort: function() {
+        onUnload: function() {
+                for(tbl in fdTableSort.tableCache) {
+                        fdTableSort.removeTableCache(tbl);
+                }
+                for(tbl in fdTableSort.tmpCache) {
+                        fdTableSort.removeTmpCache(tbl);
+                }
+                fdTableSort.removeEvent(window, "load", fdTableSort.initEvt);
+                fdTableSort.removeEvent(window, "unload", fdTableSort.onUnload);
+                fdTableSort.tmpCache = fdTableSort.tableCache = null;
+        },
+
+        removeTableCache: function(tableId) {
+                if(!(tableId in fdTableSort.tableCache)) return;
+
+                var data = fdTableSort.tableCache[tableId].data;
+                for(var i = 0, row; row = data[i]; i++) {
+                        row[row.length - 1] = null;
+                }
+                data = row = null;
+                fdTableSort.tableCache[tableId] = null;
+                delete fdTableSort.tableCache[tableId];
+
+                var tbl = document.getElementById(tableId);
+                if(!tbl) return;
+                var ths = tbl.getElementsByTagName("th");
+                var a;
+                for(var i = 0, th; th = ths[i]; i++) {
+                        a = th.getElementsByTagName("a");
+                        if(a.length) a[0].onkeypress = a[0].onclick = null;
+                        th.onclick = th.onselectstart = th = a = null;
+                }
+        },
+
+        removeTmpCache: function(tableId) {
+                if(!(tableId in fdTableSort.tmpCache)) return;
+                var headers = fdTableSort.tmpCache[tableId].headers;
+                var a
+                for(var i = 0, row; row = headers[i]; i++) {
+                        for(var j = 0, th; th = row[j]; j++) {
+                                a = th.getElementsByTagName("a");
+                                if(a.length) a[0].onkeypress = a[0].onclick = null;
+                                th.onclick = th.onselectstart = th = a = null;
+                        }
+                }
+                fdTableSort.tmpCache[tableId] = null;
+                delete fdTableSort.tmpCache[tableId];
+        },
+
+        initSort: function(noCallback) {
 
                 var span;
                 var thNode      = fdTableSort.thNode;
@@ -392,14 +474,14 @@ var fdTableSort = {
                 var colStyle    = dataObj.colStyle;
                 var rowStyle    = dataObj.rowStyle;
                 var len1        = data.length;
-                var len2        = data[0].length - 1;
-                var identical   = dataObj.identical[fdTableSort.pos] == false ? false : true;
+                var len2        = data.length > 0 ? data[0].length - 1 : 0;
+                var identical   = dataObj.identical[fdTableSort.pos];
                 var noArrow     = dataObj.noArrow;
 
                 if(lastPos != fdTableSort.pos && lastPos != -1) {
                         var th = dataObj.pos;
-                        fdTableSort.removeClass(th, "forwardSort");
-                        fdTableSort.removeClass(th, "reverseSort");
+                        fdTableSort.removeClass(th, "(forwardSort|reverseSort)");
+
                         if(!noArrow) {
                                 // Remove arrow
                                 span = th.getElementsByTagName('span')[0];
@@ -410,14 +492,14 @@ var fdTableSort = {
                 // If the same column is being sorted then just reverse the data object contents.
                 var classToAdd = "forwardSort";
 
-                if((lastPos == fdTableSort.pos && !identical) || thNode.className.match(/sortable-keep/)) {
+                if((lastPos == fdTableSort.pos && !identical) || (thNode.className.search(/sortable-keep/) != -1 && lastPos == -1)) {
                         data.reverse();
                         classToAdd = thNode.className.search(/reverseSort/) != -1 ? "forwardSort" : "reverseSort";
-                        if(thNode.className.match(/sortable-keep/)) fdTableSort.tableCache[tableElem.id].pos = thNode;
+                        if(thNode.className.search(/sortable-keep/) != -1 && lastPos == -1) fdTableSort.tableCache[tableElem.id].pos = thNode;
                 } else {
                         fdTableSort.tableCache[tableElem.id].pos = thNode;
                         if(!identical) {
-                                if(thNode.className.match(/sortable-numeric|sortable-currency|sortable-date|sortable-keep/)) {
+                                if(thNode.className.match(/sortable-(numeric|currency|date|keep)/)) {
                                         data.sort(fdTableSort.sortNumeric);
                                 } else if(thNode.className.match('sortable-text')) {
                                         data.sort(fdTableSort.sortText);
@@ -427,8 +509,7 @@ var fdTableSort = {
                         };
                 };
 
-                fdTableSort.removeClass(thNode, "forwardSort");
-                fdTableSort.removeClass(thNode, "reverseSort");
+                fdTableSort.removeClass(thNode, "(forwardSort|reverseSort)");
                 fdTableSort.addClass(thNode, classToAdd);
 
                 if(!noArrow) {
@@ -439,7 +520,7 @@ var fdTableSort = {
                 };
 
                 if(!rowStyle && !colStyle && identical) {
-                        fdTableSort.removeSortActiveClass();
+                        if(!noCallback) fdTableSort.removeSortActiveClass();
                         fdTableSort.thNode = null;
                         return;
                 }
@@ -447,30 +528,33 @@ var fdTableSort = {
                 var hook = tableElem.getElementsByTagName('tbody');
                 hook = hook.length ? hook[0] : tableElem;
 
-                var tr;
+                var tr, tds;
+                var rowReg = rowStyle ? new RegExp("(^|\\s*\\b[^-])"+rowStyle+"($|\\b(?=[^-]))", "g") : false;
+                var colReg = colStyle ? new RegExp("(^|\\s*\\b[^-])"+colStyle+"($|\\b(?=[^-]))", "g") : false;
 
                 for(var i = 0; i < len1; i++) {
                         tr = data[i][len2];
-
                         if(colStyle) {
+                                tds = tr.getElementsByTagName('td');
                                 if(lastPos != -1) {
-                                        fdTableSort.removeClass(tr.getElementsByTagName('td')[lastPos], colStyle);
+                                        tds[lastPos].className = tds[lastPos].className.replace(colReg, "");
                                 }
-                                fdTableSort.addClass(tr.getElementsByTagName('td')[fdTableSort.pos], colStyle);
+                                fdTableSort.addClass(tds[fdTableSort.pos], colStyle);
+                                tds = null;
                         };
                         if(!identical) {
-
                                 if(rowStyle) {
                                         if(i % 2) fdTableSort.addClass(tr, rowStyle);
-                                        else fdTableSort.removeClass(tr, rowStyle);
+                                        else tr.className = tr.className.replace(rowReg, "");
                                 };
 
-                                hook.removeChild(tr); /* Netscape 8.1.2 requires the removeChild call */
+                                hook.removeChild(tr); // Netscape 8.1.2 requires the removeChild call
                                 hook.appendChild(tr);
                         };
+                        tr = null;
                 };
-                fdTableSort.removeSortActiveClass();
-                fdTableSort.thNode = null;
+                if(!noCallback) fdTableSort.removeSortActiveClass();
+                fdTableSort.thNode = hook = null;
         },
 
         getInnerText: function(el) {
@@ -482,21 +566,18 @@ var fdTableSort = {
                         if (i.nodeType == 3)            txt += i.nodeValue;
                         else if (i.nodeType == 1)       txt += fdTableSort.getInnerText(i);
                 };
-
                 return txt;
         },
 
         dateFormat: function(dateIn, favourDMY) {
                 var dateTest = [
-                        { regExp:/^(0[1-9]|1[012])([- \/.])(0[1-9]|[12][0-9]|3[01])([- \/.])(\d\d?\d\d)$/, d:3, m:1, y:5 },  // mdy
-                        { regExp:/^(0[1-9]|[12][0-9]|3[01])([- \/.])(0[1-9]|1[012])([- \/.])(\d\d?\d\d)$/, d:1, m:3, y:5 },  // dmy
-                        { regExp:/^(\d\d?\d\d)([- \/.])(0[1-9]|1[012])([- \/.])(0[1-9]|[12][0-9]|3[01])$/, d:5, m:3, y:1 }   // ymd
+                        { regExp:/^(0?[1-9]|1[012])([- \/.])(0?[1-9]|[12][0-9]|3[01])([- \/.])((\d\d)?\d\d)$/, d:3, m:1, y:5 },  // mdy
+                        { regExp:/^(0?[1-9]|[12][0-9]|3[01])([- \/.])(0?[1-9]|1[012])([- \/.])((\d\d)?\d\d)$/, d:1, m:3, y:5 },  // dmy
+                        { regExp:/^(\d\d\d\d)([- \/.])(0?[1-9]|1[012])([- \/.])(0?[1-9]|[12][0-9]|3[01])$/, d:5, m:3, y:1 }   // ymd
                         ];
-
                 var start;
                 var cnt = 0;
                 var numFormats = dateTest.length;
-
                 while(cnt < numFormats) {
                         start = (cnt + (favourDMY ? numFormats + 1 : numFormats)) % numFormats;
 
@@ -511,43 +592,42 @@ var fdTableSort = {
 
                                 return y+String(m)+d;
                         }
-
                         cnt++;
                 }
-
                 return 0;
         },
 
         sortDate: function(a,b) {
                 var aa = a[fdTableSort.pos];
                 var bb = b[fdTableSort.pos];
-
                 return aa - bb;
         },
 
         sortNumeric:function (a,b) {
                 var aa = a[fdTableSort.pos];
                 var bb = b[fdTableSort.pos];
-
+                if(aa == bb) return 0;
                 if(aa === "" && !isNaN(bb)) return -1;
-                else if(bb === "" && !isNaN(aa)) return 1;
-                else if(aa == bb) return 0;
-
+                if(bb === "" && !isNaN(aa)) return 1;
                 return aa - bb;
         },
 
         sortText:function (a,b) {
                 var aa = a[fdTableSort.pos];
                 var bb = b[fdTableSort.pos];
-
                 if(aa == bb) return 0;
                 if(aa < bb)  return -1;
-
                 return 1;
         }
 };
 
-fdTableSort.addEvent(window, "load", fdTableSort.init);
+fdTableSort.addEvent(window, "load", fdTableSort.initEvt);
+fdTableSort.addEvent(window, "unload", fdTableSort.onUnload);
+
+
+
+
+
 
 
 
@@ -699,8 +779,9 @@ fdTableSort.addEvent(window, "load", tablePaginater.init);
 
 
 
+
 /*
-        TableSort zebraStripe & Hover plug-in v1.0 by frequency-decoder.com
+        TableSort zebraStripe & Hover plug-in v1.1 by frequency-decoder.com
 
         Released under a creative commons Attribution-ShareAlike 2.5 license (http://creativecommons.org/licenses/by-sa/2.5/)
 
@@ -731,8 +812,8 @@ function initialZebraStripe() {
 
         // Loop through all the tables
         for(var k = 0, table; table = tables[k]; k++) {
-                // If the table has not a rowstyle-XXX className or it will be sorted onLoad anyway then continue
-                if(table.className.search(/rowstyle-([\S]+)/) == -1 || table.className.search(/sortable-onload/) != -1) continue;
+                // If the table has not a rowstyle-XXX className then continue
+                if(table.className.search(/rowstyle-([\S]+)/) == -1) continue;
 
                 // Grab the className for the alternate rows
                 rowStyle = table.className.match(/rowstyle-([\S]+)/)[1];
@@ -752,11 +833,11 @@ function initialZebraStripe() {
                         else fdTableSort.removeClass(tr, rowStyle);
 
                         // Do the Internet Explorer hover thang (using conditional compilation for this...)
-                        // Note: If you don't want to add the hover effect for Internet Explorer, just remove the code
+                        // Note: Uncomment the code below should you wish the hover effect for IE and change the className "alternative" to suit your installation
                         /*@cc_on
                                 /*@if (@_jscript_version >= 5)
-                                fdTableSort.addEvent(tr, "mouseover", function() { fdTableSort.addClass(this, this.className.search("alternative") == -1 ? "ieRowHover" : "ieRowHoverAlt"); });
-                                fdTableSort.addEvent(tr, "mouseout",  function() { fdTableSort.removeClass(this, this.className.search("alternative") == -1 ? "ieRowHover" : "ieRowHoverAlt"); });
+                                // fdTableSort.addEvent(tr, "mouseover", function() { fdTableSort.addClass(this, this.className.search("alternative") == -1 ? "ieRowHover" : "ieRowHoverAlt"); });
+                                // fdTableSort.addEvent(tr, "mouseout",  function() { fdTableSort.removeClass(this, this.className.search("alternative") == -1 ? "ieRowHover" : "ieRowHoverAlt"); });
                                 /*@end
                         @*/
                 };

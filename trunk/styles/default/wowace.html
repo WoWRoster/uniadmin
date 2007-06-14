@@ -2,25 +2,26 @@
 
 <!-- IF S_ACELIST -->
 <form id="ua_wowace" name="ua_wowace" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+<input type="hidden" name="{A_OPERATION}" id="hide" value="" />
 
 <table class="ua_table rowstyle-data2 no-arrow paginate-20" width="100%" align="center">
 	<thead>
 		<tr>
 			<th class="table_header" colspan="4"><div class="last_updated">
-					<button class="button_hide" style="cursor:pointer;" name="{A_OPERATION}" value="{A_RELOAD}" onmouseover="return overlib('{L_FORCERELOAD_TIP}',CAPTION,'{L_FORCERELOAD}');" onmouseout="return nd();"><img src="{TEMPLATE_PATH}/images/reload_mini.png" alt="" /></button>
+					<button type="submit" class="button_hide" name="button_reload" onclick="setvalue('{A_RELOAD}');" onmouseover="return overlib('{L_FORCERELOAD_TIP}',CAPTION,'{L_FORCERELOAD}');" onmouseout="return nd();"><img src="{TEMPLATE_PATH}/images/reload_mini.png" alt="" /></button>
 					{L_LASTUPDATED}: {WOWACE_UPDATED}</div>
 				{L_WOWACE_ADDONS}</th>
 		</tr>
 		<tr>
-			<th class="sortable">{L_DOWNLOAD}</th>
-			<th class="sortable" width="80px">{L_VERSION}</th>
-			<th class="sortable">{L_DATETIME}</th>
+			<th class="sortable-text">{L_DOWNLOAD}</th>
+			<th class="sortable-numeric" width="80px">{L_VERSION}</th>
+			<th class="sortable-date">{L_DATETIME}</th>
 			<th>{L_NOTES}</th>
 		</tr>
 	</thead>
 	<tfoot>
 		<tr>
-			<th colspan="4"><button class="submit" name="{A_OPERATION}" value="{A_PROCESS}">{L_DOWNLOAD}</button></th>
+			<th colspan="4"><button type="submit" class="submit" name="button_down" onclick="setvalue('{A_PROCESS}');">{L_DOWNLOAD}</button></th>
 		</tr>
 	</tfoot>
 	<tbody>
@@ -35,8 +36,6 @@
 <!-- END addons_row -->
 	</tbody>
 </table>
-
-
 </form>
 <!-- ELSE -->
 <table class="ua_table" align="center" width="70%">

@@ -20,7 +20,7 @@ if( !defined('IN_UNIADMIN') )
 }
 
 //UniAdmin Version
-define('UA_VER', '0.7.8');
+define('UA_VER', '0.7.9');
 define('NO_CACHE', true);
 
 //Directories
@@ -38,6 +38,7 @@ define('UA_ID_ADMIN', 3);
 
 //URI Parameters
 define('UA_URI_OP',           'op');
+define('UA_URI_ACTION',       'action');
 define('UA_URI_ID',           'id');
 define('UA_URI_ADD',          'add');
 define('UA_URI_DELETE',       'delete');
