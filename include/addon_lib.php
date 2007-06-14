@@ -464,7 +464,7 @@ function arrayToLi( $array , &$string , $baseName='' , $call=false )
 	}
 	if( !$call )
 	{
-		$string .= ("</ul>\n");
+		$string .= ("</ul></li>\n");
 	}
 }
 

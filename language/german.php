@@ -302,6 +302,7 @@ $lang['addon_fullpath_tip'] = 'Für Addons die direkt ins World of Warcraft Verze
 $lang['addon_selectfile_tip'] = 'Wähle ein Addon zum Hochladen aus';
 $lang['confirm_addons_delete'] = 'Dies wird ALLE Addons aus der Datenbank und vom Webserver löschen. Bist du sicher?';
 $lang['all_addons_delete'] = 'Alle Addons wurden aus der Datenbank und vom Webserver gelöscht';
+$lang['addon_deleted'] = '%1$s has been deleted';
 
 $lang['addon_delete'] = 'AddOn Deletion Control';
 $lang['addon_delete_add'] = 'Add AddOns for UniUploader to Remove';
@@ -367,8 +368,8 @@ $lang['ADDURL3CH'] = 'Zusätzliche URL 3';
 $lang['ADDURL3'] = 'Zusätzliche URL 3 Lokation';
 $lang['ADDURL4CH'] = 'Zusätzliche URL 4';
 $lang['ADDURL4'] = 'Zusätzliche URL 4 Lokation';
-$lang['HOMEURL'] = 'URL location for homepage';
-$lang['FORUMURL'] = 'URL location for forums';
+$lang['HOMEURL'] = 'URL location for homepage<br />Used in javaUniUploader';
+$lang['FORUMURL'] = 'URL location for forums<br />Used in javaUniUploader';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'WoW automatisch starten';

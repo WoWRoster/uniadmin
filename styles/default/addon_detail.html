@@ -21,10 +21,10 @@
 </script>
 <!-- ENDIF -->
 
-<table id="addon_display" class="ua_table" align="center">
+<table id="addon_display" class="ua_table" align="center" width="600">
 	<thead>
 		<tr>
-			<th class="table_header" colspan="6" width="500">{ADDONNAME}</th>
+			<th class="table_header" colspan="6">{ADDONNAME}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -40,10 +40,10 @@
 			<td align="center"><a href="{DOWNLOAD}"><img src="{TEMPLATE_PATH}/images/download.png" class="icon" alt="" /><br />{FILESIZE}</a></td>
 			<td align="center">{NUMFILES}</td>
 			<td align="center">{TOC}</td>
-			<td align="center">{VERSION}</td>
-			<td align="center">{TIME}</td>
+			<td align="center" style="white-space:nowrap;">{VERSION}</td>
+			<td align="center" style="white-space:nowrap;">{TIME}</td>
 
-			<td>
+			<td style="white-space:nowrap;">
 				<!-- IF S_ADDON_ADD_DEL --><img src="{TEMPLATE_PATH}/images/edit.png" style="cursor:pointer;" class="icon" alt="" onclick="swapShow('addon_display','addon_edit');" onmouseover="return overlib('{L_EDIT}');" onmouseout="return nd();" /><!-- ENDIF -->
 				<!-- IF HOMEPAGE != '' --><a href="{HOMEPAGE}" target="_blank"><img src="{TEMPLATE_PATH}/images/home.png" class="icon" alt="" onmouseover="return overlib('{L_HOMEPAGE}');" onmouseout="return nd();" /></a><!-- ELSE --><img src="{TEMPLATE_PATH}/images/home_off.png" class="icon" alt="" /><!-- ENDIF -->
 
@@ -119,9 +119,9 @@
 </table>
 	<!-- IF S_ADDON_ADD_DEL -->
 <form name="ua_editaddon" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
-<table id="addon_edit" class="ua_table" style="display:none;" align="center">
+<table id="addon_edit" class="ua_table" style="display:none;" align="center" width="600">
 	<tr>
-		<th class="table_header" colspan="6" width="500">{ADDONNAME}</th>
+		<th class="table_header" colspan="6">{ADDONNAME}</th>
 	</tr>
 	<tr>
 		<th colspan="2">{L_ADDON_DETAILS}</th>
@@ -147,7 +147,7 @@
 	</tr>
 	<tr>
 		<td colspan="2" align="center"><img src="{TEMPLATE_PATH}/images/cancel.png" style="display:inline;float:right;cursor:pointer;" class="icon" alt="" onclick="swapShow('addon_display','addon_edit');" onmouseover="return overlib('{L_CANCEL}');" onmouseout="return nd();" />
-		<textarea class="textbox" name="notes">{NOTES}</textarea></td>
+		<textarea class="textbox" name="notes" cols="40" rows="4">{NOTES}</textarea></td>
 	</tr>
 	<tr>
 		<th colspan="2" align="center">

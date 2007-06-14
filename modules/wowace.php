@@ -57,7 +57,6 @@ if( isset($_POST[UA_URI_OP]) )
 					$uniadmin->error(sprintf($user->lang['error_unlink'],$ace_file));
 				}
 			}
-			clearstatcache();
 			break;
 	}
 }

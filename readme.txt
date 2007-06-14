@@ -177,7 +177,7 @@ UniAdmin uses the following libraries as well
 
 9 - Known Bugs / Gotchyas
 =========================
-Bug: Addon zip files that have more than one addon in them may show up funny
+Bug: Addon zip files that have more than one addon in them may not show correctly
 Solution: After you upload an addon zip, edit the info on the addon details page
 
 
@@ -192,6 +192,8 @@ v0.7.9
 [~] WoWAce addon list works again
     WoWAce changed the addon list format to XML and removed the old format
 [+] Force addon list reload to WoWAce module
+[+] Ability to delete Un-Scanned addons
+[+] Message when an addon is deleted
 
 
 v0.7.8

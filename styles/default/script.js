@@ -257,6 +257,19 @@ function toggleShow(ElementID,ImgID,ImgShow,ImgHide)
 	}
 }
 
+/* Some cheesy JS code to set a hidden input field
+    because IE doesn't handle the <button> tag like it
+    is supposed to
+*/
+function setvalue(ElementVal)
+{
+	var ElementID = 'hide';
+	if(document.getElementById)
+	{
+		document.getElementById(ElementID).value = ElementVal;
+	}
+}
+
 
 
 

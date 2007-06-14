@@ -4,6 +4,7 @@
 <!-- IF S_ORPHAN_ADDONS -->
 <form id="ua_orphan_addon" name="ua_orphan_addon" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
 <input type="hidden" name="{A_OPERATION}" value="{A_ORPHAN}" />
+<input type="hidden" name="{A_ACTION}" id="hide" value="" />
 <table class="ua_table" style="float:right;width:250px;">
 	<thead>
 		<tr>
@@ -20,7 +21,7 @@
 		</tr>
 	<!-- END orphan_addons_row -->
 		<tr>
-			<th><input class="submit" type="submit" value="{L_ADD}" /></th>
+			<th><button type="submit" class="submit" name="button_add" onclick="setvalue('{A_ADD}');">{L_ADD}</button> <button type="submit" class="submit" name="button_del" onclick="setvalue('{A_DELETE}');">{L_DELETE}</button></th>
 		</tr>
 	</tbody>
 </table>
@@ -35,10 +36,10 @@
 		</tr>
 <!-- IF S_ADDONS -->
 		<tr>
-			<th class="sortable">{L_NAME}</th>
-			<th class="sortable">{L_TOC}</th>
-			<th class="sortable">{L_VERSION}</th>
-			<th class="sortable">{L_UPLOADED}</th>
+			<th class="sortable-text">{L_NAME}</th>
+			<th class="sortable-numeric">{L_TOC}</th>
+			<th class="sortable-text">{L_VERSION}</th>
+			<th class="sortable-date">{L_UPLOADED}</th>
 			<th>{L_MANAGE}</th>
 		</tr>
 	</thead>
@@ -198,8 +199,8 @@
 		<td colspan="2" align="center">{L_NO_DEL_ADDONS}</td>
 	</tr>
 	<!-- ENDIF -->
-	<tr>
 	<!-- IF S_ADDON_ADD_DEL -->
+	<tr>
 		<th colspan="2">{L_ADD_ADDONDEL}</th>
 	</tr>
 	<tr>

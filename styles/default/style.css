@@ -10,9 +10,9 @@ a:hover { color:black;text-decoration:none;background-color:#E3E3FF; }
 	background:transparent url('images/input_text.png') no-repeat;
 	border:none;
 	vertical-align:middle;
-	width:234px;
+	width:237px;
 	height:55px;
-	padding:3px;
+	padding:2px 1px 3px 2px;
 	font:10px verdana, arial, helvetica, geneva, sans-serif;
 }
 * html .textbox { background-attachment:fixed;width:240px;height:58px; }
@@ -55,6 +55,7 @@ a:hover { color:black;text-decoration:none;background-color:#E3E3FF; }
 	border:1px solid #781351;
 	background-color:#f2f2ff;
 	margin-top:1px;
+	cursor:pointer;
 }
 .file {
 	font:10px verdana, arial, helvetica, geneva, sans-serif;
@@ -68,7 +69,7 @@ a:hover { color:black;text-decoration:none;background-color:#E3E3FF; }
 	color:black;
 }
 
-.button_hide { border:0;background-color:transparent;padding:0;margin:0; }
+.button_hide { cursor:pointer;border:0;background-color:transparent;padding:0;margin:0; }
 
 img, input, select, button { vertical-align:middle; }
 img { border:0; }
@@ -190,25 +191,28 @@ img { border:0; }
 
 .copyright { font-size:10px; }
 
-.last_updated { color:#FFF;font-size:10px;font-weight:bold;float:left;display:inline;position:absolute; }
+.last_updated { color:#FFF;font-size:10px;font-weight:bold;float:left;display:inline; }
 
-.ua_loginbox, .ua_loginbox table { font-size:9px; }
-.ua_loginbox, .ua_loginbox table td,
-.ua_loginbox, .ua_loginbox table th,
-.ua_loginbox, .ua_loginbox table tr { border:0; }
 .ua_loginbox fieldset {
-	width:26em;
-	padding:1px;
-	border:1px solid #00487D;
-	background-color:#F2F2FF;
+	font-size:10px;
+	width:19em;
+	padding:1px 5px 1px;
+	border:1px solid #C1DAD7;
+	text-align:right;
 }
 .ua_loginbox legend {
 	padding:1px 6px;
-	color:#000;
-	border:1px solid #B32400;
-	background-color:#FFCCBF;
-	font-size:12px;
+	color:#4F6B72;
+	border:1px solid #00487D;
+	background:#F0F0F0 url('images/th.jpg') repeat;
+	font-size:11px;
 	font-weight:bold;
+}
+.ua_loginbox .item {
+	float:right;
+}
+.ua_loginbox #loginbutton {
+	float:left;
 }
 
 

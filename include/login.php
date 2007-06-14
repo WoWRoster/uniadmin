@@ -24,6 +24,7 @@ $tpl->assign_vars(array(
 	'L_USERNAME'     => $user->lang['username'],
 	'L_PASSWORD'     => $user->lang['password'],
 	'L_LOGIN'        => $user->lang['login'],
+	'L_GO'           => $user->lang['go'],
 	'L_GUEST_ACCESS' => $user->lang['guest_access'],
 	'S_LOGIN_MSG'    => false,
 	'S_LOGIN'        => false
