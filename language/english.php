@@ -387,6 +387,7 @@ $lang['WEBWOWSVFILE'] = 'Web==&gt;WoW - Write to SavedVariable filename';
 $lang['DOWNLOADBEFOREWOWL'] = 'Web==&gt;WoW - Initiate Before UU Launches WoW';
 $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Initiate Before UU Uploads';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Initiate After UU Uploads';
+$lang['PURGEFIRST'] = 'Delete the Web==&gt;WoW data file before syncing';
 
 // END UU Sync Strings
 

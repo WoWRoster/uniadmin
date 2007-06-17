@@ -70,7 +70,8 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('WEBWOWSVFILE', 'SavedVariables.lua', '0', 'advanced', 'text{250|50'),
 	('DOWNLOADBEFOREWOWL', '0', '0', 'advanced', 'radio{on^1|off^0'),
 	('DOWNLOADBEFOREUPLOAD', '0', '0', 'advanced', 'radio{on^1|off^0'),
-	('DOWNLOADAFTERUPLOAD', '1', '0', 'advanced', 'radio{on^1|off^0');
+	('DOWNLOADAFTERUPLOAD', '1', '0', 'advanced', 'radio{on^1|off^0'),
+	('PURGEFIRST','0','0', 'advanced', 'radio{yes^1|no^0');
 
 ### SV List
 INSERT INTO `uniadmin_svlist` (`sv_name`) VALUES

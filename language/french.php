@@ -274,11 +274,11 @@ $lang['full'] = 'Complet';
 $lang['edit'] = 'Editer';
 $lang['cancel'] = 'Annuler';
 $lang['status'] = 'Statut';
-$lang['reload'] = 'Reload';
-$lang['force_reload'] = 'Force Reload';
+$lang['reload'] = 'Recharger';
+$lang['force_reload'] = 'Forcer Rechargement';
 $lang['automatic'] = 'Automatique';
 $lang['delete_all_addons'] = 'Supprimer tous les Addons';
-$lang['unscanned_addons'] = 'Un-Scanned AddOns';
+$lang['unscanned_addons'] = 'AddOns non scannés';
 
 
 // Pagination
@@ -293,7 +293,7 @@ $lang['syncro_url'] = 'URL de Synchronisation';
 $lang['verify_syncro_url'] = 'cliquer pour vérifier';
 $lang['guest_access'] = 'Accès Invité';
 $lang['interface_ready'] = 'Interface de Mise à Jour UniUploader...';
-$lang['last_updated'] = 'Last Updated';
+$lang['last_updated'] = 'Dernière Mise à Jour';
 
 
 // Addon Management
@@ -302,15 +302,15 @@ $lang['addon_fullpath_tip'] = 'Ce paramètre est pour les addons qui extraient di
 $lang['addon_selectfile_tip'] = 'Selectionner un addon à charger';
 $lang['confirm_addons_delete'] = 'Ceci supprimera TOUS les addons de la base de donnée et du serveur web. Etes-vous sûr ?';
 $lang['all_addons_delete'] = 'Tous les addons ont été supprimés de la base de donnée et du serveur web';
-$lang['addon_deleted'] = '%1$s has been deleted';
+$lang['addon_deleted'] = '%1$s a été supprimé';
 
-$lang['addon_delete'] = 'AddOn Deletion Control';
-$lang['addon_delete_add'] = 'Add AddOns for UniUploader to Remove';
-$lang['addon_delete_none'] = 'No AddOns are set for UniUploader to delete';
+$lang['addon_delete'] = 'Contrôle de suppression des AddOns';
+$lang['addon_delete_add'] = 'Ajouter des AddOns à supprimer par UniUploader';
+$lang['addon_delete_none'] = 'Aucun AddOns à supprimer par UniUploader';
 
 // WoWAce
 $lang['new_wowace_list'] = 'Nouvelle liste téléchargée de WoWAce.com';
-$lang['wowace_reload'] = 'This forces a reload of the WoWAce addon listing<br />You can also change the timeout period in UniAdmin Config';
+$lang['wowace_reload'] = 'Ceci force un rechargement de la liste des addons WoWAce<br />Vous pouvez aussi changer le délai de timeout dans la Configuration de UniAdmin';
 
 
 // Upgrader
@@ -368,8 +368,8 @@ $lang['ADDURL3CH'] = 'URL Additionnelle 1';
 $lang['ADDURL3'] = 'Adresse de l\'URL Additionnelle 3';
 $lang['ADDURL4CH'] = 'URL Additionnelle 1';
 $lang['ADDURL4'] = 'Adresse de l\'URL Additionnelle 4';
-$lang['HOMEURL'] = 'URL location for homepage<br />Used in javaUniUploader';
-$lang['FORUMURL'] = 'URL location for forums<br />Used in javaUniUploader';
+$lang['HOMEURL'] = 'URL de la homepage<br />Utilisé par javaUniUploader';
+$lang['FORUMURL'] = 'URL des forums<br />Utilisé par javaUniUploader';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'Lancer WoW automatiquement';
@@ -387,6 +387,7 @@ $lang['WEBWOWSVFILE'] = 'Web==&gt;WoW - Ecrire dans le fichier SavedVariable nom
 $lang['DOWNLOADBEFOREWOWL'] = 'Web==&gt;WoW - Faire avant qu\'UU ne lance WoW';
 $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Faire avant qu\'UU ne charge';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Faire après qu\'UU n\'ait chargé';
+$lang['PURGEFIRST'] = 'Delete the Web==&gt;WoW data file before syncing';
 
 // END UU Sync Strings
 
@@ -398,7 +399,7 @@ $lang['admin']['check_updates'] = 'Vérifier Mises à jour UA|Vérifier sur wowrost
 $lang['admin']['default_lang'] = 'Langue par Défaut|Langue par Défaut de l\'interface d\'UniAdmin<br /><br />Les valeurs sont scannées automatiquement depuis les répertoire de langues';
 $lang['admin']['default_style'] = 'Style par Défaut|Le style d\'affichage par défaut';
 $lang['admin']['enable_gzip'] = 'Compression Gzip|Activer la compression gzip pour l\'affichage des pages UniAdmin';
-$lang['admin']['interface_url'] = 'URL Interface|Specifier le lieu de interface.php ici<br /><br />Utiliser %url% pour insérer l\'url de base<br />Par défaut  "%url%?p=interface" ou "%url%interface.php"';
+$lang['admin']['interface_url'] = 'URL Interface|Specifier le lieu de interface.php ici<br /><br />Utiliser %url% pour insérer l\'url de base<br />Par défaut  &quot;%url%?p=interface&quot; ou &quot;%url%interface.php&quot;';
 $lang['admin']['logo_folder'] = 'Dossier Logo|Specifier le dossier ou les logos UniUploader seront sauvés';
 $lang['admin']['remote_timeout'] = 'Temps d\'attente du fichier distant dépassé|Délais d\'attente d\'UniAdmin du fichier distant<br />Intervalle de mise à jour en heures<br />24 par défaut';
 $lang['admin']['temp_analyze_folder'] = 'Dossier Analyse Temporaire AddOn|Specifier le dossier ou les archives zip d\'addons seront décompressées et analysées';
@@ -477,8 +478,8 @@ $lang['sql_error_settings_update'] = 'Impossible de mettre à jour le paramètre =
 $lang['sql_error_settings_sv_insert'] = 'Impossible d\'insérer le nom de fichier savedvariable &quot;%1$s&quot;';
 $lang['sql_error_settings_sv_remove'] = 'Impossible de supprimer le nom de fichier savedvariable &quot;%1$s&quot;';
 
-$lang['sql_error_settings_addondel_insert'] = 'Could not insert addon delete directory name &quot;%1$s&quot;';
-$lang['sql_error_settings_addondel_remove'] = 'Could not remove addon delete directory id &quot;%1$s&quot;';
+$lang['sql_error_settings_addondel_insert'] = 'Impossible d\'insérer le nom de répertoire d\'addon à supprimer &quot;%1$s&quot;';
+$lang['sql_error_settings_addondel_remove'] = 'Impossible de supprimer le répertoire d\'addon à supprimer d\'id &quot;%1$s&quot;';
 
 $lang['sql_error_user_add'] = 'Impossible d\'ajouter l\'utilisateur &quot;%1$s&quot;';
 $lang['sql_error_user_delete'] = 'Impossible de supprimer l\'utilisateur &quot;%1$s&quot;';
