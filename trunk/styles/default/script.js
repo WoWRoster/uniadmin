@@ -261,9 +261,8 @@ function toggleShow(ElementID,ImgID,ImgShow,ImgHide)
     because IE doesn't handle the <button> tag like it
     is supposed to
 */
-function setvalue(ElementVal)
+function setvalue(ElementID,ElementVal)
 {
-	var ElementID = 'hide';
 	if(document.getElementById)
 	{
 		document.getElementById(ElementID).value = ElementVal;

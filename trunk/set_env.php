@@ -102,7 +102,7 @@ include(UA_INCLUDEDIR . 'login.php');
 
 
 // Check to run upgrader
-if( $uniadmin->config['UAVer'] < UA_VER )
+if( version_compare($uniadmin->config['UAVer'], UA_VER,'<') )
 {
 	if( $user->data['level'] == UA_ID_ADMIN )
 	{

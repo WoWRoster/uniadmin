@@ -274,11 +274,11 @@ $lang['full'] = 'Voll';
 $lang['edit'] = 'Editieren';
 $lang['cancel'] = 'Abbrechen';
 $lang['status'] = 'Status';
-$lang['reload'] = 'Reload';
-$lang['force_reload'] = 'Force Reload';
+$lang['reload'] = 'Aktualisieren';
+$lang['force_reload'] = 'Aktualisierung erzwingen';
 $lang['automatic'] = 'Automatisch';
 $lang['delete_all_addons'] = 'Lösche alle Addons';
-$lang['unscanned_addons'] = 'Un-Scanned AddOns';
+$lang['unscanned_addons'] = 'Nicht gescannte Addons';
 
 
 // Pagination
@@ -293,7 +293,7 @@ $lang['syncro_url'] = 'Synchronisations URL';
 $lang['verify_syncro_url'] = 'klicken, um zu überprüfen';
 $lang['guest_access'] = 'Gastzugang';
 $lang['interface_ready'] = 'UniUploader Aktualisierungsschnittstelle fertig...';
-$lang['last_updated'] = 'Last Updated';
+$lang['last_updated'] = 'Zuletzt aktualisiert';
 
 
 // Addon Management
@@ -302,15 +302,15 @@ $lang['addon_fullpath_tip'] = 'Für Addons die direkt ins World of Warcraft Verze
 $lang['addon_selectfile_tip'] = 'Wähle ein Addon zum Hochladen aus';
 $lang['confirm_addons_delete'] = 'Dies wird ALLE Addons aus der Datenbank und vom Webserver löschen. Bist du sicher?';
 $lang['all_addons_delete'] = 'Alle Addons wurden aus der Datenbank und vom Webserver gelöscht';
-$lang['addon_deleted'] = '%1$s has been deleted';
+$lang['addon_deleted'] = '%1$s gelöscht';
 
-$lang['addon_delete'] = 'AddOn Deletion Control';
-$lang['addon_delete_add'] = 'Add AddOns for UniUploader to Remove';
-$lang['addon_delete_none'] = 'No AddOns are set for UniUploader to delete';
+$lang['addon_delete'] = 'Addon Löschvorgang';
+$lang['addon_delete_add'] = 'Addons hinzufügen, die durch UniUploader gelöscht werden';
+$lang['addon_delete_none'] = 'Keine Addons zum Löschen im UniUploader ausgewählt';
 
 // WoWAce
 $lang['new_wowace_list'] = 'Neue Liste von WoWAce.com heruntergeladen';
-$lang['wowace_reload'] = 'This forces a reload of the WoWAce addon listing<br />You can also change the timeout period in UniAdmin Config';
+$lang['wowace_reload'] = 'Erzwingt die Aktualisierung der WoWAce Liste<br />Das Zeitintervall kann in der Konfiguration eingestellt werden';
 
 
 // Upgrader
@@ -368,8 +368,8 @@ $lang['ADDURL3CH'] = 'Zusätzliche URL 3';
 $lang['ADDURL3'] = 'Zusätzliche URL 3 Lokation';
 $lang['ADDURL4CH'] = 'Zusätzliche URL 4';
 $lang['ADDURL4'] = 'Zusätzliche URL 4 Lokation';
-$lang['HOMEURL'] = 'URL location for homepage<br />Used in javaUniUploader';
-$lang['FORUMURL'] = 'URL location for forums<br />Used in javaUniUploader';
+$lang['HOMEURL'] = 'URL der Webseite<br />Benötigt javaUniUploader';
+$lang['FORUMURL'] = 'URL des Forums<br />Benötigt javaUniUploader';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'WoW automatisch starten';
@@ -386,7 +386,8 @@ $lang['RETRDATAURL'] = 'Web==&gt;WoW - Datenempfang an URL';
 $lang['WEBWOWSVFILE'] = 'Web==&gt;WoW - SavedVariable Dateinamen schreiben';
 $lang['DOWNLOADBEFOREWOWL'] = 'Web==&gt;WoW - Vor dem UU Start initiieren WoW';
 $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Bevor UU hochlädt, initiieren';
-$lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Nachdem UU hochgeladen hat, initiieren ';
+$lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Nachdem UU hochgeladen hat, initiieren';
+$lang['PURGEFIRST'] = 'Delete the Web==&gt;WoW data file before syncing';
 
 // END UU Sync Strings
 
@@ -477,8 +478,8 @@ $lang['sql_error_settings_update'] = 'Konnte Einstellungen nicht aktualisieren =
 $lang['sql_error_settings_sv_insert'] = 'Konnte nicht savedvariable Dateiname &quot;%1$s&quot; hinzufügen';
 $lang['sql_error_settings_sv_remove'] = 'Konnte nicht savedvariable Dateiname &quot;%1$s&quot; entfernen';
 
-$lang['sql_error_settings_addondel_insert'] = 'Could not insert addon delete directory name &quot;%1$s&quot;';
-$lang['sql_error_settings_addondel_remove'] = 'Could not remove addon delete directory id &quot;%1$s&quot;';
+$lang['sql_error_settings_addondel_insert'] = 'Konnte den Verzeichnisnamen &quot;%1$s&quot; für den Addon Löschvorgang nicht hinzufügen';
+$lang['sql_error_settings_addondel_remove'] = 'Konnte das Verzeichnis &quot;%1$s&quot; für den Addon Löschvorgang nicht entfernen';
 
 $lang['sql_error_user_add'] = 'Konnte Benutzer &quot;%1$s&quot; nicht hinzufügen';
 $lang['sql_error_user_delete'] = 'Konnte Benutzer &quot;%1$s&quot; nicht löschen';

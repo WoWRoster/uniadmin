@@ -21,7 +21,7 @@
 		</tr>
 	<!-- END orphan_addons_row -->
 		<tr>
-			<th><button type="submit" class="submit" name="button_add" onclick="setvalue('{A_ADD}');">{L_ADD}</button> <button type="submit" class="submit" name="button_del" onclick="setvalue('{A_DELETE}');">{L_DELETE}</button></th>
+			<th><button type="submit" class="submit" name="button_add" onclick="setvalue('hide','{A_ADD}');">{L_ADD}</button> <button type="submit" class="submit" name="button_del" onclick="setvalue('hide','{A_DELETE}');">{L_DELETE}</button></th>
 		</tr>
 	</tbody>
 </table>
@@ -61,8 +61,7 @@
 			<td>{addons_row.TOC}</td>
 			<td>{addons_row.VERSION}</td>
 			<td>{addons_row.TIME}</td>
-			<td>
-				<a href="{addons_row.DOWNLOAD}"><img src="{TEMPLATE_PATH}/images/download_mini.png" class="icon" alt="" onmouseover="return overlib('{L_DOWNLOAD}-[{addons_row.FILESIZE}]');" onmouseout="return nd();" /></a>
+			<td><a href="{addons_row.DOWNLOAD}"><img src="{TEMPLATE_PATH}/images/download_mini.png" class="icon" alt="" onmouseover="return overlib('{L_DOWNLOAD}-[{addons_row.FILESIZE}]');" onmouseout="return nd();" /></a>
 				<a href="{UA_FORMACTION}&amp;{A_DETAIL}={addons_row.ID}"><img src="{TEMPLATE_PATH}/images/details_mini.png" class="icon" alt="" onmouseover="return overlib('{L_ADDON_DETAILS}');" onmouseout="return nd();" /></a>
 				<!-- IF addons_row.HOMEPAGE != '' --><a href="{addons_row.HOMEPAGE}" target="_blank"><img src="{TEMPLATE_PATH}/images/home_mini.png" class="icon" alt="" onmouseover="return overlib('{L_HOMEPAGE}');" onmouseout="return nd();" /></a><!-- ELSE --><img src="{TEMPLATE_PATH}/images/home_off_mini.png" class="icon" alt="" /><!-- ENDIF -->
 
@@ -124,15 +123,16 @@
 	<!-- END addons_row -->
 	</tbody>
 <!-- ELSE -->
+	</thead>
+	<tbody>
 		<tr>
 			<th>{L_NO_ADDONS}</th>
 		</tr>
-	</thead>
+	</tbody>
 <!-- ENDIF -->
 </table>
 
-<br />
-<br />
+<br /><br />
 
 <!-- IF S_ADDON_ADD_DEL -->
 <form id="ua_updateaddon" name="ua_updateaddon" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">

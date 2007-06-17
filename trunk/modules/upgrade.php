@@ -36,7 +36,7 @@ if( !defined('IN_UNIADMIN') )
 	exit('Detected invalid access to this file!');
 }
 
-if( $uniadmin->config['UAVer'] >= UA_VER )
+if( version_compare($uniadmin->config['UAVer'], UA_VER,'>=') )
 {
 	ua_die($user->lang['no_upgrade']);
 }
@@ -51,7 +51,8 @@ if( $uniadmin->config['UAVer'] >= UA_VER )
 class Upgrade
 {
 	var $db = null;
-	var $versions = array('0.7.5','0.7.6','0.7.7');
+	var $versions = array('0.7.5','0.7.6','0.7.7','0.7.8');
+	var $index = null;
 
 	function upgrade()
 	{
@@ -65,10 +66,11 @@ class Upgrade
 			$version_from = $_POST['version'];
 			foreach( $this->versions as $index => $version )
 			{
+				$this->index = $index;
 				if( str_replace('.', '', $version) == $version_from )
 				{
 					$method = 'upgrade_' . $version_from;
-					$this->$method($index);
+					$this->$method();
 				}
 			}
 		}
@@ -78,14 +80,16 @@ class Upgrade
 		}
 	}
 
-	function finalize($index)
+	function finalize()
 	{
 		global $user, $uniadmin;
 
-		if( isset($this->versions[$index + 1]) )
+		$this->index++;
+
+		if( isset($this->versions[$this->index]) )
 		{
-			$method = 'upgrade_' . str_replace('.', '', $this->versions[$index + 1]);
-			$this->$method($index + 1);
+			$method = 'upgrade_' . str_replace('.', '', $this->versions[$this->index]);
+			$this->$method();
 		}
 		else
 		{
@@ -104,34 +108,40 @@ class Upgrade
 	// Upgrade methods
 	//--------------------------------------------------------------
 
-	function upgrade_077($index)
+	function upgrade_078()
 	{
-		$this->standard_upgrader('077');
-		$this->finalize($index);
+		$this->standard_upgrader();
+		$this->finalize();
 	}
 
-	function upgrade_076($index)
+	function upgrade_077()
 	{
-		$this->standard_upgrader('076');
-		$this->finalize($index);
+		$this->standard_upgrader();
+		$this->finalize();
 	}
 
-	function upgrade_075($index)
+	function upgrade_076()
 	{
-		$this->standard_upgrader('075');
-		$this->finalize($index);
+		$this->standard_upgrader();
+		$this->finalize();
+	}
+
+	function upgrade_075()
+	{
+		$this->standard_upgrader();
+		$this->finalize();
 	}
 
 	/**
 	 * The standard upgrader
 	 * This parses the requested sql file for database upgrade
 	 * Most upgrades will use this function
-	 *
-	 * @param string $ver
 	 */
-	function standard_upgrader($ver)
+	function standard_upgrader()
 	{
 		global $db, $config;
+
+		$ver = str_replace('.','',$this->versions[$this->index]);
 
 		$db_structure_file = UA_INCLUDEDIR . 'dbal' . DIR_SEP . 'structure' . DIR_SEP . 'upgrade_'.$ver.'.sql';
 
