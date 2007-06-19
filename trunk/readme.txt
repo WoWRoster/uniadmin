@@ -1,4 +1,4 @@
-UniAdmin 0.7.8 (updated 7th April 2007)
+UniAdmin 0.7.9 (updated 18th June 2007)
 ===============================================
 UniAdmin is a back-end web-based tool for managing the configuration of and logos in UniUploader and
 auto-updating WoW addons.
@@ -82,6 +82,7 @@ Exerladan  - WoWAce file list XML format parsing
 Zajsoft    - Great modifications to AddOn uploading, providing a better .toc file scanner
 Zeryl      - Thanks for help with parsing strings into multi-dimensional arrays
              o Thanks for the WoWAce module code
+Exerladan  - Thanks for the code to parse the new WoWAce XML file list
 
 
 6 - FAQ
@@ -191,9 +192,15 @@ Solution: After you upload an addon zip, edit the info on the addon details page
 v0.7.9
 [~] WoWAce addon list works again
     WoWAce changed the addon list format to XML and removed the old format
+	Thanks to Exerladan for the code
+[~] HTML fixes and changes
+[!] All the comment headers to our new format
+[!] The updater has been slightly modified, shouldn't affect anyone
+[!] Using version_compare() instead of a string compare when comparing versions of UA
 [+] Force addon list reload to WoWAce module
 [+] Ability to delete Un-Scanned addons
 [+] Message when an addon is deleted
+[+] Images for new settings
 
 
 v0.7.8
