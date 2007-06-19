@@ -197,6 +197,7 @@ v0.7.9
 [!] All the comment headers to our new format
 [!] The updater has been slightly modified, shouldn't affect anyone
 [!] Using version_compare() instead of a string compare when comparing versions of UA
+[+] PURGEFIRST setting
 [+] Force addon list reload to WoWAce module
 [+] Ability to delete Un-Scanned addons
 [+] Message when an addon is deleted
