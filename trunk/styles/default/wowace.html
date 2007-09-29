@@ -40,7 +40,9 @@
 <!-- ELSE -->
 <table class="ua_table" align="center" width="70%">
 	<tr>
-		<th class="table_header" colspan="2">{L_WOWACE_ADDONS}</th>
+		<th class="table_header" colspan="2"><div class="last_updated">
+				<button type="submit" class="button_hide" name="button_reload" onclick="setvalue('hide','{A_RELOAD}');" onmouseover="return overlib('{L_FORCERELOAD_TIP}',CAPTION,'{L_FORCERELOAD}');" onmouseout="return nd();"><img src="{TEMPLATE_PATH}/images/reload_mini.png" alt="" /></button></div>
+			{L_WOWACE_ADDONS}</th>
 	</tr>
 	<tr>
 		<th>{L_NOLIST}</th>
