@@ -288,11 +288,11 @@ $lang['previous_page'] = 'Vorherige Seite';
 
 
 // Miscellaneous
-$lang['time_format'] = 'M jS, J g:ia';
+$lang['time_format'] = 'Y-m-d H:i:s T';
 $lang['syncro_url'] = 'Synchronisations URL';
 $lang['verify_syncro_url'] = 'klicken, um zu überprüfen';
 $lang['guest_access'] = 'Gastzugang';
-$lang['interface_ready'] = 'UniUploader Aktualisierungsschnittstelle fertig...';
+$lang['interface_ready'] = 'UniUploader Aktualisierungsschnittstelle bereit...';
 $lang['last_updated'] = 'Zuletzt aktualisiert';
 
 
