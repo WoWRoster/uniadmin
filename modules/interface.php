@@ -276,7 +276,7 @@ function output_addon_xml( )
 			$addonElement->attribute('name', htmlspecialchars($row['name']));
 			$addonElement->attribute('version', htmlspecialchars($row['version']));
 			$addonElement->attribute('required', $row['required']);
-			$addonElement->attribute('homepage', $row['homepage']);
+			$addonElement->attribute('homepage', htmlspecialchars($row['homepage']));
 			$addonElement->attribute('filename', $uniadmin->url_path.$uniadmin->config['addon_folder'].'/'.$row['file_name']);
 			$addonElement->attribute('toc', $row['toc']);
 			$addonElement->attribute('full_path', $row['full_path']);
