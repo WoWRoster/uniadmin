@@ -1,5 +1,5 @@
 /*
-        TableSort revisited v3.7 by frequency-decoder.com
+        TableSort revisited v3.8 by frequency-decoder.com
 
         Released under a creative commons Attribution-ShareAlike 2.5 license (http://creativecommons.org/licenses/by-sa/2.5/)
 
@@ -25,8 +25,11 @@
         * Any of these conditions can be waived if you get permission from the copyright holder.
 */
 
-var fdTableSort = {
+(function() {
 
+fdTableSort = {
+
+        // Private
         regExp_Currency:        /^[£$€¥¤]/,
         regExp_Number:          /^(\-)?[0-9]+(\.[0-9]*)?$/,
         pos:                    -1,
@@ -46,7 +49,7 @@ var fdTableSort = {
         /*@end
         @*/
 
-        addEvent: function(obj, type, fn, tmp) {
+        addEvent: function addEvent(obj, type, fn, tmp) {
                 tmp || (tmp = true);
                 if( obj.attachEvent ) {
                         obj["e"+type+fn] = fn;
@@ -56,16 +59,20 @@ var fdTableSort = {
                         obj.addEventListener( type, fn, true );
                 };
         },
-        removeEvent: function(obj, type, fn, tmp) {
+
+        removeEvent: function removeEvent(obj, type, fn, tmp) {
                 tmp || (tmp = true);
-                if( obj.detachEvent ) {
-                        obj.detachEvent( "on"+type, obj[type+fn] );
-                        obj[type+fn] = null;
-                } else {
-                        obj.removeEventListener( type, fn, true );
-                };
+                try {
+                        if( obj.detachEvent ) {
+                                obj.detachEvent( "on"+type, obj[type+fn] );
+                                obj[type+fn] = null;
+                        } else {
+                                obj.removeEventListener( type, fn, true );
+                        };
+                } catch(err) {};
         },
-        stopEvent: function(e) {
+
+        stopEvent: function stopEvent(e) {
                 e = e || window.event;
 
                 if(e.stopPropagation) {
@@ -79,10 +86,12 @@ var fdTableSort = {
                 /*@end@*/
                 return false;
         },
-        initEvt: function(e) {
+
+        initEvt: function initEvent(e) {
                 fdTableSort.init(false);
         },
-        init: function(tableId) {
+
+        init: function init(tableId) {
                 if (!document.getElementsByTagName || !document.createElement || !document.getElementById) return;
 
                 var tables = tableId && document.getElementById(tableId) ? new Array(document.getElementById(tableId)) : document.getElementsByTagName("table");
@@ -91,13 +100,9 @@ var fdTableSort = {
 
                 a               = document.createElement("a");
                 a.href          = "#";
-                a.onkeypress    = fdTableSort.keyWrapper;
-
                 span            = document.createElement("span");
 
                 for(var k = 0, tbl; tbl = tables[k]; k++) {
-
-                        //if(tableId && tbl.id && tableId != tbl.id) continue;
 
                         // Remove any old dataObj for this table (tables created from an ajax callback require this)
                         if(tbl.id) fdTableSort.removeTableCache(tbl.id);
@@ -170,7 +175,7 @@ var fdTableSort = {
                                                 thtext = fdTableSort.getInnerText(workArr[c][i]);
 
                                                 if(workArr[c][i].getElementsByTagName && workArr[c][i].getElementsByTagName('a').length) {
-                                                        workArr[c][i].getElementsByTagName('a')[0].onclick = workArr[c][i].getElementsByTagName('a')[0].onkeypress = null;
+                                                        workArr[c][i].getElementsByTagName('a')[0].onclick = workArr[c][i].getElementsByTagName('a')[0].onkeydown = null;
                                                 }
 
                                                 while(workArr[c][i].firstChild) workArr[c][i].removeChild(workArr[c][i].firstChild);
@@ -179,7 +184,7 @@ var fdTableSort = {
                                                 aclone = a.cloneNode(true);
                                                 aclone.appendChild(document.createTextNode(thtext));
                                                 aclone.title = "Sort on \u201c" + thtext + "\u201d";
-                                                aclone.onclick = workArr[c][i].onclick = fdTableSort.clickWrapper;
+                                                aclone.onclick = aclone.onkeydown = workArr[c][i].onclick = fdTableSort.initWrapper;
                                                 workArr[c][i].appendChild(aclone);
 
                                                 // Add the span if needs be
@@ -207,10 +212,10 @@ var fdTableSort = {
                         fdTableSort.initSort(false);
                 };
 
-                aclone = a.onkeypress = a = span = workArr = sortable = thNode = onLoadTables = tbl = allRowArr = rowArr = null;
+                aclone = a = span = workArr = sortable = thNode = onLoadTables = tbl = allRowArr = rowArr = null;
         },
 
-        disableSelection: function(element) {
+        disableSelection: function disableSelection(element) {
                 element.onselectstart = function() {
                         return false;
                 };
@@ -218,39 +223,61 @@ var fdTableSort = {
                 element.style.MozUserSelect = "none";
         },
 
-        clickWrapper: function(e) {
+        initWrapper: function initWrapper(e) {
                 e = e || window.event;
-                if(fdTableSort.thNode == null) {
-                        var targ = this;
-                        while(targ.tagName.toLowerCase() != "th") targ = targ.parentNode;
-                        fdTableSort.thNode = targ;
-                        fdTableSort.addSortActiveClass();
-                        setTimeout(fdTableSort.initSort,5,false);
-                };
-                return fdTableSort.stopEvent(e);
-        },
+                var kc = e.type == "keydown" ? e.keyCode != null ? e.keyCode : e.charCode : -1;
 
-        keyWrapper: function(e) {
-                e = e || window.event;
-                var kc = e.keyCode != null ? e.keyCode : e.charCode;
-                if(kc == 13) {
+                if(fdTableSort.thNode == null && (e.type == "click" || kc == 13)) {
                         var targ = this;
                         while(targ.tagName.toLowerCase() != "th") targ = targ.parentNode;
                         fdTableSort.thNode = targ;
                         fdTableSort.addSortActiveClass();
+                        fdTableSort.multi = e.shiftKey;
                         setTimeout(fdTableSort.initSort,5,false);
                         return fdTableSort.stopEvent(e);
                 };
-                return true;
+                return kc != -1 ? true : false;
         },
 
-        jsWrapper: function(tableid, colNum) {
-                if(!fdTableSort.tmpCache[tableid] || fdTableSort.tmpCache[tableid].headers[0].length <= colNum || fdTableSort.tmpCache[tableid].headers[0][colNum].className.search(/fd-column/) == -1) return false;
-                fdTableSort.thNode = fdTableSort.tmpCache[tableid].headers[0][colNum];
-                fdTableSort.initSort(true);
+        jsWrapper: function jsWrapper(tableid, colNums) {
+
+                if(!(colNums instanceof Array)) colNums = [colNums];
+
+                if(!(tableid in fdTableSort.tmpCache)) { return false; }
+                if(!(tableid in fdTableSort.tableCache)) {
+                        fdTableSort.prepareTableData(document.getElementById(tableid));
+                };
+
+                fdTableSort.tableId = tableid;
+                var len = colNums.length, colNum;
+
+                if(fdTableSort.tableCache[tableid].thList.length == colNums.length) {
+                        var identical = true;
+                        var th;
+                        for(var i = 0; i < len; i++) {
+                                colNum = colNums[i];
+                                th = fdTableSort.tmpCache[tableid].headers[0][colNum];
+                                if(th != fdTableSort.tableCache[tableid].thList[i]) {
+                                        identical = false;
+                                        break;
+                                };
+                        };
+                        if(identical) {
+                                fdTableSort.thNode = th;
+                                fdTableSort.initSort(true);
+                                return;
+                        };
+                };
+
+                for(var i = 0; i < len; i++) {
+                        fdTableSort.multi = i;
+                        colNum = colNums[i];
+                        fdTableSort.thNode = fdTableSort.tmpCache[tableid].headers[0][colNum];
+                        fdTableSort.initSort(true);
+                };
         },
 
-        addSortActiveClass: function() {
+        addSortActiveClass: function addSortActiveClass() {
                 if(fdTableSort.thNode == null) return;
                 fdTableSort.addClass(fdTableSort.thNode, "sort-active");
                 fdTableSort.addClass(document.getElementsByTagName('body')[0], "sort-active");
@@ -265,7 +292,7 @@ var fdTableSort = {
                 };
         },
 
-        removeSortActiveClass: function() {
+        removeSortActiveClass: function removeSortActiveClass() {
                 fdTableSort.removeClass(fdTableSort.thNode, "sort-active");
                 fdTableSort.removeClass(document.getElementsByTagName('body')[0], "sort-active");
                 var tableElem = fdTableSort.thNode;
@@ -279,16 +306,16 @@ var fdTableSort = {
                 };
         },
 
-        addClass: function(e,c) {
+        addClass: function addClass(e,c) {
                 if(new RegExp("(^|\\s)" + c + "(\\s|$)").test(e.className)) return;
                 e.className += ( e.className ? " " : "" ) + c;
         },
 
-        removeClass: function(e,c) {
+        removeClass: function removeClass(e,c) {
                 e.className = !c ? "" : e.className.replace(new RegExp("(^|\\s*\\b[^-])"+c+"($|\\b(?=[^-]))", "g"), "");
         },
 
-        prepareTableData: function(table) {
+        prepareTableData: function prepareTableData(table) {
                 var data = [];
 
                 var start = table.getElementsByTagName('tbody');
@@ -350,20 +377,18 @@ var fdTableSort = {
                                         if((th.className.match(/sortable-([a-zA-Z\_]+)/)[1] + "PrepareData") in window) {
                                                 txt = window[th.className.match(/sortable-([a-zA-Z\_]+)/)[1] + "PrepareData"](td, txt);
                                         };
-                                } else {
-                                        if(txt != "") {
-                                                fdTableSort.removeClass(th, "sortable");
-                                                if(fdTableSort.dateFormat(txt) != 0) {
-                                                        fdTableSort.addClass(th, "sortable-date");
-                                                        txt = fdTableSort.dateFormat(txt);
-                                                } else if(txt.search(fdTableSort.regExp_Number) != -1 || txt.search(fdTableSort.regExp_Currency) != -1) {
-                                                        fdTableSort.addClass(th, "sortable-numeric");
-                                                        txt = parseFloat(txt.replace(/[^0-9\.\-]/g,''));
-                                                        if(isNaN(txt)) txt = "";
-                                                } else {
-                                                        fdTableSort.addClass(th, "sortable-text");
-                                                        txt = txt.toLowerCase();
-                                                };
+                                } else if(txt != "") {
+                                        fdTableSort.removeClass(th, "sortable");
+                                        if(fdTableSort.dateFormat(txt) != 0) {
+                                                fdTableSort.addClass(th, "sortable-date");
+                                                txt = fdTableSort.dateFormat(txt);
+                                        } else if(txt.search(fdTableSort.regExp_Number) != -1 || txt.search(fdTableSort.regExp_Currency) != -1) {
+                                                fdTableSort.addClass(th, "sortable-numeric");
+                                                txt = parseFloat(txt.replace(/[^0-9\.\-]/g,''));
+                                                if(isNaN(txt)) txt = "";
+                                        } else {
+                                                fdTableSort.addClass(th, "sortable-text");
+                                                txt = txt.toLowerCase();
                                         };
                                 };
 
@@ -387,12 +412,11 @@ var fdTableSort = {
                 var rowStyle = table.className.search(/rowstyle-([\S]+)/) != -1 ? table.className.match(/rowstyle-([\S]+)/)[1] : false;
 
                 // Cache the data object for this table
-                fdTableSort.tableCache[table.id] = { data:data, identical:identical, colStyle:colStyle, rowStyle:rowStyle, noArrow:table.className.search(/no-arrow/) != -1 };
-
+                fdTableSort.tableCache[table.id] = { thList:[], colOrder:{}, data:data, identical:identical, colStyle:colStyle, rowStyle:rowStyle, noArrow:table.className.search(/no-arrow/) != -1 };
                 sortableColumnNumbers = data = tr = td = th = trs = identical = identVal = null;
         },
 
-        onUnload: function() {
+        onUnload: function onUnload() {
                 for(tbl in fdTableSort.tableCache) {
                         fdTableSort.removeTableCache(tbl);
                 }
@@ -404,13 +428,13 @@ var fdTableSort = {
                 fdTableSort.tmpCache = fdTableSort.tableCache = null;
         },
 
-        removeTableCache: function(tableId) {
+        removeTableCache: function removeTableCache(tableId) {
                 if(!(tableId in fdTableSort.tableCache)) return;
 
                 var data = fdTableSort.tableCache[tableId].data;
                 for(var i = 0, row; row = data[i]; i++) {
                         row[row.length - 1] = null;
-                }
+                };
                 data = row = null;
                 fdTableSort.tableCache[tableId] = null;
                 delete fdTableSort.tableCache[tableId];
@@ -421,33 +445,92 @@ var fdTableSort = {
                 var a;
                 for(var i = 0, th; th = ths[i]; i++) {
                         a = th.getElementsByTagName("a");
-                        if(a.length) a[0].onkeypress = a[0].onclick = null;
+                        if(a.length) a[0].onkeydown = a[0].onclick = null;
                         th.onclick = th.onselectstart = th = a = null;
-                }
+                };
         },
 
-        removeTmpCache: function(tableId) {
+        removeTmpCache: function removeTmpCache(tableId) {
                 if(!(tableId in fdTableSort.tmpCache)) return;
                 var headers = fdTableSort.tmpCache[tableId].headers;
-                var a
+                var a;
                 for(var i = 0, row; row = headers[i]; i++) {
                         for(var j = 0, th; th = row[j]; j++) {
                                 a = th.getElementsByTagName("a");
-                                if(a.length) a[0].onkeypress = a[0].onclick = null;
+                                if(a.length) a[0].onkeydown = a[0].onclick = null;
                                 th.onclick = th.onselectstart = th = a = null;
-                        }
-                }
+                        };
+                };
                 fdTableSort.tmpCache[tableId] = null;
                 delete fdTableSort.tmpCache[tableId];
         },
+        addThNode: function addThNode() {
+                var dataObj = fdTableSort.tableCache[fdTableSort.tableId];
+                var pos     = fdTableSort.thNode.className.match(/fd-column-([0-9]+)/)[1];
+                var alt     = false;
 
-        initSort: function(noCallback) {
+                dataObj.colOrder = {};
 
-                var span;
+                if(!fdTableSort.multi) {
+                        if(dataObj.colStyle) {
+                                var len = dataObj.thList.length;
+                                for(var i = 0; i < len; i++) {
+                                        dataObj.colOrder[dataObj.thList[i].className.match(/fd-column-([0-9]+)/)[1]] = false;
+                                };
+                        };
+                        if(dataObj.thList[0] == fdTableSort.thNode) alt = true;
+                        dataObj.thList = [];
+                };
+
+                var found = false;
+                var l = dataObj.thList.length;
+
+                for(var i = 0, n; n = dataObj.thList[i]; i++) {
+                        if(n == fdTableSort.thNode) {
+                                found = true;
+                                break;
+                        };
+                };
+
+                if(!found) {
+                        dataObj.thList.push(fdTableSort.thNode);
+                        if(dataObj.colStyle) { dataObj.colOrder[pos] = true; };
+                };
+
+                var ths = document.getElementById(fdTableSort.tableId).getElementsByTagName("th");
+                for(var i = 0, th; th = ths[i]; i++) {
+                        found = false;
+                        for(var z = 0, n; n = dataObj.thList[z]; z++) {
+                                if(n == th) {
+                                        found = true;
+                                        break;
+                                };
+                        };
+                        if(!found) {
+                                fdTableSort.removeClass(th, "(forwardSort|reverseSort)");
+                                if(!dataObj.noArrow) {
+                                        span = th.getElementsByTagName('span');
+                                        if(span.length) {
+                                                span = span[0];
+                                                while(span.firstChild) span.removeChild(span.firstChild);
+                                        };
+                                };
+                        };
+                };
+
+                if(dataObj.thList.length > 1) {
+                        classToAdd = fdTableSort.thNode.className.search(/forwardSort/) != -1 ? "reverseSort" : "forwardSort";
+                        fdTableSort.removeClass(fdTableSort.thNode, "(forwardSort|reverseSort)");
+                        fdTableSort.addClass(fdTableSort.thNode, classToAdd);
+                        dataObj.pos = -1
+                } else if(alt) { dataObj.pos = fdTableSort.thNode };
+        },
+
+        initSort: function initSort(noCallback) {
                 var thNode      = fdTableSort.thNode;
 
                 // Get the table
-                var tableElem   = fdTableSort.thNode;
+                var tableElem   = thNode;
                 while(tableElem.tagName.toLowerCase() != 'table' && tableElem.parentNode) {
                         tableElem = tableElem.parentNode;
                 };
@@ -460,6 +543,8 @@ var fdTableSort = {
                 // Cache the table id
                 fdTableSort.tableId = tableElem.id;
 
+                fdTableSort.addThNode();
+
                 // Get the column position using the className added earlier
                 fdTableSort.pos = thNode.className.match(/fd-column-([0-9]+)/)[1];
 
@@ -467,88 +552,123 @@ var fdTableSort = {
                 var dataObj     = fdTableSort.tableCache[tableElem.id];
 
                 // Get the position of the last column that was sorted
-                var lastPos     = dataObj.pos ? dataObj.pos.className.match(/fd-column-([0-9]+)/)[1] : -1;
+                var lastPos     = dataObj.pos && dataObj.pos.className ? dataObj.pos.className.match(/fd-column-([0-9]+)/)[1] : -1;
 
                 // Get the stored data object for this table
-                var data        = dataObj.data;
-                var colStyle    = dataObj.colStyle;
-                var rowStyle    = dataObj.rowStyle;
-                var len1        = data.length;
-                var len2        = data.length > 0 ? data[0].length - 1 : 0;
+                var len1        = dataObj.data.length;
+                var len2        = dataObj.data.length > 0 ? dataObj.data[0].length - 1 : 0;
                 var identical   = dataObj.identical[fdTableSort.pos];
-                var noArrow     = dataObj.noArrow;
-
-                if(lastPos != fdTableSort.pos && lastPos != -1) {
-                        var th = dataObj.pos;
-                        fdTableSort.removeClass(th, "(forwardSort|reverseSort)");
-
-                        if(!noArrow) {
-                                // Remove arrow
-                                span = th.getElementsByTagName('span')[0];
-                                while(span.firstChild) span.removeChild(span.firstChild);
-                        };
-                };
 
                 // If the same column is being sorted then just reverse the data object contents.
                 var classToAdd = "forwardSort";
 
-                if((lastPos == fdTableSort.pos && !identical) || (thNode.className.search(/sortable-keep/) != -1 && lastPos == -1)) {
-                        data.reverse();
+                if(dataObj.thList.length > 1) {
+                        // Multi sort
+
+                        var js  = "var sortWrapper = function(a,b) {\n";
+                        var l   = dataObj.thList.length;
+                        var cnt = 0;
+                        var e,d,th,p,f;
+
+                        for(var i=0; i < l; i++) {
+
+                                th = dataObj.thList[i];
+                                p = th.className.match(/fd-column-([0-9]+)/)[1];
+
+                                if(dataObj.identical[p]) {
+                                        continue;
+                                };
+
+                                cnt++;
+
+                                if(th.className.match(/sortable-(numeric|currency|date|keep)/)) {
+                                        f = "fdTableSort.sortNumeric";
+                                } else if(th.className.match('sortable-text')) {
+                                        f = "fdTableSort.sortText";
+                                } else if(th.className.search(/sortable-([a-zA-Z\_]+)/) != -1 && th.className.match(/sortable-([a-zA-Z\_]+)/)[1] in window) {
+                                        f = "window['" + th.className.match(/sortable-([a-zA-Z\_]+)/)[1] + "']";
+                                } else  f = "fdTableSort.sortText";
+
+                                e = "e" + i;
+                                d = th.className.search('forwardSort') != -1 ? "a,b" : "b,a";
+                                js += "fdTableSort.pos   = " + p + ";\n";
+                                js += "var " + e + " = "+f+"(" + d +");\n";
+                                js += "if(" + e + ") return " + e + ";\n";
+                                js += "else { \n";
+                        };
+
+                        js += "return 0;\n";
+
+                        for(var i=0; i < cnt; i++) {
+                                js += "};\n";
+                        };
+
+                        if(cnt) js += "return 0;\n";
+                        js += "};\n";
+
+                        eval(js);
+                        dataObj.data.sort(sortWrapper);
+                        identical = false;
+
+                } else if((lastPos == fdTableSort.pos && !identical) || (thNode.className.search(/sortable-keep/) != -1 && lastPos == -1)) {
+                        dataObj.data.reverse();
                         classToAdd = thNode.className.search(/reverseSort/) != -1 ? "forwardSort" : "reverseSort";
                         if(thNode.className.search(/sortable-keep/) != -1 && lastPos == -1) fdTableSort.tableCache[tableElem.id].pos = thNode;
                 } else {
                         fdTableSort.tableCache[tableElem.id].pos = thNode;
+                        classToAdd = thNode.className.search(/forwardSort/) != -1 ? "reverseSort" : "forwardSort";
                         if(!identical) {
                                 if(thNode.className.match(/sortable-(numeric|currency|date|keep)/)) {
-                                        data.sort(fdTableSort.sortNumeric);
+                                        dataObj.data.sort(fdTableSort.sortNumeric);
                                 } else if(thNode.className.match('sortable-text')) {
-                                        data.sort(fdTableSort.sortText);
+                                        dataObj.data.sort(fdTableSort.sortText);
                                 } else if(thNode.className.search(/sortable-([a-zA-Z\_]+)/) != -1 && thNode.className.match(/sortable-([a-zA-Z\_]+)/)[1] in window) {
-                                        data.sort(window[thNode.className.match(/sortable-([a-zA-Z\_]+)/)[1]]);
+                                        dataObj.data.sort(window[thNode.className.match(/sortable-([a-zA-Z\_]+)/)[1]]);
                                 };
                         };
                 };
 
-                fdTableSort.removeClass(thNode, "(forwardSort|reverseSort)");
-                fdTableSort.addClass(thNode, classToAdd);
-
-                if(!noArrow) {
-                        var arrow = thNode.className.search(/forwardSort/) != -1 ? " \u2193" : " \u2191";
-                        span = thNode.getElementsByTagName('span')[0];
-                        while(span.firstChild) span.removeChild(span.firstChild);
-                        span.appendChild(document.createTextNode(arrow));
+                if(dataObj.thList.length == 1) {
+                        fdTableSort.removeClass(thNode, "(forwardSort|reverseSort)");
+                        fdTableSort.addClass(thNode, classToAdd);
                 };
 
-                if(!rowStyle && !colStyle && identical) {
+                if(!dataObj.noArrow) {
+                        var span = fdTableSort.thNode.getElementsByTagName('span')[0];
+                        if(span.firstChild) span.removeChild(span.firstChild);
+                        span.appendChild(document.createTextNode(fdTableSort.thNode.className.search(/forwardSort/) != -1 ? " \u2193" : " \u2191"));
+                };
+
+                if(!dataObj.rowStyle && !dataObj.colStyle && identical) {
                         if(!noCallback) fdTableSort.removeSortActiveClass();
                         fdTableSort.thNode = null;
                         return;
-                }
+                };
 
                 var hook = tableElem.getElementsByTagName('tbody');
                 hook = hook.length ? hook[0] : tableElem;
 
                 var tr, tds;
-                var rowReg = rowStyle ? new RegExp("(^|\\s*\\b[^-])"+rowStyle+"($|\\b(?=[^-]))", "g") : false;
-                var colReg = colStyle ? new RegExp("(^|\\s*\\b[^-])"+colStyle+"($|\\b(?=[^-]))", "g") : false;
+                var rowReg = dataObj.rowStyle ? new RegExp("(^|\\s*\\b[^-])"+dataObj.rowStyle+"($|\\b(?=[^-]))", "g") : false;
+                var colReg = dataObj.colStyle ? new RegExp("(^|\\s*\\b[^-])"+dataObj.colStyle+"($|\\b(?=[^-]))", "g") : false;
 
                 for(var i = 0; i < len1; i++) {
-                        tr = data[i][len2];
-                        if(colStyle) {
+                        tr = dataObj.data[i][len2];
+                        if(dataObj.colStyle) {
                                 tds = tr.getElementsByTagName('td');
-                                if(lastPos != -1) {
-                                        tds[lastPos].className = tds[lastPos].className.replace(colReg, "");
-                                }
-                                fdTableSort.addClass(tds[fdTableSort.pos], colStyle);
+                                for(thPos in dataObj.colOrder) {
+                                        if(!dataObj.colOrder[thPos]) tds[thPos].className = tds[thPos].className.replace(colReg, "");
+                                        else fdTableSort.addClass(tds[thPos], dataObj.colStyle);
+                                };
                                 tds = null;
                         };
                         if(!identical) {
-                                if(rowStyle) {
-                                        if(i % 2) fdTableSort.addClass(tr, rowStyle);
+                                if(dataObj.rowStyle) {
+                                        if(i % 2) fdTableSort.addClass(tr, dataObj.rowStyle);
                                         else tr.className = tr.className.replace(rowReg, "");
                                 };
 
-                                hook.removeChild(tr); // Netscape 8.1.2 requires the removeChild call
+                                hook.removeChild(tr); // Netscape 8.1.2 requires the removeChild call or it freaks out
                                 hook.appendChild(tr);
                         };
                         tr = null;
@@ -557,7 +677,7 @@ var fdTableSort = {
                 fdTableSort.thNode = hook = null;
         },
 
-        getInnerText: function(el) {
+        getInnerText: function getInnerText(el) {
                 if (typeof el == "string" || typeof el == "undefined") return el;
                 if(el.innerText) return el.innerText;
 
@@ -569,11 +689,11 @@ var fdTableSort = {
                 return txt;
         },
 
-        dateFormat: function(dateIn, favourDMY) {
+        dateFormat: function dateFormat(dateIn, favourDMY) {
                 var dateTest = [
                         { regExp:/^(0?[1-9]|1[012])([- \/.])(0?[1-9]|[12][0-9]|3[01])([- \/.])((\d\d)?\d\d)$/, d:3, m:1, y:5 },  // mdy
                         { regExp:/^(0?[1-9]|[12][0-9]|3[01])([- \/.])(0?[1-9]|1[012])([- \/.])((\d\d)?\d\d)$/, d:1, m:3, y:5 },  // dmy
-                        { regExp:/^(\d\d\d\d)([- \/.])(0?[1-9]|1[012])([- \/.])(0?[1-9]|[12][0-9]|3[01])$/, d:5, m:3, y:1 }   // ymd
+                        { regExp:/^(\d\d\d\d)([- \/.])(0?[1-9]|1[012])([- \/.])(0?[1-9]|[12][0-9]|3[01])$/, d:5, m:3, y:1 }      // ymd
                         ];
                 var start;
                 var cnt = 0;
@@ -591,19 +711,13 @@ var fdTableSort = {
                                 if(y.length != 4) y = (parseInt(y) < 50) ? "20" + String(y) : "19" + String(y);
 
                                 return y+String(m)+d;
-                        }
+                        };
                         cnt++;
-                }
+                };
                 return 0;
         },
 
-        sortDate: function(a,b) {
-                var aa = a[fdTableSort.pos];
-                var bb = b[fdTableSort.pos];
-                return aa - bb;
-        },
-
-        sortNumeric:function (a,b) {
+        sortNumeric:function sortNumeric(a,b) {
                 var aa = a[fdTableSort.pos];
                 var bb = b[fdTableSort.pos];
                 if(aa == bb) return 0;
@@ -612,7 +726,7 @@ var fdTableSort = {
                 return aa - bb;
         },
 
-        sortText:function (a,b) {
+        sortText:function sortText(a,b) {
                 var aa = a[fdTableSort.pos];
                 var bb = b[fdTableSort.pos];
                 if(aa == bb) return 0;
@@ -621,8 +735,11 @@ var fdTableSort = {
         }
 };
 
-fdTableSort.addEvent(window, "load", fdTableSort.initEvt);
+})();
+
+fdTableSort.addEvent(window, "load",   fdTableSort.initEvt);
 fdTableSort.addEvent(window, "unload", fdTableSort.onUnload);
+
 
 
 
