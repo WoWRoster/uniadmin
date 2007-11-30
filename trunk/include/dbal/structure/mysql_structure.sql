@@ -7,23 +7,23 @@
 ### Table structure for addons
 
 DROP TABLE IF EXISTS `uniadmin_addons`;
-CREATE TABLE `uniadmin_addons` (
-  `id` int(11) NOT NULL auto_increment,
-  `time_uploaded` int(11) NOT NULL default '0',
-  `version` varchar(64) NOT NULL default '0',
-  `enabled` tinyint(1) NOT NULL default '0',
-  `name` varchar(250) NOT NULL default '',
-  `file_name` varchar(250) NOT NULL default '',
-  `homepage` varchar(250) NOT NULL default '',
-  `notes` mediumtext NULL,
-  `toc` mediumint(9) NOT NULL default '0',
-  `required` tinyint(1) NOT NULL default '0',
-  `filesize` int(10) unsigned NOT NULL default '0',
-  `full_path` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `uniadmin_addons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time_uploaded` int(11) NOT NULL DEFAULT '0',
+  `version` varchar(64) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `name` varchar(250) NOT NULL DEFAULT '',
+  `file_name` varchar(250) NOT NULL DEFAULT '',
+  `homepage` varchar(250) NOT NULL DEFAULT '',
+  `notes` mediumtext,
+  `toc` mediumint(9) NOT NULL DEFAULT '0',
+  `required` tinyint(1) NOT NULL DEFAULT '0',
+  `filesize` int(10) unsigned NOT NULL DEFAULT '0',
+  `full_path` tinyint(1) NOT NULL DEFAULT '0',
+  `ace_title` varchar(64) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
   KEY `addon_name` (`name`)
 );
-
 
 # --------------------------------------------------------
 ### Table structure for addondel

@@ -185,6 +185,7 @@ function main( )
  *
  * @param string $fieldName
  * @return string
+ * Todo: Add sampling
  */
 function build_pie( $field_name )
 {
@@ -201,7 +202,7 @@ function build_pie( $field_name )
 		}
 		else
 		{
-			$final_array[date($user->lang['time_format'],$row['field'])] = $row['count'];
+			$final_array[date(preg_replace('/i|s|u/',' ',$user->lang['time_format']),$row['field'])] = $row['count'];
 		}
 	}
 

@@ -419,6 +419,7 @@ $lang['messages'] = 'Nachrichten';
 $lang['error'] = 'Fehler';
 $lang['error_invalid_login'] = 'Du hast ein falsches Passwort oder einen unzulässigen Benutzernamen eingegeben';
 $lang['error_delete_addon'] = 'Fehler bei Löschung des Addons';
+$lang['error_delete_ace_list'] = 'Delete Ace List Error';
 $lang['error_enable_addon'] = 'Fehler bei Aktivierung des Addons';
 $lang['error_disable_addon'] = 'Fehler bei Deaktivierung des Addons';
 $lang['error_require_addon'] = 'Fehler bei Benötigung des Addons';

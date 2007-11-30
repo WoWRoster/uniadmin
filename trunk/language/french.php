@@ -419,6 +419,7 @@ $lang['messages'] = 'Messages';
 $lang['error'] = 'Erreur';
 $lang['error_invalid_login'] = 'Nom d\'Utilisateur ou Mot de passe invalide ou erroné';
 $lang['error_delete_addon'] = 'Erreur Suppression d\'AddOn';
+$lang['error_delete_ace_list'] = 'Delete Ace List Error';
 $lang['error_enable_addon'] = 'Erreur Activation d\'AddOn';
 $lang['error_disable_addon'] = 'Erreur Désactivation d\'AddOn';
 $lang['error_require_addon'] = 'Erreur Addon Obligatoire';
