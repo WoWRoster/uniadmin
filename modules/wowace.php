@@ -35,6 +35,8 @@ $ace_url = 'http://files.wowace.com/latest.xml';
 
 
 
+//ace_update_all();die();
+
 
 /**
  * WoWAce Addon Page Functions
@@ -77,38 +79,8 @@ $tpl->assign_vars(array(
 	)
 );
 
-if( !file_exists($ace_file) )
-{
-	$filelist = $uniadmin->get_remote_contents($ace_url);
-	$uniadmin->message($user->lang['new_wowace_list']);
-
-	$uniadmin->write_file($ace_file,$filelist);
-	clearstatcache();
-	$file_info = stat($ace_file);
-	$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
-}
-else
-{
-	clearstatcache();
-	$file_info = stat($ace_file);
-	if( ($file_info['9'] + (60 * 60 * $uniadmin->config['remote_timeout'])) <= time() )
-	{
-		// Download List
-		$filelist = $uniadmin->get_remote_contents($ace_url);
-		$uniadmin->message($user->lang['new_wowace_list']);
-
-		$uniadmin->write_file($ace_file,$filelist);
-		clearstatcache();
-		$file_info = stat($ace_file);
-		$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
-	}
-	else
-	{
-		// Keep the old file
-		$filelist = file_get_contents($ace_file);
-		$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
-	}
-}
+$filelist = '';
+ace_get_filelist($filelist);
 
 if( !empty($filelist) )
 {
@@ -116,35 +88,8 @@ if( !empty($filelist) )
 	$tpl->assign_var('ONLOAD'," onload=\"initARC('ua_wowace','radioOn', 'radioOff','checkboxOn', 'checkboxOff');\"");
 
 	$waaddons = array();
-	if( function_exists('xml_parse') )
-	{
-		$xmlParser =& new XmlParser();
-		$xmlParser->Parse(file_get_contents($ace_file));
-
-		$items = $xmlParser->data['rss'][0]['child']['channel'][0]['child']['item'];
-
-		foreach( $items as $item )
-		{
-			$title = $item['child']['title'][0]['data'];
-			$description = ( isset($item['child']['description'][0]['data']) ? $item['child']['description'][0]['data'] : $title );
-			$version = $item['child']['wowaddon:version'][0]['data'];
-			$datetime = $item['child']['pubDate'][0]['data'];
-
-			$waaddons[$title]['description'] = $description;
-			$waaddons[$title]['version'] = $version;
-			$waaddons[$title]['datetime'] = strtotime($datetime);
-
-			$url = $item['child']['enclosure'][0]['attribs']['url'];
-			$waaddons[$title]['url'] = ( !empty($url) ? str_replace('http://www.wowace.com/files', 'http://files.wowace.com', $url) : 'http://files.wowace.com/' . $title . '/' . $title . '.zip' );
-		}
-	}
-	else
-	{
-		ua_die('php XML parsing functions are required for the WoWAce module');
-	}
-
-	uksort($waaddons, 'strnatcasecmp');
-
+	ace_parselist($waaddons, $filelist);
+	
 	$id = 0;
 	foreach( $waaddons as $addon => $data )
 	{
@@ -177,6 +122,153 @@ $uniadmin->set_vars(array(
 );
 
 
+function ace_parselist(&$waaddons, &$waaddons_unparsed){
+	global $ace_file;
+	$waaddons = array();
+	if( function_exists('xml_parse') )
+	{
+		$xmlParser =& new XmlParser();
+		
+		if (!empty($waaddons_unparsed))
+			$xmlParser->Parse($waaddons_unparsed);
+		else
+			$xmlParser->Parse(file_get_contents($ace_file));
+
+		$items = $xmlParser->data['rss'][0]['child']['channel'][0]['child']['item'];
+
+		foreach( $items as $item )
+		{
+			$title = $item['child']['title'][0]['data'];
+			$description = ( isset($item['child']['description'][0]['data']) ? $item['child']['description'][0]['data'] : $title );
+			$version = $item['child']['wowaddon:version'][0]['data'];
+			$datetime = $item['child']['pubDate'][0]['data'];
+
+			$waaddons[$title]['description'] = $description;
+			$waaddons[$title]['version'] = $version;
+			$waaddons[$title]['datetime'] = strtotime($datetime);
+
+			$url = $item['child']['enclosure'][0]['attribs']['url'];
+			$waaddons[$title]['url'] = ( !empty($url) ? str_replace('http://www.wowace.com/files', 'http://files.wowace.com', $url) : 'http://files.wowace.com/' . $title . '/' . $title . '.zip' );
+		}
+	}
+	else
+	{
+		ua_die('php XML parsing functions are required for the WoWAce module');
+	}
+	uksort($waaddons, 'strnatcasecmp');
+	//should really move all keys starting with a non alpha to the BOTTOM mwahahahah
+	//print_r($waaddons);die();
+}
+
+
+function ace_update_all(){
+	// could build a proxy tpl where user can see which are outdated and manually update single ones
+	// dont know how fast this chain of functions is/could be
+	// ace_checkforold_all forces a new xml download, so watch out
+	$db_ace_addons = ace_checkforold_all();
+	foreach($db_ace_addons as $key => $value)
+	{
+		if ($value['old'])
+			ace_update_single($key, $value['url']);
+	}
+}
+function ace_update_single($ace_name,$url){
+	//download/process it
+}
+
+function ace_checkforold_all(){
+	global $db,$ace_file;
+	$waaddons = array();
+	$waaddons_unparsed = '';
+	ace_get_filelist($waaddons_unparsed,true);
+	ace_parselist($waaddons, $waaddons_unparsed);
+	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '`  WHERE not (`ace_title` = \'\') ORDER BY `name` ASC;';
+	$result = $db->query($sql);
+	$addons = array();
+	if( $db->num_rows($result) > 0 )
+	{
+		while( $row = $db->fetch_record($result) )
+		{
+			$addons[$row['ace_title']]=$row;
+			if (ace_title_in_list($row['ace_title'],$waaddons)){
+				$addons[$row['ace_title']]['url'] = ace_geturl($row['ace_title'],$waaddons);
+				if (ace_checkforold_single($row,$waaddons)){
+					$addons[$row['ace_title']]['old'] = true;
+				}
+				else
+				{
+					$addons[$row['ace_title']]['old'] = false;
+				}
+			}
+		}
+	}
+	return $addons;
+}
+
+function ace_title_in_list($ace_title, &$waaddons)
+{
+	return array_key_exists($ace_title, $waaddons);
+}
+function ace_checkforold_single($ace_dbrow, &$waaddons)
+{
+	//server time may affect this comparison , perhaps another database.ua.addons field is in order
+	//to be honest maybe all of the ace stuff should be in the addons table to make it easier
+	if ((int)$ace_dbrow['time_uploaded'] > (int)$waaddons[$ace_dbrow['ace_title']]['datetime'])
+		return false;
+	else 
+		return true;
+}
+function ace_geturl($ace_title, &$waaddons)
+{
+	return $waaddons[$ace_title]['url'];
+}
+function ace_get_filelist(&$filelist,$force = false){
+	global $tpl, $uniadmin, $user, $ace_url, $ace_file;
+	
+	if ($force){
+		$try_unlink = unlink($ace_file);
+		if( !$try_unlink )
+		{
+			$uniadmin->error($user->lang['error_delete_ace_list']);
+			$uniadmin->error(sprintf($user->lang['error_unlink'],$ace_file));
+		}
+	}
+	if( !file_exists($ace_file) )
+	{
+		$filelist = $uniadmin->get_remote_contents($ace_url);
+		$uniadmin->message($user->lang['new_wowace_list']);
+		$uniadmin->write_file($ace_file,$filelist);
+		clearstatcache();
+		$file_info = stat($ace_file);
+		$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
+		return true;
+	}
+	else
+	{
+		clearstatcache();
+		$file_info = stat($ace_file);
+		if( ($file_info['9'] + (60 * 60 * $uniadmin->config['remote_timeout'])) <= time() )
+		{
+			// Download List
+			$filelist = $uniadmin->get_remote_contents($ace_url);
+			$uniadmin->message($user->lang['new_wowace_list']);
+
+			$uniadmin->write_file($ace_file,$filelist);
+			clearstatcache();
+			$file_info = stat($ace_file);
+			$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
+			return true;
+		}
+		else
+		{
+			// Keep the old file
+			$filelist = file_get_contents($ace_file);
+			$tpl->assign_var('WOWACE_UPDATED',date($user->lang['time_format'],$file_info['9']) );
+			return true;
+		}
+	}
+	return false;
+}
 function process_wowace_addons( )
 {
 	global $uniadmin, $user;
