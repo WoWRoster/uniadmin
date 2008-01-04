@@ -174,6 +174,47 @@ function ace_update_all(){
 }
 function ace_update_single($ace_name,$url){
 	//download/process it
+	global $tpl, $uniadmin, $user, $ace_url, $ace_file;
+	//$url = $_SESSION[$addon . '_url'];
+	//$addon = $_SESSION[$addon];
+	$addon = $ace_name;
+
+	$addoncon = $uniadmin->get_remote_contents($url);
+	$filename = UA_BASEDIR . $uniadmin->config['addon_folder'] . DIR_SEP . "$addon.zip";
+
+	//remove existing file if exists
+	if (file_exists($filename))
+	{
+		$try_unlink = unlink($filename);
+		if( !$try_unlink )
+		{
+			$uniadmin->error(sprintf($user->lang['error_unlink'],$filename));
+			return;
+		}
+	}
+	$write_temp_file = $uniadmin->write_file($filename,$addoncon,'w+');
+	if( $write_temp_file === false )
+	{
+		$uniadmin->error(sprintf($user->lang['error_write_file'],str_replace('\\','/',$filename)));
+	}
+	else
+	{
+		$toPass = array();
+		$toPass['name'] = $addon . '.zip';
+		$toPass['type'] = 'application/zip';
+		$toPass['tmp_name'] = $filename;
+
+		if( is_readable($toPass['tmp_name']) )
+		{
+			$toPass['error'] = 0;
+		}
+		else
+		{
+			$toPass['error'] = 1;
+		}
+		$toPass['size'] = filesize($toPass['tmp_name']);
+		process_addon($toPass);
+	}
 }
 
 function ace_checkforold_all(){
