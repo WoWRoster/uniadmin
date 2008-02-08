@@ -279,7 +279,7 @@ $lang['force_reload'] = 'Aktualisierung erzwingen';
 $lang['automatic'] = 'Automatisch';
 $lang['delete_all_addons'] = 'Lösche alle Addons';
 $lang['unscanned_addons'] = 'Nicht gescannte Addons';
-
+$lang['update_all'] = 'Update All';
 
 // Pagination
 $lang['next_page'] = 'Nächste Seite';

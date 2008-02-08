@@ -126,6 +126,7 @@ function main( )
 		'L_DISABLE_ENABLE' => $user->lang['disable_enable'],
 		'L_SELECT_FILE'    => $user->lang['select_file'],
 		'L_DOWNLOAD'       => $user->lang['download'],
+		'L_UPDATE_ALL'     => $user->lang['update_all'],
 		'L_ADD_UPDATE'     => $user->lang['add_update_addon'],
 		'L_ADD'            => $user->lang['add'],
 		'L_REQUIRED_ADDON' => $user->lang['required_addon'],

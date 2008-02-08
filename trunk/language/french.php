@@ -279,7 +279,7 @@ $lang['force_reload'] = 'Forcer Rechargement';
 $lang['automatic'] = 'Automatique';
 $lang['delete_all_addons'] = 'Supprimer tous les Addons';
 $lang['unscanned_addons'] = 'AddOns non scannés';
-
+$lang['update_all'] = 'Tout mettre à jour';
 
 // Pagination
 $lang['next_page'] = 'Page Suivante';

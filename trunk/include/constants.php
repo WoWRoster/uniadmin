@@ -48,6 +48,8 @@ define('UA_URI_ENABLE',       'enable');
 define('UA_URI_OPT',          'optional');
 define('UA_URI_REQ',          'require');
 define('UA_URI_PROCESS',      'process');
+define('UA_URI_UPDATE_ALL',   'update_all');
+define('UA_URI_UPDATE_ONE',   'update_one');
 define('UA_URI_SVNAME',       'svname');
 define('UA_URI_NAME',         'name');
 define('UA_URI_LEVEL',        'level');

@@ -1,5 +1,7 @@
 <!-- INCLUDE overall_header.html -->
 
+<div id="addon_updater_progress"></div>
+
 <!-- IF S_ACELIST -->
 <form id="ua_wowace" name="ua_wowace" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
 <input type="hidden" name="{A_OPERATION}" id="hide" value="" />
@@ -21,7 +23,8 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<th colspan="4"><button type="submit" class="submit" name="button_down" onclick="setvalue('hide','{A_PROCESS}');">{L_DOWNLOAD}</button></th>
+			<th colspan="4"><button type="submit" class="submit" name="button_down" onclick="setvalue('hide','{A_PROCESS}');">{L_DOWNLOAD}</button>
+			<button type="submit" class="submit" name="button_update_all" onclick="setvalue('hide','{A_UPDATE_ALL}');">{L_UPDATE_ALL}</button></th>
 		</tr>
 	</tfoot>
 	<tbody>
@@ -37,12 +40,66 @@
 	</tbody>
 </table>
 </form>
+<!-- IF S_UPDATE_ALL -->
+<script type="text/javascript" src="{TEMPLATE_PATH}/scriptaculous-js/.js"></script>
+<script type="text/javascript" src="{TEMPLATE_PATH}/scriptaculous-js/lib/prototype.js"></script>
+<script type="text/javascript" src="{TEMPLATE_PATH}/scriptaculous-js/src/scriptaculous.js"></script>
+<script type="text/javascript">
+var addOnsToUpdate = Array(<!-- BEGIN addons_to_update_row -->
+'{addons_to_update_row.INDEX}',<!-- END addons_to_update_row -->
+''
+);
+addOnsToUpdate.pop();
+Ajax.AddOnUpdater = Class.create({
+  initialize: function( update, url, addOnList, options) {
+    this.list                  = addOnList || { };
+    this.working               = false;
+    this.options               = options || { };
+    this.updatePanel           = document.getElementById(update);
+    this.options.encoding      = 'ISO-8859-1';
+    this.options.tokens        = this.options.tokens || [];
+    this.options.frequency     = this.options.frequency || 0.4;
+    this.options.asynchronous  = true;
+    this.options.method        = 'post';
+    this.options.onComplete    = this.onComplete.bind(this);
+    this.options.defaultParams = this.options.parameters || null;
+    this.url                   = url;
+  },
+
+  updateAddOn: function() {
+    this.working = true;
+	if ( this.list.length > 0 ) {
+		var index = this.list[0];
+		this.list.shift();
+		
+	    if(this.options.defaultParams) 
+	      this.options.parameters = '&' + this.options.defaultParams;
+	    
+	    this.options.parameters += '&' + index + '=on';
+	    
+	    new Ajax.Request(this.url, this.options);
+	}
+  },
+
+  onComplete: function(request) {
+    this.updatePanel.innerHTML = request.responseText;
+    this.working = false;
+    if ( this.list.length > 0 ) {
+    	this.updateAddOn();
+    }
+  }
+  
+});
+if( addOnsToUpdate.length > 0 ) {
+	var addOnUpdater = new Ajax.AddOnUpdater( 'addon_updater_progress', '?p=wowace', addOnsToUpdate, {parameters:'{A_OPERATION}={A_UPDATE_ONE}'} );
+	addOnUpdater.updateAddOn();
+}
+</script>
+<!-- ENDIF -->
 <!-- ELSE -->
 <table class="ua_table" align="center" width="70%">
 	<tr>
-		<th class="table_header" colspan="2"><div class="last_updated">
-				<button type="submit" class="button_hide" name="button_reload" onclick="setvalue('hide','{A_RELOAD}');" onmouseover="return overlib('{L_FORCERELOAD_TIP}',CAPTION,'{L_FORCERELOAD}');" onmouseout="return nd();"><img src="{TEMPLATE_PATH}/images/reload_mini.png" alt="" /></button></div>
-			{L_WOWACE_ADDONS}</th>
+		<th class="table_header" colspan="2">{L_WOWACE_ADDONS}</th>
 	</tr>
 	<tr>
 		<th>{L_NOLIST}</th>

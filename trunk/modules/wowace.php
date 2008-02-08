@@ -50,6 +50,10 @@ if( isset($_POST[UA_URI_OP]) )
 			process_wowace_addons();
 			break;
 
+		case UA_URI_UPDATE_ALL:
+			update_wowace_addons();
+			break;
+
 		case UA_URI_RELOAD:
 			if( file_exists($ace_file) )
 			{
@@ -120,8 +124,54 @@ $uniadmin->set_vars(array(
 	'display'       => true
 	)
 );
+function update_wowace_addons(){
+	global $db, $uniadmin, $user, $tpl;
+	
+	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '` ORDER BY `name` ASC;';
+	
+	$result = $db->query($sql);
 
+	// Set not scanned addons array
+	$addon_in_db = array();
+	$addonIndexByName = array();
+	
+	$i = 1;
+	while ( isset( $_SESSION['addon_'.$i] ) ) {
+		$addonIndexByName[$_SESSION['addon_'.$i]] = $i;
+		$i++;
+	}
 
+	// Loop for every addon in database
+	if( $db->num_rows($result) > 0 )
+	{
+		$tpl->assign_var('S_UPDATE_ALL', true);
+		$addonsToUpdate = array();
+		$addonSQLIds = array();
+		while( $row = $db->fetch_record($result) )
+		{
+			$addon = substr( $row['file_name'], 0, -4 );
+			if ( isset( $addonIndexByName[$addon] ) ) {
+				$index = $addonIndexByName[$addon];
+				if ( $row['time_uploaded'] == $_SESSION['addon_' . $index . '_timestamp'] ) {
+					$addonSQLIds[] = $row['id'];
+				}
+				else {
+					$url = $_SESSION['addon_'.$index. '_url'];
+					$tpl->assign_block_vars('addons_to_update_row', array(
+						'NAME' =>  $addon,
+						'URL' =>  $url,
+						'INDEX' =>  'addon_'.$index
+					) );
+				}
+			}
+			else {
+				//$uniadmin->message(sprintf($user->lang['not_wowace_addon'],$row['name']));
+			}
+		}
+	}
+	
+	//echo '<pre>'.print_r( $_SESSION, true ).'</pre>'."\n";
+}
 function ace_parselist(&$waaddons, &$waaddons_unparsed){
 	global $ace_file;
 	$waaddons = array();
@@ -159,8 +209,6 @@ function ace_parselist(&$waaddons, &$waaddons_unparsed){
 	//should really move all keys starting with a non alpha to the BOTTOM mwahahahah
 	//print_r($waaddons);die();
 }
-
-
 function ace_update_all(){
 	// could build a proxy tpl where user can see which are outdated and manually update single ones
 	// dont know how fast this chain of functions is/could be
@@ -216,7 +264,6 @@ function ace_update_single($ace_name,$url){
 		process_addon($toPass);
 	}
 }
-
 function ace_checkforold_all(){
 	global $db,$ace_file;
 	$waaddons = array();
@@ -245,13 +292,10 @@ function ace_checkforold_all(){
 	}
 	return $addons;
 }
-
-function ace_title_in_list($ace_title, &$waaddons)
-{
+function ace_title_in_list($ace_title, &$waaddons){
 	return array_key_exists($ace_title, $waaddons);
 }
-function ace_checkforold_single($ace_dbrow, &$waaddons)
-{
+function ace_checkforold_single($ace_dbrow, &$waaddons){
 	//server time may affect this comparison , perhaps another database.ua.addons field is in order
 	//to be honest maybe all of the ace stuff should be in the addons table to make it easier
 	if ((int)$ace_dbrow['time_uploaded'] > (int)$waaddons[$ace_dbrow['ace_title']]['datetime'])
@@ -259,8 +303,7 @@ function ace_checkforold_single($ace_dbrow, &$waaddons)
 	else 
 		return true;
 }
-function ace_geturl($ace_title, &$waaddons)
-{
+function ace_geturl($ace_title, &$waaddons){
 	return $waaddons[$ace_title]['url'];
 }
 function ace_get_filelist(&$filelist,$force = false){
@@ -310,8 +353,7 @@ function ace_get_filelist(&$filelist,$force = false){
 	}
 	return false;
 }
-function process_wowace_addons( )
-{
+function process_wowace_addons( ){
 	global $uniadmin, $user;
 
 	foreach( $_POST as $addon => $dl )
