@@ -243,6 +243,34 @@ class UniAdmin
 
 		return $list;
 	}
+	
+	/**
+	 * Zips files into a zip file
+	 *
+	 * @param string $file
+	 * @param string $path
+	 */
+	function zip( $zipFile, $files, $removePath )
+	{
+		global $user;
+
+		require_once(UA_INCLUDEDIR . 'pclzip.lib.php');
+
+		$archive = new PclZip($zipFile);
+		$list = $archive->create( $files, '', $removePath );
+		if ($list == 0)
+		{
+			$try_unlink = @unlink($zipFile);
+			if( !$try_unlink )
+			{
+				$this->error(sprintf($user->lang['error_unlink'],$zipFile));
+			}
+			ua_die(sprintf($user->lang['error_pclzip'],$archive->errorInfo(true)),'PclZip Error');
+		}
+		unset($archive);
+
+		return $list;
+	}
 
 	/**
 	 * Figures out what the file's extention is
@@ -348,7 +376,7 @@ class UniAdmin
 
 	/**
 	 * Set object variables
-	 * NOTE: If the last var is 'display' and the val is TRUE, UniAdmin::display() is called
+	 * NOTE: If the last var is 'display' and the val is TRUE, EQdkp::display() is called
 	 *   automatically
 	 *
 	 * @var $var Var to set
@@ -456,6 +484,8 @@ class UniAdmin
 			'A_OPT'            => UA_URI_OPT,
 			'A_REQ'            => UA_URI_REQ,
 			'A_PROCESS'        => UA_URI_PROCESS,
+			'A_UPDATE_ALL'     => UA_URI_UPDATE_ALL,
+			'A_UPDATE_ONE'     => UA_URI_UPDATE_ONE,
 			'A_SVNAME'         => UA_URI_SVNAME,
 			'A_LEVEL'          => UA_URI_LEVEL,
 			'A_PASS'           => UA_URI_PASS,
@@ -673,7 +703,7 @@ class UniAdmin
 	function filesize_readable( $size )
 	{
 		// Units
-		$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+		$sizes = array('b', 'kb', 'mb', 'gb', 'tb', 'pb');
 		$mod   = 1024;
 
 		$ii = count($sizes) - 1;
