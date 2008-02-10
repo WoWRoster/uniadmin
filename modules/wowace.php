@@ -79,7 +79,8 @@ $tpl->assign_vars(array(
 	'L_DATETIME'        => $user->lang['date_time'],
 	'L_LASTUPDATED'     => $user->lang['last_updated'],
 	'L_FORCERELOAD'     => $user->lang['force_reload'],
-	'L_FORCERELOAD_TIP' => $user->lang['wowace_reload']
+	'L_FORCERELOAD_TIP' => $user->lang['wowace_reload'],
+	'L_UPDATE_ALL'      => $user->lang['update_all']
 	)
 );
 
@@ -124,7 +125,10 @@ $uniadmin->set_vars(array(
 	'display'       => true
 	)
 );
-function update_wowace_addons(){
+
+
+function update_wowace_addons()
+{
 	global $db, $uniadmin, $user, $tpl;
 	
 	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '` ORDER BY `name` ASC;';
@@ -136,8 +140,9 @@ function update_wowace_addons(){
 	$addonIndexByName = array();
 	
 	$i = 1;
-	while ( isset( $_SESSION['addon_'.$i] ) ) {
-		$addonIndexByName[$_SESSION['addon_'.$i]] = $i;
+	while( isset($_SESSION['addon_' . $i]) )
+	{
+		$addonIndexByName[$_SESSION['addon_' . $i]] = $i;
 		$i++;
 	}
 
@@ -150,13 +155,16 @@ function update_wowace_addons(){
 		while( $row = $db->fetch_record($result) )
 		{
 			$addon = substr( $row['file_name'], 0, -4 );
-			if ( isset( $addonIndexByName[$addon] ) ) {
+			if( isset($addonIndexByName[$addon]) )
+			{
 				$index = $addonIndexByName[$addon];
-				if ( $row['time_uploaded'] == $_SESSION['addon_' . $index . '_timestamp'] ) {
+				if ( $row['time_uploaded'] == $_SESSION['addon_' . $index . '_timestamp'] )
+				{
 					$addonSQLIds[] = $row['id'];
 				}
-				else {
-					$url = $_SESSION['addon_'.$index. '_url'];
+				else
+				{
+					$url = $_SESSION['addon_' . $index . '_url'];
 					$tpl->assign_block_vars('addons_to_update_row', array(
 						'NAME' =>  $addon,
 						'URL' =>  $url,
@@ -164,25 +172,33 @@ function update_wowace_addons(){
 					) );
 				}
 			}
-			else {
+			else
+			{
 				//$uniadmin->message(sprintf($user->lang['not_wowace_addon'],$row['name']));
 			}
 		}
 	}
 	
-	//echo '<pre>'.print_r( $_SESSION, true ).'</pre>'."\n";
+	//echo '<pre>' . print_r( $_SESSION, true ) . '</pre>' . "\n";
 }
-function ace_parselist(&$waaddons, &$waaddons_unparsed){
+
+
+function ace_parselist( &$waaddons , &$waaddons_unparsed )
+{
 	global $ace_file;
 	$waaddons = array();
 	if( function_exists('xml_parse') )
 	{
 		$xmlParser =& new XmlParser();
 		
-		if (!empty($waaddons_unparsed))
+		if( !empty($waaddons_unparsed) )
+		{
 			$xmlParser->Parse($waaddons_unparsed);
+		}
 		else
+		{
 			$xmlParser->Parse(file_get_contents($ace_file));
+		}
 
 		$items = $xmlParser->data['rss'][0]['child']['channel'][0]['child']['item'];
 
@@ -209,18 +225,26 @@ function ace_parselist(&$waaddons, &$waaddons_unparsed){
 	//should really move all keys starting with a non alpha to the BOTTOM mwahahahah
 	//print_r($waaddons);die();
 }
-function ace_update_all(){
+
+
+function ace_update_all()
+{
 	// could build a proxy tpl where user can see which are outdated and manually update single ones
 	// dont know how fast this chain of functions is/could be
 	// ace_checkforold_all forces a new xml download, so watch out
 	$db_ace_addons = ace_checkforold_all();
-	foreach($db_ace_addons as $key => $value)
+	foreach( $db_ace_addons as $key => $value )
 	{
-		if ($value['old'])
+		if( $value['old'] )
+		{
 			ace_update_single($key, $value['url']);
+		}
 	}
 }
-function ace_update_single($ace_name,$url){
+
+
+function ace_update_single( $ace_name , $url )
+{
 	//download/process it
 	global $tpl, $uniadmin, $user, $ace_url, $ace_file;
 	//$url = $_SESSION[$addon . '_url'];
@@ -231,7 +255,7 @@ function ace_update_single($ace_name,$url){
 	$filename = UA_BASEDIR . $uniadmin->config['addon_folder'] . DIR_SEP . "$addon.zip";
 
 	//remove existing file if exists
-	if (file_exists($filename))
+	if( file_exists($filename) )
 	{
 		$try_unlink = unlink($filename);
 		if( !$try_unlink )
@@ -264,13 +288,17 @@ function ace_update_single($ace_name,$url){
 		process_addon($toPass);
 	}
 }
-function ace_checkforold_all(){
+
+
+function ace_checkforold_all()
+{
 	global $db,$ace_file;
+
 	$waaddons = array();
 	$waaddons_unparsed = '';
 	ace_get_filelist($waaddons_unparsed,true);
 	ace_parselist($waaddons, $waaddons_unparsed);
-	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '`  WHERE not (`ace_title` = \'\') ORDER BY `name` ASC;';
+	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '`  WHERE NOT (`ace_title` = \'\') ORDER BY `name` ASC;';
 	$result = $db->query($sql);
 	$addons = array();
 	if( $db->num_rows($result) > 0 )
@@ -278,9 +306,11 @@ function ace_checkforold_all(){
 		while( $row = $db->fetch_record($result) )
 		{
 			$addons[$row['ace_title']]=$row;
-			if (ace_title_in_list($row['ace_title'],$waaddons)){
+			if( ace_title_in_list($row['ace_title'],$waaddons) )
+			{
 				$addons[$row['ace_title']]['url'] = ace_geturl($row['ace_title'],$waaddons);
-				if (ace_checkforold_single($row,$waaddons)){
+				if( ace_checkforold_single($row,$waaddons) )
+				{
 					$addons[$row['ace_title']]['old'] = true;
 				}
 				else
@@ -292,24 +322,41 @@ function ace_checkforold_all(){
 	}
 	return $addons;
 }
-function ace_title_in_list($ace_title, &$waaddons){
+
+
+function ace_title_in_list( $ace_title , &$waaddons )
+{
 	return array_key_exists($ace_title, $waaddons);
 }
-function ace_checkforold_single($ace_dbrow, &$waaddons){
+
+
+function ace_checkforold_single( $ace_dbrow , &$waaddons )
+{
 	//server time may affect this comparison , perhaps another database.ua.addons field is in order
 	//to be honest maybe all of the ace stuff should be in the addons table to make it easier
-	if ((int)$ace_dbrow['time_uploaded'] > (int)$waaddons[$ace_dbrow['ace_title']]['datetime'])
+	if( (int)$ace_dbrow['time_uploaded'] > (int)$waaddons[$ace_dbrow['ace_title']]['datetime'] )
+	{
 		return false;
-	else 
+	}
+	else
+	{
 		return true;
+	}
 }
-function ace_geturl($ace_title, &$waaddons){
+
+
+function ace_geturl( $ace_title , &$waaddons )
+{
 	return $waaddons[$ace_title]['url'];
 }
-function ace_get_filelist(&$filelist,$force = false){
+
+
+function ace_get_filelist( &$filelist , $force = false )
+{
 	global $tpl, $uniadmin, $user, $ace_url, $ace_file;
 	
-	if ($force){
+	if( $force )
+	{
 		$try_unlink = unlink($ace_file);
 		if( !$try_unlink )
 		{
@@ -353,7 +400,10 @@ function ace_get_filelist(&$filelist,$force = false){
 	}
 	return false;
 }
-function process_wowace_addons( ){
+
+
+function process_wowace_addons()
+{
 	global $uniadmin, $user;
 
 	foreach( $_POST as $addon => $dl )

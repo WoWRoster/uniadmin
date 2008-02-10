@@ -258,7 +258,7 @@ class UniAdmin
 
 		$archive = new PclZip($zipFile);
 		$list = $archive->create( $files, '', $removePath );
-		if ($list == 0)
+		if( $list == 0 )
 		{
 			$try_unlink = @unlink($zipFile);
 			if( !$try_unlink )
@@ -376,7 +376,7 @@ class UniAdmin
 
 	/**
 	 * Set object variables
-	 * NOTE: If the last var is 'display' and the val is TRUE, EQdkp::display() is called
+	 * NOTE: If the last var is 'display' and the val is TRUE, UniAdmin::display() is called
 	 *   automatically
 	 *
 	 * @var $var Var to set
@@ -703,7 +703,7 @@ class UniAdmin
 	function filesize_readable( $size )
 	{
 		// Units
-		$sizes = array('b', 'kb', 'mb', 'gb', 'tb', 'pb');
+		$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
 		$mod   = 1024;
 
 		$ii = count($sizes) - 1;

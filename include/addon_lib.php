@@ -57,7 +57,7 @@ function process_addon( $fileArray )
 		$temp_folder = UA_BASEDIR . $uniadmin->config['temp_analyze_folder'];
 		
 		// Check if this addon is required
-		$required = isset($_FILES['file']) ? ( isset($_POST['required'] ) ? 1 : 0 ) : null ;
+		$required = ( isset($_FILES['file']) ? ( isset($_POST['required'] ) ? 1 : 0 ) : NULL );
 
 		// See if we are auto detecting the path or are we overriding it
 		$full_path = false;
@@ -141,41 +141,51 @@ function process_addon( $fileArray )
 			$lodAddOnZipFiles = array();
 			foreach( $files as $index => $file )
 			{
-				if ( ( substr( $file, -6 ) == 'lod.sh' ) || ( substr( $file, -7 ) == 'lod.bat' ) ) {
+				if( ( substr( $file, -6 ) == 'lod.sh' ) || ( substr( $file, -7 ) == 'lod.bat' ) )
+				{
 					$lodAddOns = true;
 					$localPath = dirname( $file );
 					//echo 'Local Path '.$localPath.'<br />';
 					chdir( $localPath );
-					foreach ( explode( "\n", file_get_contents( $file ) ) as $line ) {
+					foreach ( explode( "\n", file_get_contents( $file ) ) as $line )
+					{
 						$line = trim( $line );
 						$arguments = explode( ' ', $line );
 						$command = $arguments[0];
 						//echo 'Command detected : '.$command.'<br />'."\n";
-						switch ( $command ) {
+						switch ( $command )
+						{
 							case 'cd':
-								for ( $i = 1; $i < count( $arguments ); $i++ ) {
-									if ( strlen($arguments[$i]) ) {
+								for( $i = 1; $i < count( $arguments ); $i++ )
+								{
+									if( strlen($arguments[$i]) )
+									{
 										$localPath = realpath( $arguments[$i] );
-										if ( substr( $localPath, 0, strlen( $temp_folder ) ) == $temp_folder ) {
+										if( substr( $localPath, 0, strlen( $temp_folder ) ) == $temp_folder )
+										{
 											chdir( $localPath );
 											//echo 'Change Local Path '.$localPath.'<br />';
 										}
-										else {
+										else
+										{
 											$uniadmin->error(sprintf($user->lang['error_unsafe_file'],basename($file)));
 										}
 										break;
 									}
 								}
 								break;
+
 							case 'del':
 							case 'rm':
 								$options = '';
 								$delete = array();
-								for ( $i = 1; $i < count( $arguments ); $i++ ) {
-									if ( substr( $arguments[$i], 0,1 ) == '-' ) {
+								for( $i = 1; $i < count( $arguments ); $i++ )
+								{
+									if( substr( $arguments[$i], 0,1 ) == '-' )
+									{
 										$options .= substr( $arguments[$i], 1 );
 									}
-									elseif (
+									elseif(
 										strlen($arguments[$i])
 										&& ( $deleteFile = realpath( $arguments[$i] ) )
 										&& ( is_dir( $deleteFile ) || is_file( $deleteFile ) )
@@ -185,15 +195,19 @@ function process_addon( $fileArray )
 										$delete[] = $deleteFile;
 									}
 								}
-								if ( count( $delete ) ) {
+								if( count($delete) )
+								{
 								}
 								break;
+
 							case 'mv':
 								$options = '';
 								$from = null;
 								$to = null;
-								for ( $i = 1; $i < count( $arguments ); $i++ ) {
-									if ( substr( $arguments[$i], 0,1 ) == '-' ) {
+								for( $i = 1; $i < count( $arguments ); $i++ )
+								{
+									if( substr( $arguments[$i], 0,1 ) == '-' )
+									{
 										$options .= substr( $arguments[$i], 1 );
 									}
 									elseif (
@@ -216,11 +230,13 @@ function process_addon( $fileArray )
 										$to = $moveFile.DIR_SEP.$lastfile;
 									}
 								}
-								if ( $from && $to ) {
+								if( $from && $to )
+								{
 									rename( $from, $to );
 									//echo 'rename( \''.$from.'\',\''.$to.'\');<br />'."\n";
 								}
 								break;
+								
 							default:
 								//echo 'Line not interpretated '.$line.'<br />'."\n";
 								break;
@@ -238,12 +254,14 @@ function process_addon( $fileArray )
 				}
 			}
 		
-			if ( $lodAddOns ) {
+			if ( $lodAddOns )
+			{
 				$oldFiles = $files;
 				$newFiles = $uniadmin->ls($temp_folder);
 				foreach( $oldFiles as $index => $file )
 				{
-					if ( ! file_exists( $file ) ) {
+					if( ! file_exists($file) )
+					{
 						unset( $oldFiles[$index] );
 					}
 				}
@@ -257,7 +275,8 @@ function process_addon( $fileArray )
 				foreach( $newFiles as $index => $file )
 				{
 					$loadAddOnName = substr( $file, strlen($lodAddOnDirPath)+1, strpos( $file, '/', strlen($lodAddOnDirPath) + 1 ) - strlen($lodAddOnDirPath)-1 );
-					if ( !isset($filesbyLodAddOn[$loadAddOnName]) || ! is_array( $filesbyLodAddOn[$loadAddOnName] ) ) {
+					if( !isset($filesbyLodAddOn[$loadAddOnName]) || ! is_array($filesbyLodAddOn[$loadAddOnName]) )
+					{
 						$filesbyLodAddOn[$loadAddOnName] = array();
 					}
 					$filesbyLodAddOn[$loadAddOnName][] = $file;
@@ -268,7 +287,8 @@ function process_addon( $fileArray )
 					$uniadmin->zip( $lodAddOnZipFile, $files, $temp_folder );
 					//echo '$uniadmin->zip( '. $lodAddOnZipFile .', '.$files.', '.$temp_folder.'); <br />'."\n";
 					$lodAddOnZipFiles[$loadAddOnName] = $lodAddOnZipFile;
-					foreach( $files as $index => $file ) {
+					foreach( $files as $index => $file )
+					{
 						unlink( $file );
 					}
 				}
@@ -406,7 +426,8 @@ function process_addon( $fileArray )
 			$sql = "DELETE FROM `" . UA_TABLE_FILES . "` WHERE `addon_id` = '" . $addon_id . "';";
 			$db->query($sql);
 			
-			if ( is_null($required) ) {
+			if( is_null($required) )
+			{
 				$required = $row['required'] ? 1 : 0;
 			}
 
@@ -417,7 +438,8 @@ function process_addon( $fileArray )
 		}
 		else
 		{
-			if ( is_null($required) ) {
+			if( is_null($required) )
+			{
 				$required = 0;
 			}
 			// Insert Main Addon data
@@ -505,8 +527,10 @@ function process_addon( $fileArray )
 
 		$uniadmin->message(sprintf($user->lang['addon_uploaded'],$real_addon_name));
 		
-		if (count($lodAddOnZipFiles)) {
-			foreach ( $lodAddOnZipFiles as $lodAddOnName => $lodAddOnZipFile ) {
+		if( count($lodAddOnZipFiles) )
+		{
+			foreach ( $lodAddOnZipFiles as $lodAddOnName => $lodAddOnZipFile )
+			{
 				$toPass = array();
 				$toPass['name'] = $lodAddOnName . '.zip';
 				$toPass['type'] = 'application/zip';
