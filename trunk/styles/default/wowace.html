@@ -45,55 +45,57 @@
 <script type="text/javascript" src="{TEMPLATE_PATH}/scriptaculous-js/lib/prototype.js"></script>
 <script type="text/javascript" src="{TEMPLATE_PATH}/scriptaculous-js/src/scriptaculous.js"></script>
 <script type="text/javascript">
-var addOnsToUpdate = Array(<!-- BEGIN addons_to_update_row -->
-'{addons_to_update_row.INDEX}',<!-- END addons_to_update_row -->
-''
-);
-addOnsToUpdate.pop();
-Ajax.AddOnUpdater = Class.create({
-  initialize: function( update, url, addOnList, options) {
-    this.list                  = addOnList || { };
-    this.working               = false;
-    this.options               = options || { };
-    this.updatePanel           = document.getElementById(update);
-    this.options.encoding      = 'ISO-8859-1';
-    this.options.tokens        = this.options.tokens || [];
-    this.options.frequency     = this.options.frequency || 0.4;
-    this.options.asynchronous  = true;
-    this.options.method        = 'post';
-    this.options.onComplete    = this.onComplete.bind(this);
-    this.options.defaultParams = this.options.parameters || null;
-    this.url                   = url;
-  },
+<!--
+	var addOnsToUpdate = Array(<!-- BEGIN addons_to_update_row -->
+	'{addons_to_update_row.INDEX}',<!-- END addons_to_update_row -->
+	''
+	);
+	addOnsToUpdate.pop();
+	Ajax.AddOnUpdater = Class.create({
+	  initialize: function( update, url, addOnList, options) {
+	    this.list                  = addOnList || { };
+	    this.working               = false;
+	    this.options               = options || { };
+	    this.updatePanel           = document.getElementById(update);
+	    this.options.encoding      = 'ISO-8859-1';
+	    this.options.tokens        = this.options.tokens || [];
+	    this.options.frequency     = this.options.frequency || 0.4;
+	    this.options.asynchronous  = true;
+	    this.options.method        = 'post';
+	    this.options.onComplete    = this.onComplete.bind(this);
+	    this.options.defaultParams = this.options.parameters || null;
+	    this.url                   = url;
+	  },
 
-  updateAddOn: function() {
-    this.working = true;
-	if ( this.list.length > 0 ) {
-		var index = this.list[0];
-		this.list.shift();
-		
-	    if(this.options.defaultParams) 
-	      this.options.parameters = '&' + this.options.defaultParams;
-	    
-	    this.options.parameters += '&' + index + '=on';
-	    
-	    new Ajax.Request(this.url, this.options);
+	  updateAddOn: function() {
+	    this.working = true;
+		if ( this.list.length > 0 ) {
+			var index = this.list[0];
+			this.list.shift();
+			
+		    if(this.options.defaultParams) 
+		      this.options.parameters = '&' + this.options.defaultParams;
+		    
+		    this.options.parameters += '&' + index + '=on';
+		    
+		    new Ajax.Request(this.url, this.options);
+		}
+	  },
+
+	  onComplete: function(request) {
+	    this.updatePanel.innerHTML = request.responseText;
+	    this.working = false;
+	    if ( this.list.length > 0 ) {
+	    	this.updateAddOn();
+	    }
+	  }
+	  
+	});
+	if( addOnsToUpdate.length > 0 ) {
+		var addOnUpdater = new Ajax.AddOnUpdater( 'addon_updater_progress', '?p=wowace', addOnsToUpdate, {parameters:'{A_OPERATION}={A_UPDATE_ONE}'} );
+		addOnUpdater.updateAddOn();
 	}
-  },
-
-  onComplete: function(request) {
-    this.updatePanel.innerHTML = request.responseText;
-    this.working = false;
-    if ( this.list.length > 0 ) {
-    	this.updateAddOn();
-    }
-  }
-  
-});
-if( addOnsToUpdate.length > 0 ) {
-	var addOnUpdater = new Ajax.AddOnUpdater( 'addon_updater_progress', '?p=wowace', addOnsToUpdate, {parameters:'{A_OPERATION}={A_UPDATE_ONE}'} );
-	addOnUpdater.updateAddOn();
-}
+//-->
 </script>
 <!-- ENDIF -->
 <!-- ELSE -->
