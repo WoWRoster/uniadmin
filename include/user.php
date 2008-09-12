@@ -129,7 +129,7 @@ function get_user_info( $name='' )
 
 	$username = ( $name == '' ? get_username() : $name );
 
-	$sql = "SELECT * FROM `" . UA_TABLE_USERS . "` WHERE `name` = '$username';";
+	$sql = "SELECT * FROM `" . $db->table('users') . "` WHERE `name` = '$username';";
 	$result = $db->query($sql);
 	$row = mysql_fetch_assoc($result);
 

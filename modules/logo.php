@@ -86,7 +86,7 @@ function main( )
 
 	for( $logo_num=1; $logo_num<=$num_logos; $logo_num++ )
 	{
-		$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `logo_num` = '$logo_num';";
+		$sql = "SELECT * FROM `".$db->table('logos')."` WHERE `logo_num` = '$logo_num';";
 		$result = $db->query($sql);
 		$row = $db->fetch_record($result);
 
@@ -169,11 +169,11 @@ function toggle_logo( $op , $id )
 		switch( $op )
 		{
 			case UA_URI_DISABLE:
-				$sql = "UPDATE `".UA_TABLE_LOGOS."` SET `active` = '0' WHERE `id` = '$id';";
+				$sql = "UPDATE `".$db->table('logos')."` SET `active` = '0' WHERE `id` = '$id';";
 				break;
 
 			case UA_URI_ENABLE:
-				$sql = "UPDATE `".UA_TABLE_LOGOS."` SET `active` = '1' WHERE `id` = '$id';";
+				$sql = "UPDATE `".$db->table('logos')."` SET `active` = '1' WHERE `id` = '$id';";
 				break;
 
 			default:
@@ -197,7 +197,7 @@ function process_logo( )
 	$logo_folder = UA_BASEDIR.$uniadmin->config['logo_folder'];
 	if( isset($_FILES['logo1']) && $_FILES['logo1']['name'] != '' )
 	{
-		$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `logo_num` = '1';";
+		$sql = "SELECT * FROM `".$db->table('logos')."` WHERE `logo_num` = '1';";
 		$result = $db->query($sql);
 
 		$row = $db->fetch_record($result);
@@ -210,7 +210,7 @@ function process_logo( )
 	}
 	elseif( isset($_FILES['logo2']) && $_FILES['logo2']['name'] != '' )
 	{
-		$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `logo_num` = '2';";
+		$sql = "SELECT * FROM `".$db->table('logos')."` WHERE `logo_num` = '2';";
 		$result = $db->query($sql);
 
 		$row = $db->fetch_record($result);
@@ -262,11 +262,11 @@ function process_logo( )
 
 		$md5 = md5_file($logo_location);
 
-		$sql = "DELETE FROM `".UA_TABLE_LOGOS."` WHERE `id` = '$logo_id'";
+		$sql = "DELETE FROM `".$db->table('logos')."` WHERE `id` = '$logo_id'";
 		$result = $db->query($sql);
 
 
-		$sql = "INSERT INTO `".UA_TABLE_LOGOS."` ( `filename` , `updated` , `logo_num` , `active` , `md5` ) VALUES ( 'logo$logo_num.$logo_ext', '".time()."', '$logo_num', '1', '$md5' );";
+		$sql = "INSERT INTO `".$db->table('logos')."` ( `filename` , `updated` , `logo_num` , `active` , `md5` ) VALUES ( 'logo$logo_num.$logo_ext', '".time()."', '$logo_num', '1', '$md5' );";
 		$result = $db->query($sql);
 		if( !$db->affected_rows() )
 		{

@@ -43,13 +43,25 @@
 <!-- IF S_DEBUG_SQL -->
 <table class="ua_table" align="center" width="90%">
 	<tr>
-		<th class="table_header">{L_QUERIES}</th>
+		<th colspan="3" class="table_header">{L_QUERIES}</th>
 	</tr>
-	<!-- BEGIN debug_sql_row -->
 	<tr>
-		<td>{debug_sql_row.QUERY}</td>
+		<th>{L_LINE}</th>
+		<th>{L_TIME}</th>
+		<th>{L_QUERY}</th>
 	</tr>
-	<!-- END debug_sql_row -->
+	<!-- BEGIN debug_sql -->
+	<tr>
+		<td colspan="3" class="data2"><strong>{debug_sql.FILE}</strong></td>
+	</tr>
+	<!-- BEGIN row -->
+	<tr>
+		<td width="70">&nbsp;&nbsp;{debug_sql.row.LINE}</td>
+		<td width="70">{debug_sql.row.TIME}</td>
+		<td>{debug_sql.row.QUERY}</td>
+	</tr>
+	<!-- END row -->
+	<!-- END debug_sql -->
 </table>
 <br />
 <!-- ENDIF -->

@@ -70,7 +70,7 @@ function main( )
 		)
 	);
 
-	$sql = "SELECT * FROM `".UA_TABLE_CONFIG."` ORDER BY `config_name` ASC;";
+	$sql = "SELECT * FROM `".$db->table('config')."` ORDER BY `config_name` ASC;";
 	$result = $db->query($sql);
 
 	while( $row = $db->fetch_record($result) )
@@ -81,6 +81,12 @@ function main( )
 		// Figure out input type
 		$input_field = '';
 		$input_type = explode('{',$row['form_type']);
+
+		// Special case for hidden, continue only breaks the switch...grrrr
+		if( $input_type[0] == 'hidden')
+		{
+			continue;
+		}
 
 		switch( $input_type[0] )
 		{
@@ -109,7 +115,7 @@ function main( )
 					$vals = explode('^',$value);
 					if( $setvalue == $vals[1] && $select_one )
 					{
-						$input_field .= '  <option value="'.$vals[1].'" selected="selected">&gt;'.$vals[0].'&lt;</option>'."\n";
+						$input_field .= '  <option value="'.$vals[1].'" selected="selected">'.$vals[0].'</option>'."\n";
 						$select_one = 0;
 					}
 					else

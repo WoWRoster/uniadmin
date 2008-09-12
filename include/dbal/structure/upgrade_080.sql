@@ -8,4 +8,20 @@
 
 UPDATE `uniadmin_config` SET `config_value` = '0.8.0' WHERE `config_name` = 'UAVer' LIMIT 1;
 
-ALTER TABLE `uniadmin_addons` ADD `ace_title` VARCHAR( 64 ) NOT NULL DEFAULT '';
+UPDATE `uniadmin_config` SET `form_type` = 'select{Do Not check^0|Once a Day^24|Once a Week^168|Once a Month^720', `config_value` = '168'
+	WHERE `config_name` = 'check_updates' LIMIT 1;
+
+INSERT INTO `uniadmin_config` (`config_name`, `config_value`, `form_type`) VALUES
+	('versioncache', '', 'hidden');
+
+# --------------------------------------------------------
+### Alter uniadmin_settings
+
+## INSERT INTO `uniadmin_settings` ( `id` , `set_name` , `set_value` , `enabled` , `section` , `form_type` ) VALUES
+##  (NULL , 'PURGEFIRST','0','0', 'advanced', 'radio{yes^1|no^0');
+
+# --------------------------------------------------------
+### Alter uniadmin_addons
+
+ALTER TABLE `uniadmin_addons`
+  ADD `ace_title` VARCHAR(64) NOT NULL DEFAULT '';

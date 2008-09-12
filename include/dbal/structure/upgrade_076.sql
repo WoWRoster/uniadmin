@@ -8,7 +8,7 @@
 
 UPDATE `uniadmin_config` SET `config_value` = '0.7.7' WHERE `config_name` = 'UAVer' LIMIT 1;
 
-ALTER TABLE `uniadmin_config`  ORDER BY `config_name`;
+ALTER TABLE `uniadmin_config` ORDER BY `config_name`;
 
 
 # --------------------------------------------------------

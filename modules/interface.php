@@ -109,7 +109,7 @@ function update_stats( $op )
 	$action = ( isset($_REQUEST['ADDON']) ? $op.' - '.$_REQUEST['ADDON'] : $op );
 	$remote_host = gethostbyaddr($user->ip_address);
 
-	$sql = "INSERT INTO `".UA_TABLE_STATS."` ( `ip_addr` , `host_name` , `action` , `time` , `user_agent` ) VALUES
+	$sql = "INSERT INTO `".$db->table('stats')."` ( `ip_addr` , `host_name` , `action` , `time` , `user_agent` ) VALUES
 		( '".$db->escape($user->ip_address)."', '".$db->escape($remote_host)."', '".$db->escape($action)."', '".time()."', '".$db->escape($user->user_agent)."' );";
 	$db->query($sql);
 }
@@ -136,7 +136,7 @@ function output_settings( )
 	$output_string = '';
 
 	// logos
-	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `active` = '1' ORDER BY `logo_num` ASC;";
+	$sql = "SELECT * FROM `".$db->table('logos')."` WHERE `active` = '1' ORDER BY `logo_num` ASC;";
 	$result = $db->query($sql);
 	if( $db->num_rows($result) > 0 )
 	{
@@ -148,7 +148,7 @@ function output_settings( )
 	$db->free_result($result);
 
 	// settings
-	$sql = "SELECT * FROM `".UA_TABLE_SETTINGS."` WHERE `enabled` = '1' ORDER BY `set_name` ASC;";
+	$sql = "SELECT * FROM `".$db->table('settings')."` WHERE `enabled` = '1' ORDER BY `set_name` ASC;";
 	$result = $db->query($sql);
 	if( $db->num_rows($result) > 0 )
 	{
@@ -160,7 +160,7 @@ function output_settings( )
 	$db->free_result($result);
 
 	// sv list
-	$sql = "SELECT * FROM `".UA_TABLE_SVLIST."` ORDER BY `sv_name` ASC;";
+	$sql = "SELECT * FROM `".$db->table('svlist')."` ORDER BY `sv_name` ASC;";
 	$result = $db->query($sql);
 	if( $db->num_rows($result) > 0 )
 	{
@@ -190,7 +190,7 @@ function output_settings_xml( )
 
 
 	// logos
-	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `active` = '1' ORDER BY `logo_num` ASC;";
+	$sql = "SELECT * FROM `".$db->table('logos')."` WHERE `active` = '1' ORDER BY `logo_num` ASC;";
 	$result = $db->query($sql);
 	if( $db->num_rows($result) > 0 )
 	{
@@ -207,7 +207,7 @@ function output_settings_xml( )
 
 
 	// settings
-	$sql = "SELECT * FROM `".UA_TABLE_SETTINGS."` WHERE `enabled` = '1' ORDER BY `set_name` ASC;";
+	$sql = "SELECT * FROM `".$db->table('settings')."` WHERE `enabled` = '1' ORDER BY `set_name` ASC;";
 	$result = $db->query($sql);
 	if( $db->num_rows($result) > 0 )
 	{
@@ -223,7 +223,7 @@ function output_settings_xml( )
 
 
 	// sv list
-	$sql = "SELECT * FROM `".UA_TABLE_SVLIST."` ORDER BY `sv_name` ASC;";
+	$sql = "SELECT * FROM `".$db->table('svlist')."` ORDER BY `sv_name` ASC;";
 	$result = $db->query($sql);
 	if( $db->num_rows($result) > 0 )
 	{
@@ -254,11 +254,11 @@ function output_addon_xml( )
 	// Don't get optional addons if UU_COMPAT is true
 	if( UU_COMPAT )
 	{
-		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `enabled` = '1' AND `required` = '1' ORDER BY `name` ASC;";
+		$sql = "SELECT * FROM `".$db->table('addons')."` WHERE `enabled` = '1' AND `required` = '1' ORDER BY `name` ASC;";
 	}
 	else
 	{
-		$sql = "SELECT * FROM `".UA_TABLE_ADDONS."` WHERE `enabled` = '1' ORDER BY `required` DESC, `name` ASC;";
+		$sql = "SELECT * FROM `".$db->table('addons')."` WHERE `enabled` = '1' ORDER BY `required` DESC, `name` ASC;";
 	}
 	$result = $db->query($sql);
 
@@ -282,7 +282,7 @@ function output_addon_xml( )
 			$addonElement->attribute('full_path', $row['full_path']);
 			$addonElement->attribute('notes', htmlspecialchars($row['notes']));
 
-			$sql = "SELECT * FROM `".UA_TABLE_FILES."` WHERE `addon_id` = '".$row['id']."';";
+			$sql = "SELECT * FROM `".$db->table('files')."` WHERE `addon_id` = '".$row['id']."';";
 			$result2 = $db->query($sql);
 
 			if( $db->num_rows($result2) > 0 )
@@ -313,7 +313,7 @@ function output_addon_url( $addonName )
 {
 	global $db, $uniadmin;
 
-	$sql = "SELECT `name`, `file_name` FROM `".UA_TABLE_ADDONS."` WHERE `name` LIKE '".$db->escape($addonName)."';";
+	$sql = "SELECT `name`, `file_name` FROM `".$db->table('addons')."` WHERE `name` LIKE '".$db->escape($addonName)."';";
 	$result = $db->query($sql);
 
 	if( $db->num_rows($result) > 0 )
@@ -340,7 +340,7 @@ function output_logo_md5( $filename )
 {
 	global $db;
 
-	$sql = "SELECT * FROM `".UA_TABLE_LOGOS."` WHERE `filename` = '".$db->escape($filename)."';";
+	$sql = "SELECT * FROM `".$db->table('logos')."` WHERE `filename` = '".$db->escape($filename)."';";
 	$result = $db->query($sql);
 
 	if( $db->num_rows($result) > 0 )
@@ -365,7 +365,7 @@ function output_addondel_xml( )
 	global $db, $uniadmin;
 
 	// Don't get optional addons if UU_COMPAT is true
-	$sql = "SELECT * FROM `".UA_TABLE_ADDONDEL."`;";
+	$sql = "SELECT * FROM `".$db->table('addondel')."`;";
 	$result = $db->query($sql);
 
 	$xmlDoc = new MiniXMLDoc();

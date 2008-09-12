@@ -33,15 +33,36 @@ if( intval(ini_get('register_globals')) != 0 )
 		}
 	}
 }
+// Unset old style global vars, we use only php 4.3+ style globals
+unset($HTTP_GET_VARS,$HTTP_POST_VARS,$HTTP_COOKIE_VARS);
+
 
 // Disable magic quotes and add slashes to global arrays
-set_magic_quotes_runtime(0);
-if( get_magic_quotes_gpc() == 0 )
+// Checking for function existance for php6
+if( function_exists('set_magic_quotes_runtime') )
 {
-    $_GET = slash_global_data($_GET);
-    $_POST = slash_global_data($_POST);
-    $_COOKIE = slash_global_data($_COOKIE);
+	set_magic_quotes_runtime(0);
 }
+
+if( function_exists('get_magic_quotes_gpc') )
+{
+	if( !get_magic_quotes_gpc() )
+	{
+		$_GET = slash_global_data($_GET);
+		$_POST = slash_global_data($_POST);
+		$_COOKIE = slash_global_data($_COOKIE);
+		$_REQUEST = slash_global_data($_REQUEST);
+	}
+}
+else
+{
+	$_GET = slash_global_data($_GET);
+	$_POST = slash_global_data($_POST);
+	$_COOKIE = slash_global_data($_COOKIE);
+	$_REQUEST = slash_global_data($_REQUEST);
+}
+
+
 
 define('CAN_INI_SET',!ereg('ini_set', ini_get('disable_functions')));
 
@@ -80,7 +101,10 @@ if( !defined('UA_INSTALLED') )
 define('IN_UNIADMIN',true);
 
 // Start our session
-session_start();
+if( session_id() == '' )
+{
+	session_start();
+}
 
 
 include(UA_BASEDIR . 'include' . DIR_SEP . 'constants.php');
@@ -117,22 +141,50 @@ if( version_compare($uniadmin->config['UAVer'], UA_VER,'<') )
 
 
 // ----[ Check for latest UniAdmin Version ]------------------
-if( $user->data['level'] == UA_ID_ADMIN && $uniadmin->config['check_updates'] )
+if( $user->data['level'] == UA_ID_ADMIN && $uniadmin->config['check_updates'] && isset($uniadmin->config['versioncache']) )
 {
-	$ua_ver_latest = '';
+	$cache = unserialize($uniadmin->config['versioncache']);
 
-	$content = $uniadmin->get_remote_contents('http://wowroster.net/ua_version.txt');
-
-	if( preg_match('#<version>(.+)</version>#i',$content,$version) )
+	if( $uniadmin->config['versioncache'] == '' )
 	{
-		$ua_ver_latest = $version[1];
+		$cache['timestamp'] = 0;
+		$cache['ver_latest'] = '';
+		$cache['ver_info'] = '';
+		$cache['ver_date'] = '';
 	}
 
-	if( !empty($ua_ver_latest) && $ua_ver_latest > UA_VER )
+	if( ($cache['timestamp'] + (60 * 60 * $uniadmin->config['check_updates'])) <= time() )
 	{
-		$uniadmin->error(sprintf($user->lang['new_version_available'],$ua_ver_latest));
+		$cache['timestamp'] = time();
+
+		$content = $uniadmin->get_remote_contents(UA_UPDATECHECK);
+
+		if( preg_match('#<version>(.+)</version>#i',$content,$version) )
+		{
+			$cache['ver_latest'] = $version[1];
+		}
+
+		if( preg_match('#<info>(.+)</info>#i',$content,$info) )
+		{
+			$cache['ver_info'] = $info[1];
+		}
+
+		if( preg_match('#<updated>(.+)</updated>#i',$content,$info) )
+		{
+			$cache['ver_date'] = $info[1];
+		}
+
+		$db->query ( "UPDATE `" . $db->table('config') . "` SET `config_value` = '" . serialize($cache) . "' WHERE `config_name` = 'versioncache' LIMIT 1;");
+
+	}
+
+	if( version_compare($cache['ver_latest'],UA_VER,'>') )
+	{
+		$cache['ver_date'] = date($user->lang['time_format'], $cache['ver_date']);
+		$uniadmin->error(sprintf($user->lang['new_version_available'],$cache['ver_latest'],$cache['ver_date'],UA_DOWNLOAD) . '<br /><br />' . $cache['ver_info']);
 	}
 }
+
 
 
 /**
@@ -151,4 +203,10 @@ function slash_global_data( $data )
 		}
 	}
 	return $data;
+}
+
+function ua_microtime( )
+{
+	list($usec, $sec) = explode(' ', microtime());
+	return ($usec + $sec);
 }

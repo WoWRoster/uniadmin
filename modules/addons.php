@@ -151,6 +151,7 @@ function main( )
 
 		'L_REMOVE'         => $user->lang['remove'],
 		'L_ADDON'          => $user->lang['addon'],
+		'L_ADDONDEL_CONT'  => $user->lang['addon_delete'],
 		'L_ADD_ADDONDEL'   => $user->lang['addon_delete_add'],
 		'L_NO_DEL_ADDONS'  => $user->lang['addon_delete_none'],
 
@@ -172,7 +173,7 @@ function main( )
 		$tpl->assign_var('L_ADDON_MANAGE',$user->lang['view_addons']);
 	}
 
-	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '` ORDER BY `name` ASC;';
+	$sql = 'SELECT * FROM `' . $db->table('addons') . '` ORDER BY `name` ASC;';
 
 	$result = $db->query($sql);
 
@@ -223,7 +224,7 @@ function main( )
 	$tpl->assign_var('S_ADDON_DEL',false);
 
 	// Build the addon delete list table
-	$sql = "SELECT * FROM `" . UA_TABLE_ADDONDEL . "`;";
+	$sql = "SELECT * FROM `" . $db->table('addondel') . "`;";
 	$result = $db->query($sql);
 
 	if( $db->num_rows($result) > 0 )
@@ -328,7 +329,7 @@ function addon_detail( $addon_id )
 		$tpl->assign_var('L_ADDON_MANAGE',$user->lang['view_addons']);
 	}
 
-	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . "` WHERE `id` = '$addon_id';";
+	$sql = 'SELECT * FROM `' . $db->table('addons') . "` WHERE `id` = '$addon_id';";
 
 	$result = $db->query($sql);
 
@@ -337,7 +338,7 @@ function addon_detail( $addon_id )
 	// Get all files
 	if( $db->num_rows($result) > 0 )
 	{
-		$sql = 'SELECT * FROM `' . UA_TABLE_FILES . "` WHERE `addon_id` = '$addon_id' ORDER BY `filename` ASC;";
+		$sql = 'SELECT * FROM `' . $db->table('files') . "` WHERE `addon_id` = '$addon_id' ORDER BY `filename` ASC;";
 
 		$result2 = $db->query($sql);
 
@@ -429,22 +430,22 @@ function toggle_addon( $op , $addon_id )
 		switch( $op )
 		{
 			case UA_URI_DISABLE:
-				$sql = "UPDATE `" . UA_TABLE_ADDONS . "` SET `enabled` = '0' WHERE `id` = '$addon_id';";
+				$sql = "UPDATE `" . $db->table('addons') . "` SET `enabled` = '0' WHERE `id` = '$addon_id';";
 				$error = 'disable';
 				break;
 
 			case UA_URI_ENABLE:
-				$sql = "UPDATE `" . UA_TABLE_ADDONS . "` SET `enabled` = '1' WHERE `id` = '$addon_id';";
+				$sql = "UPDATE `" . $db->table('addons') . "` SET `enabled` = '1' WHERE `id` = '$addon_id';";
 				$error = 'enable';
 				break;
 
 			case UA_URI_OPT:
-				$sql = "UPDATE `" . UA_TABLE_ADDONS . "` SET `required` = '0' WHERE `id` = '$addon_id';";
+				$sql = "UPDATE `" . $db->table('addons') . "` SET `required` = '0' WHERE `id` = '$addon_id';";
 				$error = 'optional';
 				break;
 
 			case UA_URI_REQ:
-				$sql = "UPDATE `" . UA_TABLE_ADDONS . "` SET `required` = '1' WHERE `id` = '$addon_id';";
+				$sql = "UPDATE `" . $db->table('addons') . "` SET `required` = '1' WHERE `id` = '$addon_id';";
 				$error = 'require';
 				break;
 
@@ -469,7 +470,7 @@ function delete_addon( $addon_id )
 {
 	global $db, $user, $uniadmin;
 
-	$sql = "SELECT * FROM `" . UA_TABLE_ADDONS . "` WHERE `id` = '$addon_id';";
+	$sql = "SELECT * FROM `" . $db->table('addons') . "` WHERE `id` = '$addon_id';";
 	$result = $db->query($sql);
 
 	if( $db->num_rows($result) > 0 )
@@ -487,14 +488,14 @@ function delete_addon( $addon_id )
 			}
 		}
 
-		$sql = "DELETE FROM `" . UA_TABLE_ADDONS . "` WHERE `id` = '$addon_id';";
+		$sql = "DELETE FROM `" . $db->table('addons') . "` WHERE `id` = '$addon_id';";
 		$db->query($sql);
 		if( !$db->affected_rows() )
 		{
 		    $uniadmin->error(sprintf($user->lang['sql_error_addons_delete'],$addon_id));
 		}
 
-		$sql = "DELETE FROM `" . UA_TABLE_FILES . "` WHERE `addon_id` = '$addon_id';";
+		$sql = "DELETE FROM `" . $db->table('files') . "` WHERE `addon_id` = '$addon_id';";
 		$db->query($sql);
 		if( !$db->affected_rows() )
 		{
@@ -512,10 +513,10 @@ function delete_all_addons( )
 {
 	global $db, $user, $uniadmin;
 
-	$sql = "TRUNCATE TABLE `" . UA_TABLE_ADDONS . "`;";
+	$sql = "TRUNCATE TABLE `" . $db->table('addons') . "`;";
 	$result = $db->query($sql);
 
-	$sql = "TRUNCATE TABLE `" . UA_TABLE_FILES . "`;";
+	$sql = "TRUNCATE TABLE `" . $db->table('files') . "`;";
 	$result = $db->query($sql);
 
 	$uniadmin->cleardir(UA_BASEDIR . $uniadmin->config['addon_folder']);
@@ -534,7 +535,7 @@ function edit_addon( $addon_id )
 	$addon_notes = str_replace(array("\r","\n"),array('',' '),strip_tags(stripslashes($_POST['notes'])));
 
 	// Insert Main Addon data
-	$sql = "UPDATE `" . UA_TABLE_ADDONS . "` SET
+	$sql = "UPDATE `" . $db->table('addons') . "` SET
 		`version` = '" . $db->escape($addon_version) . "',
 		`name` = '" . $db->escape($addon_name) . "',
 		`homepage` = '" . $db->escape($addon_url) . "',
@@ -615,7 +616,7 @@ function add_addon_del( $name )
 
 	if( !empty($name) )
 	{
-		$sql = "INSERT INTO `" . UA_TABLE_ADDONDEL . "` ( `dir_name` ) VALUES ( '" . $db->escape($name) . "' );";
+		$sql = "INSERT INTO `" . $db->table('addondel') . "` ( `dir_name` ) VALUES ( '" . $db->escape($name) . "' );";
 		$db->query($sql);
 		if( !$db->affected_rows() )
 		{
@@ -633,7 +634,7 @@ function remove_addon_del( $id )
 {
 	global $db, $user, $uniadmin;
 
-	$sql = "DELETE FROM `" . UA_TABLE_ADDONDEL . "` WHERE `id` = " . $db->escape($id) . " LIMIT 1;";
+	$sql = "DELETE FROM `" . $db->table('addondel') . "` WHERE `id` = " . $db->escape($id) . " LIMIT 1;";
 	$db->query($sql);
 	if( !$db->affected_rows() )
 	{

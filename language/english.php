@@ -319,7 +319,7 @@ $lang['no_upgrade'] = 'You have already upgraded UniAdmin<br />Or you have a new
 $lang['select_version'] = 'Select Version';
 $lang['success'] = 'Success';
 $lang['upgrade_complete'] = 'Your UniAdmin installation has been successfully upgraded';
-$lang['new_version_available'] = 'There is a new version of UniAdmin available <span class="green">v%1$s</span><br />Get it <a href="http://www.wowroster.net" target="_blank">HERE</a>';
+$lang['new_version_available'] = 'There is a new version of UniAdmin available <span class="green">v%1$s</span><br />Released: %2$s<br />Get it <a href="%3$s" target="_blank">HERE</a>';
 
 
 // UU Sync Settings
@@ -412,6 +412,9 @@ $lang['admin']['ua_debug'] = 'Debug Mode|Debugging for UniAdmin<br /><br />- [no
 // Debug
 $lang['queries'] = 'Queries';
 $lang['debug'] = 'Debug';
+$lang['query'] = 'Query';
+$lang['line'] = 'Line';
+$lang['time'] = 'Time';
 $lang['messages'] = 'Messages';
 
 

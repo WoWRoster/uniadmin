@@ -56,7 +56,7 @@ function main( )
 		$start = '0';
 	}
 
-	$sql = "SELECT count(`id`) rows FROM `".UA_TABLE_STATS."`;";
+	$sql = "SELECT count(`id`) rows FROM `".$db->table('stats')."`;";
 	$result = $db->query($sql);
 
 	$total_rows = $db->fetch_record($result);
@@ -96,7 +96,7 @@ function main( )
 			);
 		}
 
-		$sql = "SELECT * FROM `".UA_TABLE_STATS."` ORDER BY `id` DESC LIMIT $start , $limit;";
+		$sql = "SELECT * FROM `".$db->table('stats')."` ORDER BY `id` DESC LIMIT $start , $limit;";
 		$result = $db->query($sql);
 
 
@@ -191,7 +191,7 @@ function build_pie( $field_name )
 {
 	global $db, $uniadmin, $user;
 
-	$sql = "SELECT count(`id`) count, `$field_name` field FROM `".UA_TABLE_STATS."` GROUP BY `$field_name` ORDER BY `count` DESC LIMIT 0,5";
+	$sql = "SELECT count(`id`) count, `$field_name` field FROM `".$db->table('stats')."` GROUP BY `$field_name` ORDER BY `count` DESC LIMIT 0,5";
 	$result = $db->query($sql);
 
 	while( $row = $db->fetch_record($result) )
