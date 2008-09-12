@@ -30,7 +30,7 @@ switch( $config['dbtype'] )
 		break;
 }
 
-$db = new SQL_DB($config['host'], $config['database'], $config['username'], $config['password'], false);
+$db = new SQL_DB($config['host'], $config['database'], $config['username'], $config['password'], $config['table_prefix']);
 if( !$db->link_id )
 {
 	print("Cannot connect to the database<br />\n");

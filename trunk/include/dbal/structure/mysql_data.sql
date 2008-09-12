@@ -7,7 +7,7 @@
 ### Configuration values
 INSERT INTO `uniadmin_config` (`config_name`, `config_value`, `form_type`) VALUES
 	('addon_folder', 'addon_zips', 'text{250|50'),
-	('check_updates', '1', 'radio{yes^1|no^0'),
+	('check_updates', '168', 'select{Do Not check^0|Once a Day^24|Once a Week^168|Once a Month^720'),
 	('default_lang', 'english', 'function{lang_select'),
 	('default_style', 'default', 'function{style_select'),
 	('enable_gzip', '0', 'radio{yes^1|no^0'),
@@ -15,8 +15,9 @@ INSERT INTO `uniadmin_config` (`config_name`, `config_value`, `form_type`) VALUE
 	('logo_folder', 'logos', 'text{250|50'),
 	('remote_timeout', '24', 'text{10|10'),
 	('temp_analyze_folder', 'addon_temp', 'text{250|50'),
-	('UAVer', '0.7.9', 'display'),
-	('ua_debug', '1', 'radio{no^0|half^1|full^2');
+	('UAVer', '0.8.0', 'display'),
+	('ua_debug', '1', 'radio{no^0|half^1|full^2'),
+	('versioncache', '', 'hidden');
 
 ### Settings
 INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, `form_type`) VALUES
@@ -26,11 +27,13 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('AUTODETECTWOW', '1', '0', 'settings', 'radio{yes^1|no^0'),
 	('OPENGL', '0', '0', 'settings', 'radio{yes^1|no^0'),
 	('WINDOWMODE', '0', '0', 'settings', 'radio{yes^1|no^0'),
+
 	('UUUPDATERCHECK', '1', '0', 'updater', 'radio{yes^1|no^0'),
 	('SYNCHROURL', 'http://yourdomain.com/UniAdmin/interface.php', '0', 'updater', 'text{250|50'),
 	('ADDONAUTOUPDATE', '1', '0', 'updater', 'radio{yes^1|no^0'),
 	('ALLOWADDONDEL', '1', '0', 'updater', 'radio{yes^1|no^0'),
 	('UUSETTINGSUPDATER', '1', '0', 'updater', 'radio{yes^1|no^0'),
+
 	('AUTOUPLOADONFILECHANGES', '1', '0', 'options', 'radio{yes^1|no^0'),
 	('ALWAYSONTOP', '1', '0', 'options', 'radio{yes^1|no^0'),
 	('SYSTRAY', '0', '0', 'options', 'radio{yes^1|no^0'),
@@ -56,6 +59,7 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('ADDURL4', '', '0', 'options', 'text{250|50'),
 	('HOMEURL', 'http://yourdomain.com', '0', 'options', 'text{250|50'),
 	('FORUMURL', 'http://yourdomain.com/forum', '0', 'options', 'text{250|50'),
+
 	('AUTOLAUNCHWOW', '0', '0', 'advanced', 'radio{yes^1|no^0'),
 	('WOWARGS', '0', '0', 'advanced', 'text{250|50'),
 	('STARTWITHWINDOWS', '0', '0', 'advanced', 'radio{yes^1|no^0'),

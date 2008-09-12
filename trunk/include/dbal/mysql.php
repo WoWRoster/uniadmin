@@ -44,6 +44,49 @@ class SQL_DB
 	var $queries     = array();             // Queries                  @var queries
 	var $error_die   = true;                // Die on errors?           @var error_die
 
+	var $querytime   = 0;                   // Time query starts        @var querytime
+	var $file        = '';                  // File query was ran       @var file
+	var $line        = 0;                   // Line of file of query    @var line
+
+	/**
+	 * Log the query
+	 *
+	 * @param string $query
+	 */
+	function _log( $query )
+	{
+		$this->_backtrace();
+
+		$this->queries[$this->file][$this->query_count]['query'] = $query;
+		$this->queries[$this->file][$this->query_count]['time'] = round((ua_microtime()-$this->querytime), 4);
+		$this->queries[$this->file][$this->query_count]['line'] = $this->line;
+
+		// Error message in case of failed query
+		$this->queries[$this->file][$this->query_count]['error'] = empty($this->query_id) ? $this->error : '';
+	}
+
+	/**
+	 * Backtrace the query, to get the calling file name
+	 */
+	function _backtrace()
+	{
+		$this->file = 'unknown';
+		$this->line = 0;
+		if( version_compare(phpversion(), '4.3.0','>=') )
+		{
+			$tmp = debug_backtrace();
+			for ($i=0; $i<count($tmp); ++$i)
+			{
+				if (!preg_match('#[\\\/]{1}include[\\\/]{1}dbal[\\\/]{1}[a-z_]+.php$#', $tmp[$i]['file']))
+				{
+					$this->file = $tmp[$i]['file'];
+					$this->line = $tmp[$i]['line'];
+					break;
+				}
+			}
+		}
+	}
+
 	/**
 	 * Constructor
 	 *
@@ -56,13 +99,14 @@ class SQL_DB
 	 * @param $pconnect Use persistent connection
 	 * @return mixed Link ID / false
 	 */
-	function sql_db( $dbhost , $dbname , $dbuser , $dbpass='' , $pconnect = false )
+	function sql_db( $dbhost , $dbname , $dbuser , $dbpass='' , $prefix='' , $pconnect = false )
 	{
-		$this->pconnect = $pconnect;
 		$this->dbhost = $dbhost;
 		$this->dbname = $dbname;
 		$this->dbuser = $dbuser;
 		$this->dbpass = $dbpass;
+		$this->pconnect = $pconnect;
+		$this->prefix = $prefix;
 
 		if( $this->pconnect )
 		{
@@ -149,6 +193,8 @@ class SQL_DB
 
 		//$query = preg_replace('/;.*$/', '', $query);
 
+		$this->querytime = ua_microtime();
+
 		if( $query != '' )
 		{
 			$this->query_count++;
@@ -156,8 +202,10 @@ class SQL_DB
 		}
 		if( !empty($this->query_id) )
 		{
-			$this->queries[$this->query_count] = $query;
-
+			if( defined('UA_DEBUG') && UA_DEBUG == 2 )
+			{
+				$this->_log($query);
+			}
 			unset($this->record[$this->query_id]);
 			unset($this->record_set[$this->query_id]);
 			return $this->query_id;
@@ -166,11 +214,12 @@ class SQL_DB
 		{
 			if( UA_DEBUG )
 			{
+				$this->_log($query);
 				$error = $this->error();
 				$message  = 'SQL query error<br /><br />';
-				$message .= 'Query: '.$query.'<br />';
-				$message .= 'Message: '.$error['message'].'<br />';
-				$message .= 'Code: '.$error['code'];
+				$message .= 'Query: ' . $query . '<br />';
+				$message .= 'Message: ' . $error['message'] . '<br />';
+				$message .= 'Code: ' . $error['code'];
 
 				if( $this->error_die )
 				{
@@ -414,5 +463,16 @@ class SQL_DB
 	function error_die( $setting = true )
 	{
 		$this->error_die = $setting;
+	}
+
+	/**
+	 * Expand base table name to a full table name
+	 *
+	 * @param string $table the base table name
+	 * @return string tablename as fit for MySQL queries
+	 */
+	function table( $table )
+	{
+		return $this->prefix . $table;
 	}
 }

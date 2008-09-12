@@ -37,7 +37,7 @@ class UniAdmin
 	var $error      = array();                  // Error messages array     @var error
 	var $languages  = array();                  // Available Languages      @var languages
 	var $styles     = array();                  // Available Styles         @var styles
-	var $reject_ini = array();                  // ini variable to not scan @var reject_ini
+	var $reject_ini = array();                  // do not scan in ini       @var reject_ini
 
 	// Output vars
 	var $root_path         = './';              // Path to UniAdmin's root  @var root_path
@@ -57,9 +57,7 @@ class UniAdmin
 	function uniadmin()
 	{
 		// Start a script timer
-		$mc_split = split(' ', microtime());
-		$this->timer_start = $mc_split[0] + $mc_split[1];
-		unset($mc_split);
+		$this->timer_start = ua_microtime();
 
 		$url = explode('/','http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
 		array_pop($url);
@@ -87,7 +85,7 @@ class UniAdmin
 			die('Database object not initialized');
 		}
 
-		$sql = 'SELECT `config_name`, `config_value` FROM `' . UA_TABLE_CONFIG . '`;';
+		$sql = 'SELECT `config_name`, `config_value` FROM `' . $db->table('config') . '`;';
 
 		if( !($result = $db->query($sql)) )
 		{
@@ -167,7 +165,7 @@ class UniAdmin
 			}
 			else
 			{
-				$sql = 'UPDATE `' . UA_TABLE_CONFIG . "` SET `config_value` = '" . strip_tags($config_value) . "' WHERE `config_name` = '" . $config_name . "';";
+				$sql = 'UPDATE `' . $db->table('config') . "` SET `config_value` = '" . strip_tags($config_value) . "' WHERE `config_name` = '" . $config_name . "';";
 				$db->query($sql);
 
 				return true;
@@ -214,11 +212,13 @@ class UniAdmin
 		$this->messages[] = $message_string;
 	}
 
+
 	/**
 	 * Unzips a zip file
 	 *
 	 * @param string $file
 	 * @param string $path
+	 * @return int 0 or a negative value on failure
 	 */
 	function unzip( $file , $path )
 	{
@@ -230,25 +230,26 @@ class UniAdmin
 		$list = $archive->extract(PCLZIP_OPT_PATH, $path,
 			PCLZIP_CB_PRE_EXTRACT, 'pclzip_pre_extract');
 
-		if ($list == 0)
+		if( $list == 0 )
 		{
 			$try_unlink = @unlink($file);
 			if( !$try_unlink )
 			{
 				$this->error(sprintf($user->lang['error_unlink'],$file));
 			}
-			ua_die(sprintf($user->lang['error_pclzip'],$archive->errorInfo(true)),'PclZip Error');
+			$this->error(sprintf($user->lang['error_pclzip'],$archive->errorInfo(true)));
 		}
 		unset($archive);
 
 		return $list;
 	}
-	
+
 	/**
 	 * Zips files into a zip file
 	 *
 	 * @param string $file
 	 * @param string $path
+	 * @return int 0 on failure
 	 */
 	function zip( $zipFile, $files, $removePath )
 	{
@@ -258,6 +259,7 @@ class UniAdmin
 
 		$archive = new PclZip($zipFile);
 		$list = $archive->create( $files, '', $removePath );
+
 		if( $list == 0 )
 		{
 			$try_unlink = @unlink($zipFile);
@@ -265,7 +267,7 @@ class UniAdmin
 			{
 				$this->error(sprintf($user->lang['error_unlink'],$zipFile));
 			}
-			ua_die(sprintf($user->lang['error_pclzip'],$archive->errorInfo(true)),'PclZip Error');
+			$this->error(sprintf($user->lang['error_pclzip'],$archive->errorInfo(true)));
 		}
 		unset($archive);
 
@@ -273,7 +275,7 @@ class UniAdmin
 	}
 
 	/**
-	 * Figures out what the file's extention is
+	 * Figures out what the filename's extention is
 	 *
 	 * @param string $filename
 	 * @return string
@@ -311,7 +313,7 @@ class UniAdmin
 	 */
 	function ls( $dir , $array = array() , $sub_dir = true )
 	{
-		$no_scan = array('.','..','.svn');
+		$no_scan = array('.','..','.svn','_svn');
 
 		$handle = opendir($dir);
 		for(;(false !== ($readdir = readdir($handle)));)
@@ -356,7 +358,7 @@ class UniAdmin
 	 */
 	function cleardir( $dir )
 	{
-		$no_delete = array('.','..','.svn');
+		$no_delete = array('.','..','.svn','_svn');
 
 		if( !($dir = dir($dir)) )
 		{
@@ -383,9 +385,9 @@ class UniAdmin
 	 * @var $val Value for Var
 	 * @return bool
 	 */
-	function set_vars($var, $val = '', $append = false)
+	function set_vars( $var , $val = '' , $append = false )
 	{
-		if ( is_array($var) )
+		if( is_array($var) )
 		{
 			foreach ( $var as $d_var => $d_val )
 			{
@@ -394,17 +396,17 @@ class UniAdmin
 		}
 		else
 		{
-			if ( empty($val) )
+			if( empty($val) )
 			{
 				return false;
 			}
-			if ( ($var == 'display') && ($val === true) )
+			if( ($var == 'display') && ($val === true) )
 			{
 				$this->display();
 			}
 			else
 			{
-				if ( $append )
+				if( $append )
 				{
 					if ( is_array($this->$var) )
 					{
@@ -443,9 +445,9 @@ class UniAdmin
 		define('HEADER_INC', true);
 
 		// Use gzip if available
-		if ( $this->config['enable_gzip'] == '1' )
+		if( $this->config['enable_gzip'] == '1' )
 		{
-			if ( (extension_loaded('zlib')) && (!headers_sent()) )
+			if( (extension_loaded('zlib')) && (!headers_sent()) )
 			{
 				@ob_start('ob_gzhandler');
 			}
@@ -526,9 +528,9 @@ class UniAdmin
 			$tpl->assign_var('S_MESSAGE',true);
 			foreach( $this->messages as $message )
 			{
-				$tpl->assign_block_vars('messages_row',
-					array('TEXT'    => $message,
-						'ROW_CLASS' => $this->switch_row_class(),
+				$tpl->assign_block_vars('messages_row',array(
+					'TEXT'    => $message,
+					'ROW_CLASS' => $this->switch_row_class(),
 					)
 				);
 			}
@@ -542,9 +544,9 @@ class UniAdmin
 			$tpl->assign_var('S_DEBUG',true);
 			foreach( $this->error as $message )
 			{
-				$tpl->assign_block_vars('debug_row',
-					array('TEXT'    => $message,
-						'ROW_CLASS' => $this->switch_row_class(),
+				$tpl->assign_block_vars('debug_row',array(
+					'TEXT'    => $message,
+					'ROW_CLASS' => $this->switch_row_class(),
 					)
 				);
 			}
@@ -627,31 +629,41 @@ class UniAdmin
 
 			$tpl->assign_var('S_NORMAL_FOOTER', true);
 
-			$mc_split = split(' ', microtime());
-			$this->timer_end = $mc_split[0] + $mc_split[1];
-			unset($mc_split);
+			$this->timer_end = ua_microtime();
 
 			if( UA_DEBUG && ($user->data['level'] > UA_ID_ANON) )
 			{
 				$tpl->assign_vars(array(
 					'L_QUERIES'      => $user->lang['queries'],
 					'L_DEBUG'        => $user->lang['debug'],
+					'L_LINE'         => $user->lang['line'],
+					'L_TIME'         => $user->lang['time'],
+					'L_QUERY'        => $user->lang['query'],
 
 					'S_SHOW_DEBUG'   => true,
 					'U_RENDERTIME'   => substr($this->timer_end - $this->timer_start, 0, 5),
 					'U_QUERYCOUNT'   => $db->query_count)
 				);
 
-				if( (UA_DEBUG == 2) )
+				if( UA_DEBUG == 2 )
 				{
 					$debug_sql = true;
-					foreach ( $db->queries as $query )
+					foreach( $db->queries as $file => $queries )
 					{
-						$tpl->assign_block_vars('debug_sql_row', array(
-							'ROW_CLASS' => $this->switch_row_class(),
-							'QUERY' => htmlentities($query)
+						$tpl->assign_block_vars('debug_sql', array(
+							'FILE' => substr($file, strlen(UA_BASEDIR)),
 							)
 						);
+						foreach( $queries as $query )
+						{
+							$tpl->assign_block_vars('debug_sql.row', array(
+								'ROW_CLASS' => $this->switch_row_class(),
+								'LINE'      => $query['line'],
+								'TIME'      => $query['time'],
+								'QUERY'     => nl2br(htmlentities($query['query'])) . ( empty($query['error']) ? '' : '<hr />' . nl2br(htmlentities($query['error'])) ),
+								)
+							);
+						}
 					}
 				}
 
@@ -713,7 +725,7 @@ class UniAdmin
 
 		// Loop
 		$i = 0;
-		while ($size >= 1024 && $i < $ii)
+		while( $size >= 1024 && $i < $ii )
 		{
 			$size /= $mod;
 			$i++;
@@ -738,7 +750,7 @@ class UniAdmin
 			$contents = curl_exec($ch);
 
 			// If there were errors
-			if (curl_errno($ch))
+			if( curl_errno($ch) )
 			{
 				$this->error('Error: ' . curl_error($ch));
 				return false;
@@ -798,13 +810,13 @@ function pclzip_pre_extract( $p_event , &$p_header )
 	global $uniadmin, $user;
 
 	$info = $uniadmin->get_file_ext($p_header['filename']);
-	//bad files are skipped
+	// Bad files are skipped
 	if( !empty($info) && in_array($info,explode(',',UA_ADDON_BLACKLIST)) )
 	{
 		$uniadmin->error(sprintf($user->lang['error_unsafe_file'],$p_header['stored_filename']));
 		return 0;
 	}
-	//all other files are simply extracted
+	// All other files are simply extracted
 	else
 	{
 		return 1;

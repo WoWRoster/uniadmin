@@ -132,9 +132,10 @@
 <!-- ENDIF -->
 </table>
 
-<br /><br />
 
 <!-- IF S_ADDON_ADD_DEL -->
+<br /><br />
+
 <form id="ua_updateaddon" name="ua_updateaddon" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
 	<table class="ua_table" align="center">
 		<tr>
@@ -166,19 +167,19 @@
 </form>
 <!-- ENDIF -->
 
-<br />
+<br /><br />
 
-<table class="ua_table" align="center" width="40%">
+<table class="ua_table" align="center" width="35%">
 	<tr>
-		<th colspan="2" class="table_header">{L_ADD_ADDONDEL}</th>
+		<th colspan="2" class="table_header">{L_ADDONDEL_CONT}</th>
 	</tr>
+	<!-- IF S_ADDON_DEL -->
 	<tr>
 		<th>{L_ADDON}</th>
 		<!-- IF S_ADDON_ADD_DEL -->
 		<th width="10%">{L_REMOVE}</th>
 		<!-- ENDIF -->
 	</tr>
-	<!-- IF S_ADDON_DEL -->
 	<!-- BEGIN addondel_list -->
 	<tr>
 		<td class="data{addondel_list.ROW_CLASS}">{addondel_list.NAME}</td>

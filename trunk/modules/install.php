@@ -21,9 +21,7 @@ if( !defined('IN_UNIADMIN') )
 }
 
 // Start a script timer
-$mc_split = split(' ', microtime());
-$timer_start = $mc_split[0] + $mc_split[1];
-unset($mc_split);
+$timer_start = ua_microtime();
 
 
 define( 'UA_ADDONZIP_DIR' , UA_BASEDIR . 'addon_zips' . DIR_SEP );
@@ -177,9 +175,7 @@ class Template_Wrap extends Template
 			$this->error_out(false);
 		}
 
-		$mc_split = split(' ', microtime());
-		$timer_end = $mc_split[0] + $mc_split[1];
-		unset($mc_split);
+		$timer_end = ua_microtime();
 
 		if ( UA_DEBUG )
 		{
@@ -612,7 +608,7 @@ function process_step3()
 	// Database population
 	//
 	include_once($dbal_file);
-	$db = new SQL_DB($config['host'], $config['database'], $config['username'], $config['password'], false);
+	$db = new SQL_DB($config['host'], $config['database'], $config['username'], $config['password']);
 
 	// Check to make sure a connection was made
 	if ( !is_resource($db->link_id) )
@@ -766,7 +762,7 @@ function process_step4()
 			break;
 	}
 
-	$db = new SQL_DB($config['host'], $config['database'], $config['username'], $config['password'], false);
+	$db = new SQL_DB($config['host'], $config['database'], $config['username'], $config['password']);
 
 	// Get the default theme and locale for first user
 	$sql = 'SELECT `config_value` FROM ' . CONFIG_TABLE . " WHERE `config_name` = 'default_lang';";

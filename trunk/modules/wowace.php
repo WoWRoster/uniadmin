@@ -94,7 +94,7 @@ if( !empty($filelist) )
 
 	$waaddons = array();
 	ace_parselist($waaddons, $filelist);
-	
+
 	$id = 0;
 	foreach( $waaddons as $addon => $data )
 	{
@@ -130,15 +130,15 @@ $uniadmin->set_vars(array(
 function update_wowace_addons()
 {
 	global $db, $uniadmin, $user, $tpl;
-	
-	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '` ORDER BY `name` ASC;';
-	
+
+	$sql = 'SELECT * FROM `' . $db->table('addons') . '` ORDER BY `name` ASC;';
+
 	$result = $db->query($sql);
 
 	// Set not scanned addons array
 	$addon_in_db = array();
 	$addonIndexByName = array();
-	
+
 	$i = 1;
 	while( isset($_SESSION['addon_' . $i]) )
 	{
@@ -178,7 +178,7 @@ function update_wowace_addons()
 			}
 		}
 	}
-	
+
 	//echo '<pre>' . print_r( $_SESSION, true ) . '</pre>' . "\n";
 }
 
@@ -190,7 +190,7 @@ function ace_parselist( &$waaddons , &$waaddons_unparsed )
 	if( function_exists('xml_parse') )
 	{
 		$xmlParser =& new XmlParser();
-		
+
 		if( !empty($waaddons_unparsed) )
 		{
 			$xmlParser->Parse($waaddons_unparsed);
@@ -298,7 +298,7 @@ function ace_checkforold_all()
 	$waaddons_unparsed = '';
 	ace_get_filelist($waaddons_unparsed,true);
 	ace_parselist($waaddons, $waaddons_unparsed);
-	$sql = 'SELECT * FROM `' . UA_TABLE_ADDONS . '`  WHERE NOT (`ace_title` = \'\') ORDER BY `name` ASC;';
+	$sql = 'SELECT * FROM `' . $db->table('addons') . '`  WHERE NOT (`ace_title` = \'\') ORDER BY `name` ASC;';
 	$result = $db->query($sql);
 	$addons = array();
 	if( $db->num_rows($result) > 0 )
@@ -354,7 +354,7 @@ function ace_geturl( $ace_title , &$waaddons )
 function ace_get_filelist( &$filelist , $force = false )
 {
 	global $tpl, $uniadmin, $user, $ace_url, $ace_file;
-	
+
 	if( $force )
 	{
 		$try_unlink = unlink($ace_file);

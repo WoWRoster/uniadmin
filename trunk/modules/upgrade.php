@@ -1,20 +1,4 @@
 <?php
-/******************************
- * WoWRoster.net  UniAdmin
- * Copyright 2002-2007
- * Licensed under the Creative Commons
- * "Attribution-NonCommercial-ShareAlike 2.5" license
- *
- * Short summary
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/
- *
- * Full license information
- *  http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
- * -----------------------------
- *
- * $Id$
- *
- ******************************/
 /**
  * WoWRoster.net UniAdmin
  *
@@ -51,7 +35,7 @@ if( version_compare($uniadmin->config['UAVer'], UA_VER,'>=') )
 class Upgrade
 {
 	var $db = null;
-	var $versions = array('0.7.5','0.7.6','0.7.7','0.7.8');
+	var $versions = array('0.7.5','0.7.6','0.7.7','0.7.8','0.7.9');
 	var $index = null;
 
 	function upgrade()
@@ -107,6 +91,12 @@ class Upgrade
 	//--------------------------------------------------------------
 	// Upgrade methods
 	//--------------------------------------------------------------
+
+	function upgrade_079()
+	{
+		$this->standard_upgrader();
+		$this->finalize();
+	}
 
 	function upgrade_078()
 	{
