@@ -105,10 +105,9 @@ function update_stats( $op )
 	global $db, $user;
 
 	$action = ( isset($_REQUEST['ADDON']) ? $op . ' - ' . $_REQUEST['ADDON'] : $op );
-	$remote_host = gethostbyaddr($user->ip_address);
 
 	$sql = "INSERT INTO `" . $db->table('stats') . "` ( `ip_addr` , `host_name` , `action` , `time` , `user_agent` ) VALUES
-		( '" . $db->escape($user->ip_address) . "', '" . $db->escape($remote_host) . "', '" . $db->escape($action) . "', '" . time() . "', '" . $db->escape($user->user_agent) . "' );";
+		( '" . $db->escape($user->ip_address) . "', '" . $db->escape($user->remote_host) . "', '" . $db->escape($action) . "', '" . time() . "', '" . $db->escape($user->user_agent) . "' );";
 	$db->query($sql);
 }
 

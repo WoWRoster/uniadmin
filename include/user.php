@@ -36,6 +36,7 @@ class User
 	var $lang_path    = '';                 // Language path            @var lang_path
 	var $user_agent   = '';                 // User Agent               @var user_agent
 	var $ip_address   = 0;                  // User IP                  @var ip_address
+	var $remote_host  = '';                 // User Host                @var remote_host
 
 	/**
 	 * Initialize user object
@@ -46,6 +47,7 @@ class User
 
 		$this->ip_address = ( !empty($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
 		$this->user_agent = ( !empty($_SERVER['HTTP_USER_AGENT']) ) ? $_SERVER['HTTP_USER_AGENT'] : $_ENV['HTTP_USER_AGENT'];
+		$this->remote_host = gethostbyaddr($user->ip_address);
 
 		$this->lang_path = UA_LANGDIR;
 
