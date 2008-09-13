@@ -29,7 +29,7 @@ if( preg_match('/[^a-z0-9_]/i', UA_CURRENT_PAGE) )
 }
 
 // Include the module
-if( is_file( $var = UA_MODULEDIR . UA_CURRENT_PAGE . '.php' ) )
+if( is_file($var = UA_MODULEDIR . UA_CURRENT_PAGE . '.php') )
 {
 	require($var);
 }

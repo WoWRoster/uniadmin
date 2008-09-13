@@ -73,7 +73,7 @@ define('UA_URI_THEME',    'theme');
 define('UA_FORMACTION',   UA_INDEX . ( isset($_GET[UA_URI_PAGE]) && ($_GET[UA_URI_PAGE] != '') ? '?' . UA_URI_PAGE . '=' . $_GET[UA_URI_PAGE] : '') );
 
 // Reject certain settings in UU since we don't need them, or want them displayed
-define('UA_REJECT_INI'   , 'CHECKEDADDONS,CHECKEDSVLIST,EXELOC,FILELOCATION,SELECTEDACCT,EXE1,EXE1LOCATION,EXE2,EXE2LOCATION,EXE3,EXE3LOCATION,EXEUULAUNCH,EXEWOWLAUNCH,USERAGENT');
+define('UA_REJECT_INI'   , 'CHECKEDADDONS,CHECKEDSVLIST,EXELOC,FILELOCATION,SELECTEDACCT,EXE1,EXE1LOCATION,EXE2,EXE2LOCATION,EXE3,EXE3LOCATION,EXEUULAUNCH,EXEWOWLAUNCH');
 
 // File types to ignore when scanning addons
 define('UA_ADDON_BLACKLIST', 'ade,adp,bas,bat,chm,cmd,com,cpl,crt,doc,eml,emf,exe,hlp,hta,inf,ins,isp,jar,js,jse,lnk,mdb,mde,msc,msi,msp,mst,pcd,pif,ppt,py,rar,reg,scr,sct,shs,url,vbs,vbe,wsf,wsh,wsc,xsl');

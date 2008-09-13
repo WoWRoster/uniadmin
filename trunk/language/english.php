@@ -336,6 +336,8 @@ $lang['PROGRAMMODE'] = 'Program mode';
 $lang['AUTODETECTWOW'] = 'Auto detect WoW';
 $lang['OPENGL'] = 'Run WoW in OpenGL mode';
 $lang['WINDOWMODE'] = 'Run WoW in window mode';
+$lang['UPLOADSCREENSHOTS'] = 'Upload Screenshots';
+$lang['UPLOADSVS'] = 'Upload SavedVariable files';
 
 // updater
 $lang['UUUPDATERCHECK'] = 'Check for UniUploader updates/upgrades';
@@ -343,6 +345,8 @@ $lang['SYNCHROURL'] = 'URL for synchronization with UniAdmin';
 $lang['ADDONAUTOUPDATE'] = 'AddOn auto-update';
 $lang['UUSETTINGSUPDATER'] = 'Sync UniUploader settings with UniAdmin';
 $lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
+$lang['AUTOSYNCIN'] = 'Auto Sync/Update Interval';
+$lang['UPDATESURL'] = 'URL for UniUpdater updates/upgrades';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Auto upload on SavedVariable file changes';
@@ -368,8 +372,12 @@ $lang['ADDURL3CH'] = 'Additional URL 3';
 $lang['ADDURL3'] = 'Additional URL 3 location';
 $lang['ADDURL4CH'] = 'Additional URL 4';
 $lang['ADDURL4'] = 'Additional URL 4 location';
-$lang['HOMEURL'] = 'URL location for homepage<br />Used in javaUniUploader';
-$lang['FORUMURL'] = 'URL location for forums<br />Used in javaUniUploader';
+$lang['HOMEURL'] = 'URL location for homepage';
+$lang['FORUMURL'] = 'URL location for forums';
+$lang['USERAGENT'] = 'Custom User Agent';
+$lang['UPERRPOPUP'] = 'Show Error Popup when upload fails';
+$lang['CLOSEAFUPD'] = 'Close UU after Sync/Update';
+$lang['CLOSEAFLAU'] = 'Close UU after WoW Launch';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'Auto-Launch WoW';
@@ -388,6 +396,7 @@ $lang['DOWNLOADBEFOREWOWL'] = 'Web==&gt;WoW - Initiate Before UU Launches WoW';
 $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Initiate Before UU Uploads';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Initiate After UU Uploads';
 $lang['PURGEFIRST'] = 'Delete the Web==&gt;WoW data file before syncing';
+$lang['USEAPPDATA'] = 'Use Application Data Folder';
 
 // END UU Sync Strings
 

@@ -336,6 +336,8 @@ $lang['PROGRAMMODE'] = 'Programmmodus';
 $lang['AUTODETECTWOW'] = 'WoW automatisch erkennen';
 $lang['OPENGL'] = 'Starte WoW im OpenGL Modus';
 $lang['WINDOWMODE'] = 'Starte WoW im Fenster Modus';
+$lang['UPLOADSCREENSHOTS'] = 'Upload Screenshots';
+$lang['UPLOADSVS'] = 'Upload SavedVariable files';
 
 // updater
 $lang['UUUPDATERCHECK'] = 'Überprüfe auf UniUploader Aktualisierungen';
@@ -343,6 +345,8 @@ $lang['SYNCHROURL'] = 'URL für die Synchronisation mit dem UniAdmin';
 $lang['ADDONAUTOUPDATE'] = 'automatische Addon-Aktualisierung';
 $lang['UUSETTINGSUPDATER'] = 'Synchronisiere UniUploader Einstellungen mit UniAdmin';
 $lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
+$lang['AUTOSYNCIN'] = 'Auto Sync/Update Interval';
+$lang['UPDATESURL'] = 'URL for UniUpdater updates/upgrades';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Lade SavedVariable Datei bei Änderungen automatisch hoch';
@@ -368,8 +372,12 @@ $lang['ADDURL3CH'] = 'Zusätzliche URL 3';
 $lang['ADDURL3'] = 'Zusätzliche URL 3 Lokation';
 $lang['ADDURL4CH'] = 'Zusätzliche URL 4';
 $lang['ADDURL4'] = 'Zusätzliche URL 4 Lokation';
-$lang['HOMEURL'] = 'URL der Webseite<br />Benötigt javaUniUploader';
-$lang['FORUMURL'] = 'URL des Forums<br />Benötigt javaUniUploader';
+$lang['HOMEURL'] = 'URL der Webseite';
+$lang['FORUMURL'] = 'URL des Forums';
+$lang['USERAGENT'] = 'Custom User Agent';
+$lang['UPERRPOPUP'] = 'Show Error Popup when upload fails';
+$lang['CLOSEAFUPD'] = 'Close UU after Sync/Update';
+$lang['CLOSEAFLAU'] = 'Close UU after WoW Launch';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'WoW automatisch starten';
@@ -388,6 +396,7 @@ $lang['DOWNLOADBEFOREWOWL'] = 'Web==&gt;WoW - Vor dem UU Start initiieren WoW';
 $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Bevor UU hochlädt, initiieren';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Nachdem UU hochgeladen hat, initiieren';
 $lang['PURGEFIRST'] = 'Lösche die Web==&gt;WoW Daten vor der Synchronisation';
+$lang['USEAPPDATA'] = 'Use Application Data Folder';
 
 // END UU Sync Strings
 

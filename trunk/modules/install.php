@@ -24,10 +24,10 @@ if( !defined('IN_UNIADMIN') )
 $timer_start = ua_microtime();
 
 
-define( 'UA_ADDONZIP_DIR' , UA_BASEDIR . 'addon_zips' . DIR_SEP );
-define( 'UA_ADDONTMP_DIR' , UA_BASEDIR . 'addon_temp' . DIR_SEP );
-define( 'UA_LOGO_DIR' , UA_BASEDIR . 'logos' . DIR_SEP );
-define( 'UA_DEBUG', 2 );
+define('UA_ADDONZIP_DIR' , UA_BASEDIR . 'addon_zips' . DIR_SEP);
+define('UA_ADDONTMP_DIR' , UA_BASEDIR . 'addon_temp' . DIR_SEP);
+define('UA_LOGO_DIR' , UA_BASEDIR . 'logos' . DIR_SEP);
+define('UA_DEBUG', 2);
 
 // Get the config file
 if( file_exists(UA_BASEDIR . 'config.php') )
@@ -152,7 +152,7 @@ class Template_Wrap extends Template
 		$this->assign_vars(array(
 			'INSTALL_STEP'  => $STEP,
 			'TEMPLATE_PATH' => 'styles/install',
-			'UA_FORMACTION' => UA_INDEXPAGE.'install'
+			'UA_FORMACTION' => UA_INDEXPAGE . 'install'
 			)
 		);
 	}
@@ -457,6 +457,9 @@ function process_step1()
 	 */
 	$our_ua_version   = $DEFAULTS['version'];
 	$their_ua_version = 'Unknown';
+
+	$location = str_replace('http://www.wowroster.net','',UA_UPDATECHECK);
+
 	$sh = @fsockopen('wowroster.net', 80, $errno, $error, 5);
 	if ( !$sh )
 	{
@@ -464,7 +467,7 @@ function process_step1()
 	}
 	else
 	{
-		@fputs($sh, "GET /ua_version.txt HTTP/1.1\r\nHost: wowroster.net\r\nConnection: close\r\n\r\n");
+		@fputs($sh, "GET /$location HTTP/1.1\r\nHost: wowroster.net\r\nConnection: close\r\n\r\n");
 		while ( !@feof($sh) )
 		{
 			$content = @fgets($sh, 512);
@@ -535,7 +538,7 @@ function process_step2()
 	{
 		while( false !== ($file = readdir($handle)) )
 		{
-			if( $file != '.' && $file != '..' && $file != '.svn' && !is_dir(UA_LANGDIR.$file) )
+			if( $file != '.' && $file != '..' && $file != '.svn' && !is_dir(UA_LANGDIR . $file) )
 			{
 				$tpl->assign_block_vars('language_row', array(
 					'VALUE'  => substr($file,0,-4),
@@ -547,7 +550,7 @@ function process_step2()
 	}
 	else
 	{
-		$tpl->message_die('Cannot read the directory ['.UA_LANGDIR.']', 'Installation Error');
+		$tpl->message_die('Cannot read the directory [' . UA_LANGDIR . ']', 'Installation Error');
 	}
 
 	/**
@@ -698,20 +701,21 @@ function process_step3()
 	 * Write the config file
 	 */
 	$config_file  = '';
-	$config_file .= "<?php\n\n";
-	$config_file .= "\$config['host']         = '" . $config['host']         . "';\n";
-	$config_file .= "\$config['username']     = '" . $config['username']     . "';\n";
-	$config_file .= "\$config['password']     = '" . $config['password']     . "';\n";
-	$config_file .= "\$config['database']     = '" . $config['database']     . "';\n";
-	$config_file .= "\$config['table_prefix'] = '" . $config['table_prefix'] . "';\n";
-	$config_file .= "\$config['dbtype']       = '" . $config['dbtype']       . "';\n";
+	$config_file .= "<?php\n";
+	$config_file .= "/**\n * AUTO-GENERATED CONFIG FILE\n * DO NOT EDIT !!!\n */\n\n";
+	$config_file .= "\$config['host']         = '" . var_export($config['host'],true)         . "';\n";
+	$config_file .= "\$config['username']     = '" . var_export($config['username'],true)     . "';\n";
+	$config_file .= "\$config['password']     = '" . var_export($config['password'],true)     . "';\n";
+	$config_file .= "\$config['database']     = '" . var_export($config['database'],true)     . "';\n";
+	$config_file .= "\$config['table_prefix'] = '" . var_export($config['table_prefix'],true) . "';\n";
+	$config_file .= "\$config['dbtype']       = '" . var_export($config['dbtype'],true)       . "';\n";
 
 	// Set our permissions to execute-only
 	@umask(0111);
 
 	if ( !$fp = @fopen('config.php', 'w') )
 	{
-		$error_message  = 'The <strong>config.php</strong> file couldn\'t be opened for writing.  Paste the following in to config.php and save the file to continue:<br /><pre>' . $config_file . '</pre>';
+		$error_message  = 'The <strong>config.php</strong> file couldn\'t be opened for writing. Paste the following in to config.php and save the file to continue:<br /><pre>' . $config_file . '</pre>';
 		$tpl->error_append($error_message);
 	}
 	else
@@ -786,11 +790,11 @@ function process_step4()
 	// Set PRIMARYURL, SYNCHROURL, RETRDATAURL with default values
 
 	// Grab the url first, lol!
-	$url = explode('/','http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
+	$url = explode('/','http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
 	array_pop($url);
 	$url = implode('/',$url);
 
-	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/yourinterface.php' WHERE `set_name` = 'PRIMARYURL';");
+	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/upload_sv.php' WHERE `set_name` = 'PRIMARYURL';");
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/interface.php' WHERE `set_name` = 'SYNCHROURL';");
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/web_to_wow.php' WHERE `set_name` = 'RETRDATAURL';");
 
@@ -800,7 +804,7 @@ function process_step4()
 	 * Rewrite the config file to its final form
 	 */
 	$config_file = file(UA_BASEDIR . 'config.php');
-	$config_file[] = 'define(\'UA_INSTALLED\', true);';
+	$config_file[] = "\ndefine('UA_INSTALLED', true);\n";
 	$config_file = implode('', $config_file);
 
 	// Set our permissions to execute-only
