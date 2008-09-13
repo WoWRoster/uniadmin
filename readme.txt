@@ -1,4 +1,4 @@
-UniAdmin 0.7.9 (updated 18th June 2007)
+UniAdmin 0.8.0 (updated 30th September 2008)
 ===============================================
 UniAdmin is a back-end web-based tool for managing the configuration of and logos in UniUploader and
 auto-updating WoW addons.
@@ -302,7 +302,7 @@ v0.7.5
 [~] Not using $pipe_sep in interface.php
 [~] Made a call to $uniadmin->config() after changing settings in UA config so they will show correctly
 [~] Notice userN when editing self user in User Config page
-[~] Fixed error on UA config page dealing with default style
+[~] Error on UA config page dealing with default style
 [~] index.php to use the page variable constant defined in constants.php
 [+] Added installer and upgrader
     Moved files around in zip package now that UA has an installer
@@ -317,15 +317,13 @@ v0.7.5
 [+] Added password confirmation
     If you edit yourself, you need to enter old password
     If your level > user, then no old password is needed
-[+] If adding a new user, and there is a form validation error, some of the info will be still in the form (name,
-level, lang, style)
+[+] If adding a new user, and there is a form validation error, some of the info will be still in the form (name, level, lang, style)
 [+] Added ua_die() to kill UA when needed with a message and debug info
 [+] Added remote checking for new UA version
     There is an option to turn this off in uniadmin config
 [+] Added WoWAce module, now you can get addons from wowace.com
 [+] Added a function to grab a remote file's contents $uniadmin->get_remote_contents()
-[!] Addon zips are loaded on the assumption that they extract to Interface/AddOns/, there is a switch on the upload
-form to change this action
+[!] Addon zips are loaded on the assumption that they extract to Interface/AddOns/, there is a switch on the upload form to change this action
 [!] Simplified the upload process
     Only 3 fields; Required, Full Path, Select File
 [!] Greatly improved .toc file detection
@@ -333,8 +331,7 @@ form to change this action
     You can use the addon details page to edit fields
 [!] get_toc() changed to get_toc_val()
     This can get any value from the .toc file such as Interface, Version, X-Website, etc...
-[!] Merged many addon.php functions ( require_addon, optional_addon, enable_addon, disable_addon ) into one
-function toggle_addon()
+[!] Merged many addon.php functions ( require_addon, optional_addon, enable_addon, disable_addon ) into one function toggle_addon()
 [!] Moved addon functions to include/addon_lib.php
 [!] Moved debug config to the UA settings page
 [!] Removed all extra ?>
@@ -343,14 +340,13 @@ function toggle_addon()
     Finally all html moved into themes and out of php code
     Made the pie charts smaller on the stats page
     Removed uploaded and status idication when no logo's are uploaded
-    Added meta tag the prevents IE from showing the image toolbar
+    Added meta tag that prevents IE from showing the image toolbar
 [!] Moved URL detection to include/uniadmin.php
 [!] Simplified module detection and inclusion in index.php
 [!] Changed $uniadmin->debug() to $uniadmin->error()
 [!] Changed some calls in $uniadmin that used $uniadmin to $this
 [!] Changed $uniadmin->ls() to be able to not traverse directories if needed
-[!] Moved interface.php to modules dir, interface.php still exists in the root, but includes index.php and sets
-$_GET['p'] = 'interface';
+[!] Moved interface.php to modules dir, interface.php still exists in the root, but includes index.php and sets $_GET['p'] = 'interface';
 [!] Changed uniadmin config text strings in locale files
     Using "title|tootip" format now
 [!] Changed menu generation to give more variables so menu can be styled easily in themes
@@ -366,7 +362,7 @@ Beta 0.7.0
 [~] Uploading addons will now try to chmod and moveuploaded file and report any errors nicely
 [~] Addons uploaded with an already existing addon in UA will be updated and will not be inserted as a new addon
 [~] Addon parsing now checks to see if you are uploading a .zip file
-[~] The temp_anaylize folder will now be  on addon processing errors
+[~] The temp_anaylize folder will now be cleared on addon processing errors
 [+] Display templating
 [+] TOC scanning and display for addons
 [+] Required/Optional addons selection

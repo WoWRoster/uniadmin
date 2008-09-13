@@ -336,6 +336,8 @@ $lang['PROGRAMMODE'] = 'Mode du programme';
 $lang['AUTODETECTWOW'] = 'Auto détecter WoW';
 $lang['OPENGL'] = 'Executer WoW en mode OpenGL';
 $lang['WINDOWMODE'] = 'Executer WoW en fenêtré';
+$lang['UPLOADSCREENSHOTS'] = 'Upload Screenshots';
+$lang['UPLOADSVS'] = 'Upload SavedVariable files';
 
 // updater
 $lang['UUUPDATERCHECK'] = 'Vérifier les mises à jour d\'UniUploader';
@@ -343,6 +345,8 @@ $lang['SYNCHROURL'] = 'URL de synchronisation avec UniAdmin';
 $lang['ADDONAUTOUPDATE'] = 'Mise à jour automatique des AddOns';
 $lang['UUSETTINGSUPDATER'] = 'Synchroniser les réglages UniUploader avec UniAdmin';
 $lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
+$lang['AUTOSYNCIN'] = 'Auto Sync/Update Interval';
+$lang['UPDATESURL'] = 'URL for UniUpdater updates/upgrades';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Charger Automatiquement les fichiers SavedVariable lorsqu\'ils sont modifiés';
@@ -368,8 +372,12 @@ $lang['ADDURL3CH'] = 'URL Additionnelle 1';
 $lang['ADDURL3'] = 'Adresse de l\'URL Additionnelle 3';
 $lang['ADDURL4CH'] = 'URL Additionnelle 1';
 $lang['ADDURL4'] = 'Adresse de l\'URL Additionnelle 4';
-$lang['HOMEURL'] = 'URL de la homepage<br />Utilisé par javaUniUploader';
-$lang['FORUMURL'] = 'URL des forums<br />Utilisé par javaUniUploader';
+$lang['HOMEURL'] = 'URL de la homepage';
+$lang['FORUMURL'] = 'URL des forums';
+$lang['USERAGENT'] = 'Custom User Agent';
+$lang['UPERRPOPUP'] = 'Show Error Popup when upload fails';
+$lang['CLOSEAFUPD'] = 'Close UU after Sync/Update';
+$lang['CLOSEAFLAU'] = 'Close UU after WoW Launch';
 
 // advanced
 $lang['AUTOLAUNCHWOW'] = 'Lancer WoW automatiquement';
@@ -388,6 +396,7 @@ $lang['DOWNLOADBEFOREWOWL'] = 'Web==&gt;WoW - Faire avant qu\'UU ne lance WoW';
 $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Faire avant qu\'UU ne charge';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Faire après qu\'UU n\'ait chargé';
 $lang['PURGEFIRST'] = 'Supprimer le fichier de données Web==&gt;WoW avant synchronisation';
+$lang['USEAPPDATA'] = 'Use Application Data Folder';
 
 // END UU Sync Strings
 

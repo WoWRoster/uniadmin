@@ -19,6 +19,11 @@ INSERT INTO `uniadmin_config` (`config_name`, `config_value`, `form_type`) VALUE
 	('ua_debug', '1', 'radio{no^0|half^1|full^2'),
 	('versioncache', '', 'hidden');
 
+### Logos
+INSERT INTO `uniadmin_logos` (`filename` , `updated` , `logo_num` , `active` , `md5`) VALUES
+	('logo1.gif', , '1', '0', '$md5'),
+	('logo2.gif', , '2', '0', '$md5');
+
 ### Settings
 INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, `form_type`) VALUES
 	('LANGUAGE', 'English', '0', 'settings', 'select{English^English|Deutsch^Deutsch|French^French|Nederlands^Nederlands|Russian^Russian|Svenska^Svenska'),
@@ -27,12 +32,16 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('AUTODETECTWOW', '1', '0', 'settings', 'radio{yes^1|no^0'),
 	('OPENGL', '0', '0', 'settings', 'radio{yes^1|no^0'),
 	('WINDOWMODE', '0', '0', 'settings', 'radio{yes^1|no^0'),
+	('UPLOADSCREENSHOTS','1','0', 'settings', 'radio{yes^1|no^0'),
+	('UPLOADSVS','1','0', 'settings', 'radio{yes^1|no^0'),
 
 	('UUUPDATERCHECK', '1', '0', 'updater', 'radio{yes^1|no^0'),
 	('SYNCHROURL', 'http://yourdomain.com/UniAdmin/interface.php', '0', 'updater', 'text{250|50'),
 	('ADDONAUTOUPDATE', '1', '0', 'updater', 'radio{yes^1|no^0'),
 	('ALLOWADDONDEL', '1', '0', 'updater', 'radio{yes^1|no^0'),
 	('UUSETTINGSUPDATER', '1', '0', 'updater', 'radio{yes^1|no^0'),
+	('AUTOSYNCIN','0','0', 'updater', 'text{250|50'),
+	('UPDATESURL', 'http://www.wowroster.net/uniuploader_updater2/update.php', '0', 'updater', 'text{250|50'),
 
 	('AUTOUPLOADONFILECHANGES', '1', '0', 'options', 'radio{yes^1|no^0'),
 	('ALWAYSONTOP', '1', '0', 'options', 'radio{yes^1|no^0'),
@@ -59,6 +68,10 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('ADDURL4', '', '0', 'options', 'text{250|50'),
 	('HOMEURL', 'http://yourdomain.com', '0', 'options', 'text{250|50'),
 	('FORUMURL', 'http://yourdomain.com/forum', '0', 'options', 'text{250|50'),
+	('USERAGENT','UniUploader 2.0 (UU 2.6.8 BETA 3; English)','0', 'options', 'text{250|50'),
+	('UPERRPOPUP','1','0', 'options', 'radio{yes^1|no^0'),
+	('CLOSEAFUPD','0','0', 'options', 'radio{yes^1|no^0'),
+	('CLOSEAFLAU','0','0', 'options', 'radio{yes^1|no^0'),
 
 	('AUTOLAUNCHWOW', '0', '0', 'advanced', 'radio{yes^1|no^0'),
 	('WOWARGS', '0', '0', 'advanced', 'text{250|50'),
@@ -75,7 +88,8 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('DOWNLOADBEFOREWOWL', '0', '0', 'advanced', 'radio{on^1|off^0'),
 	('DOWNLOADBEFOREUPLOAD', '0', '0', 'advanced', 'radio{on^1|off^0'),
 	('DOWNLOADAFTERUPLOAD', '1', '0', 'advanced', 'radio{on^1|off^0'),
-	('PURGEFIRST','0','0', 'advanced', 'radio{yes^1|no^0');
+	('PURGEFIRST','0','0', 'advanced', 'radio{yes^1|no^0'),
+	('USEAPPDATA','0','0', 'advanced', 'radio{yes^1|no^0');
 
 ### SV List
 INSERT INTO `uniadmin_svlist` (`sv_name`) VALUES

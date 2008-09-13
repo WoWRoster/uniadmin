@@ -174,7 +174,6 @@ function main( )
 	}
 
 	$sql = 'SELECT * FROM `' . $db->table('addons') . '` ORDER BY `name` ASC;';
-
 	$result = $db->query($sql);
 
 	// Set not scanned addons array
@@ -323,7 +322,7 @@ function addon_detail( $addon_id )
 		$tpl->assign_var('S_ADDON_ADD_DEL',true);
 	}
 
-	// If anonymous, cahnge to "View Addons"
+	// If anonymous, change to "View Addons"
 	if( $user->data['level'] == UA_ID_ANON )
 	{
 		$tpl->assign_var('L_ADDON_MANAGE',$user->lang['view_addons']);
@@ -367,7 +366,7 @@ function addon_detail( $addon_id )
 				addToList($row2['filename'],$row2['md5sum'],$addonsArray);
 			}
 
-			//$uniadmin->error('<pre>' . print_r($addonsArray,true) . '</pre>');
+//			$uniadmin->error('<pre>' . print_r($addonsArray,true) . '</pre>');
 
 			// Parse the dir tree array into an html list
 			$htmllist = '';
