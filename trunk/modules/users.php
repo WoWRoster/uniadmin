@@ -96,7 +96,7 @@ function main( )
 		)
 	);
 
-	$sql = "SELECT * FROM `".$db->table('users')."` ORDER BY `level` DESC, `name` ASC;";
+	$sql = "SELECT * FROM `" . $db->table('users') . "` ORDER BY `level` DESC, `name` ASC;";
 	$result = $db->query($sql);
 
 
@@ -174,7 +174,7 @@ function modify_user()
 
 	$uid = $_POST[UA_URI_ID];
 
-	$sql = "SELECT * FROM `".$db->table('users')."` WHERE `id` = '$uid';";
+	$sql = "SELECT * FROM `" . $db->table('users') . "` WHERE `id` = '$uid';";
 	$result = $db->query($sql);
 
 	$row = $db->fetch_record($result);
@@ -233,7 +233,7 @@ function finalize_user()
 	$userS = $_POST['style'];
 	$userW = $_POST['language'];
 
-	$sql = "SELECT * FROM `".$db->table('users')."` WHERE `id` = '".$db->escape($userI)."';";
+	$sql = "SELECT * FROM `" . $db->table('users') . "` WHERE `id` = '" . $db->escape($userI) . "';";
 	$result = $db->query($sql);
 
 	$row = $db->fetch_record($result);
@@ -278,7 +278,7 @@ function finalize_user()
 			$userP = $old_pass_hash;
 		}
 
-		$sql = "UPDATE `".$db->table('users')."` SET `password` = '".$db->escape($userP)."', `language` = '".$db->escape($userW)."', `user_style` = '".$db->escape($userS)."' WHERE `id` = '$userI' LIMIT 1 ;";
+		$sql = "UPDATE `" . $db->table('users') . "` SET `password` = '" . $db->escape($userP) . "', `language` = '" . $db->escape($userW) . "', `user_style` = '" . $db->escape($userS) . "' WHERE `id` = '$userI' LIMIT 1 ;";
 		$result = $db->query($sql);
 	}
 	elseif( $user->data['level'] > UA_ID_USER )
@@ -314,11 +314,11 @@ function finalize_user()
 			{
 				$userL = UA_ID_USER;
 			}
-			$sql = "UPDATE `".$db->table('users')."` SET `name` = '".$db->escape($userN)."', `level` = '".$db->escape($userL)."', `password` = '".$db->escape($userP)."', `language` = '".$db->escape($userW)."', `user_style` = '".$db->escape($userS)."' WHERE `id` = '$userI' LIMIT 1 ;";
+			$sql = "UPDATE `" . $db->table('users') . "` SET `name` = '" . $db->escape($userN) . "', `level` = '" . $db->escape($userL) . "', `password` = '" . $db->escape($userP) . "', `language` = '" . $db->escape($userW) . "', `user_style` = '" . $db->escape($userS) . "' WHERE `id` = '$userI' LIMIT 1 ;";
 		}
 		else
 		{
-			$sql = "UPDATE `".$db->table('users')."` SET `name` = '".$db->escape($userN)."', `password` = '".$db->escape($userP)."', `language` = '".$db->escape($userW)."', `user_style` = '".$db->escape($userS)."' WHERE `id` = '$userI' LIMIT 1 ;";
+			$sql = "UPDATE `" . $db->table('users') . "` SET `name` = '" . $db->escape($userN) . "', `password` = '" . $db->escape($userP) . "', `language` = '" . $db->escape($userW) . "', `user_style` = '" . $db->escape($userS) . "' WHERE `id` = '$userI' LIMIT 1 ;";
 
 		}
 		$result = $db->query($sql);
@@ -383,7 +383,7 @@ function new_user()
 	{
 		if ($user->data['level'] > UA_ID_POWER)
 		{
-			$sql = "INSERT INTO `".$db->table('users')."` ( `name` , `password` , `level` , `language` , `user_style` ) VALUES ( '".$db->escape($userN)."' , '".$userP."' , '$userL' , '".$db->escape($userW)."' , '".$db->escape($userS)."' );";
+			$sql = "INSERT INTO `" . $db->table('users') . "` ( `name` , `password` , `level` , `language` , `user_style` ) VALUES ( '" . $db->escape($userN) . "' , '" . $userP . "' , '$userL' , '" . $db->escape($userW) . "' , '" . $db->escape($userS) . "' );";
 			$db->query($sql);
 			if( !$db->affected_rows() )
 			{
@@ -395,7 +395,7 @@ function new_user()
 		}
 		else
 		{
-			$sql = "INSERT INTO `".$db->table('users')."` ( `name` , `password` , `level` , `language` , `user_style` ) VALUES ( '".$db->escape($userN)."' , '".$userP."' , '1' , '".$db->escape($userW)."' , '".$db->escape($userS)."' );";
+			$sql = "INSERT INTO `" . $db->table('users') . "` ( `name` , `password` , `level` , `language` , `user_style` ) VALUES ( '" . $db->escape($userN) . "' , '" . $userP . "' , '1' , '" . $db->escape($userW) . "' , '" . $db->escape($userS) . "' );";
 			$db->query($sql);
 			if( !$db->affected_rows() )
 			{
@@ -421,7 +421,7 @@ function delete_user()
 
 	$userI = $_POST[UA_URI_ID];
 
-	$sql = "SELECT * FROM `".$db->table('users')."` WHERE `id` = '$userI';";
+	$sql = "SELECT * FROM `" . $db->table('users') . "` WHERE `id` = '$userI';";
 	$result = $db->query($sql);
 
 	$row = $db->fetch_record($result);
@@ -429,7 +429,7 @@ function delete_user()
 
 	if ($user->data['level'] == UA_ID_ADMIN || $user->data['id'] == $userI)
 	{
-		$sql = "DELETE FROM `".$db->table('users')."` WHERE `id` = '$userI' LIMIT 1";
+		$sql = "DELETE FROM `" . $db->table('users') . "` WHERE `id` = '$userI' LIMIT 1";
 		$result = $db->query($sql);
 		if( !$db->affected_rows() )
 		{
@@ -441,7 +441,7 @@ function delete_user()
 	}
 	elseif ($user->data['level'] == UA_ID_POWER && $row['level'] == UA_ID_USER )
 	{
-		$sql = "DELETE FROM `".$db->table('users')."` WHERE `id` = '$userI' LIMIT 1";
+		$sql = "DELETE FROM `" . $db->table('users') . "` WHERE `id` = '$userI' LIMIT 1";
 		$result = $db->query($sql);
 		if( !$db->affected_rows() )
 		{

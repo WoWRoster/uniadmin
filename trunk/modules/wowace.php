@@ -174,12 +174,12 @@ function update_wowace_addons()
 			}
 			else
 			{
-				//$uniadmin->message(sprintf($user->lang['not_wowace_addon'],$row['name']));
+//				$uniadmin->message(sprintf($user->lang['not_wowace_addon'],$row['name']));
 			}
 		}
 	}
 
-	//echo '<pre>' . print_r( $_SESSION, true ) . '</pre>' . "\n";
+//	echo '<pre>' . print_r( $_SESSION, true ) . '</pre>' . "\n";
 }
 
 

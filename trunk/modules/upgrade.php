@@ -129,25 +129,33 @@ class Upgrade
 	 */
 	function standard_upgrader()
 	{
-		global $db, $config;
+		global $db, $config, $user;
 
 		$ver = str_replace('.','',$this->versions[$this->index]);
 
-		$db_structure_file = UA_INCLUDEDIR . 'dbal' . DIR_SEP . 'structure' . DIR_SEP . 'upgrade_'.$ver.'.sql';
+		$db_structure_file = UA_INCLUDEDIR . 'dbal' . DIR_SEP . 'structure' . DIR_SEP . 'upgrade_' . $ver . '.sql';
 
-		// Parse structure file and create database tables
-		$sql = @fread(@fopen($db_structure_file, 'r'), @filesize($db_structure_file));
-		$sql = preg_replace('#uniadmin\_(\S+?)([\s\.,]|$)#', $config['table_prefix'] . '\\1\\2', $sql);
-
-		$sql = remove_remarks($sql);
-		$sql = parse_sql($sql, ';');
-
-		$sql_count = count($sql);
-		for ( $i = 0; $i < $sql_count; $i++ )
+		if( file_exists($db_structure_file) )
 		{
-			$db->query($sql[$i]);
+			// Parse structure file and create database tables
+			$sql = @fread(@fopen($db_structure_file, 'r'), @filesize($db_structure_file));
+			$sql = preg_replace('#uniadmin\_(\S+?)([\s\.,]|$)#', $config['table_prefix'] . '\\1\\2', $sql);
+
+			$sql = remove_remarks($sql);
+			$sql = parse_sql($sql, ';');
+
+			$sql_count = count($sql);
+			for ( $i = 0; $i < $sql_count; $i++ )
+			{
+				$db->query($sql[$i]);
+			}
+			unset($sql);
 		}
-		unset($sql);
+
+		// Nifty, we update the stats table to include our UA upgrades!
+		$sql = "INSERT INTO `" . $db->table('stats') . "` ( `ip_addr` , `host_name` , `action` , `time` , `user_agent` ) VALUES
+			( '" . $db->escape($user->ip_address) . "', '" . $db->escape($user->remote_host) . "', 'UPGRADE-" . UA_VER . "', '" . time() . "', '" . $db->escape($user->user_agent) . "' );";
+		$db->query($sql);
 
 		return;
 	}

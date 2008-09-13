@@ -104,7 +104,7 @@ function main( )
 		)
 	);
 
-	$sql = "SELECT * FROM `".$db->table('settings')."`";
+	$sql = "SELECT * FROM `" . $db->table('settings') . "`";
 
 	if( $user->data['level'] == UA_ID_ADMIN )
 	{
@@ -151,12 +151,12 @@ function main( )
 		{
 			case 'text':
 				$length = explode('|',$input_type[1]);
-				$input_field = '<input class="input" name="'.$setname.'" type="text" value="'.$setvalue.'" size="'.$length[1].'" maxlength="'.$length[0].'" />';
+				$input_field = '<input class="input" name="' . $setname . '" type="text" value="' . $setvalue . '" size="' . $length[1] . '" maxlength="' . $length[0] . '" />';
 				break;
 
 			case 'password':
 				$length = explode('|',$input_type[1]);
-				$input_field = '<input class="input" name="'.$setname.'" type="password" value="'.$setvalue.'" size="'.$length[1].'" maxlength="'.$length[0].'" />';
+				$input_field = '<input class="input" name="' . $setname . '" type="password" value="' . $setvalue . '" size="' . $length[1] . '" maxlength="' . $length[0] . '" />';
 				break;
 
 			case 'radio':
@@ -165,26 +165,26 @@ function main( )
 				foreach( $options as $value )
 				{
 					$vals = explode('^',$value);
-					$input_field .= '<input type="radio" id="'.$setname.'_'.$rad.'" name="'.$setname.'" value="'.$vals[1].'" '.( $setvalue == $vals[1] ? 'checked="checked"' : '' ).' /><label for="'.$setname.'_'.$rad.'">'.$user->lang[$vals[0]]."</label>\n";
+					$input_field .= '<input type="radio" id="' . $setname . '_' . $rad . '" name="' . $setname . '" value="' . $vals[1] . '" ' . ( $setvalue == $vals[1] ? 'checked="checked"' : '' ) . ' /><label for="' . $setname . '_' . $rad . '">' . $user->lang[$vals[0]] . "</label>\n";
 					$rad++;
 				}
 				break;
 
 			case 'select':
 				$options = explode('|',$input_type[1]);
-				$input_field .= '<select class="select" name="'.$setname.'">'."\n";
+				$input_field .= '<select class="select" name="' . $setname . '">' . "\n";
 				$select_one = 1;
 				foreach( $options as $value )
 				{
 					$vals = explode('^',$value);
 					if( $setvalue == $vals[1] && $select_one )
 					{
-						$input_field .= '	<option value="'.$vals[1].'" selected="selected">-'.$vals[0].'-</option>'."\n";
+						$input_field .= '	<option value="' . $vals[1] . '" selected="selected">-' . $vals[0] . '-</option>' . "\n";
 						$select_one = 0;
 					}
 					else
 					{
-						$input_field .= '	<option value="'.$vals[1].'">'.$vals[0].'</option>'."\n";
+						$input_field .= '	<option value="' . $vals[1] . '">' . $vals[0] . '</option>' . "\n";
 					}
 				}
 				$input_field .= '</select>';
@@ -230,7 +230,7 @@ function main( )
 	$db->free_result($result);
 
 	// Build the SV list table
-	$sql = "SELECT * FROM `".$db->table('svlist')."` ORDER BY `id` DESC;";
+	$sql = "SELECT * FROM `" . $db->table('svlist') . "` ORDER BY `id` DESC;";
 	$result = $db->query($sql);
 
 	while( $row = $db->fetch_record($result) )
@@ -266,7 +266,7 @@ function process_update( )
 		{
 			if( isset($_POST['settings']) )
 			{
-				if( isset($_POST[$setting_name.'_en']) && $_POST[$setting_name.'_en'] == '1')
+				if( isset($_POST[$setting_name . '_en']) && $_POST[$setting_name . '_en'] == '1')
 				{
 					$enabled = 1;
 				}
@@ -275,14 +275,14 @@ function process_update( )
 					$enabled = 0;
 				}
 
-				$sql = "UPDATE `".$db->table('settings')."` SET `enabled` = '$enabled', `set_value` = '".$db->escape($setting_value)."' WHERE `set_name` = '".$db->escape($setting_name)."' LIMIT 1;";
+				$sql = "UPDATE `" . $db->table('settings') . "` SET `enabled` = '$enabled', `set_value` = '" . $db->escape($setting_value) . "' WHERE `set_name` = '" . $db->escape($setting_name) . "' LIMIT 1;";
 				$db->query($sql);
 			}
 			elseif( isset($_POST['inifile']) )
 			{
-				if( isset($_POST[$setting_name.'_ck']) && $_POST[$setting_name.'_ck'] == '1')
+				if( isset($_POST[$setting_name . '_ck']) && $_POST[$setting_name . '_ck'] == '1')
 				{
-					$sql = "UPDATE `".$db->table('settings')."` SET `set_value` = '".$db->escape($setting_value)."' WHERE `set_name` = '".$db->escape($setting_name)."' LIMIT 1;";
+					$sql = "UPDATE `" . $db->table('settings') . "` SET `set_value` = '" . $db->escape($setting_value) . "' WHERE `set_name` = '" . $db->escape($setting_name) . "' LIMIT 1;";
 					$db->query($sql);
 				}
 			}
@@ -302,7 +302,7 @@ function add_sv( $svname )
 
 	if( !empty($svname) )
 	{
-		$sql = "INSERT INTO `".$db->table('svlist')."` ( `sv_name` ) VALUES ( '".$db->escape($svname)."' );";
+		$sql = "INSERT INTO `" . $db->table('svlist') . "` ( `sv_name` ) VALUES ( '" . $db->escape($svname) . "' );";
 		$db->query($sql);
 		if( !$db->affected_rows() )
 		{
@@ -320,7 +320,7 @@ function remove_sv( $id )
 {
 	global $db, $user, $uniadmin;
 
-	$sql = "DELETE FROM `".$db->table('svlist')."` WHERE `id` = ".$db->escape($id)." LIMIT 1;";
+	$sql = "DELETE FROM `" . $db->table('svlist') . "` WHERE `id` = " . $db->escape($id) . " LIMIT 1;";
 	$db->query($sql);
 	if( !$db->affected_rows() )
 	{
@@ -366,7 +366,7 @@ function process_ini( )
 		$ini_folder = UA_CACHEDIR;
 
 		// Name and location of the ini file
-		$ini_file = $ini_folder.$file_name;
+		$ini_file = $ini_folder . $file_name;
 
 		// Delete ini if it exists
 		if( file_exists($ini_file) )
@@ -451,7 +451,7 @@ function get_ini( )
 	$comment = "UniUploader initialization file\nAUTO generated by UniAdmin";
 
 	// Get settings
-	$sql = "SELECT * FROM `".$db->table('settings')."` ORDER BY `id` ASC;";
+	$sql = "SELECT * FROM `" . $db->table('settings') . "` ORDER BY `id` ASC;";
 	$result = $db->query($sql);
 
 	$gen_ini = array();
@@ -464,13 +464,13 @@ function get_ini( )
 	$db->free_result($result);
 
 	// Get SV list
-	$sql = "SELECT `sv_name` FROM `".$db->table('svlist')."` ORDER BY `id` ASC;";
+	$sql = "SELECT `sv_name` FROM `" . $db->table('svlist') . "` ORDER BY `id` ASC;";
 	$result = $db->query($sql);
 
 	$checked_sv = '';
 	while( $row = $db->fetch_record($result) )
 	{
-		$checked_sv .= $row['sv_name'].'|';
+		$checked_sv .= $row['sv_name'] . '|';
 	}
 	if( !empty($checked_sv) )
 	{
@@ -505,41 +505,41 @@ function read_ini_file( $filename , $commentchar='#' )
 	{
 		foreach( $array as $filedata )
 		{
-			$dataline = trim( $filedata );
-			$firstchar = substr( $dataline, 0, 1 );
+			$dataline = trim($filedata);
+			$firstchar = substr($dataline, 0, 1);
 			if( $firstchar != $commentchar && $dataline!='' )
 			{
-				//It's an entry (not a comment and not a blank line)
-				if( $firstchar == '[' && substr( $dataline, -1, 1 ) == ']' )
+				// It's an entry (not a comment and not a blank line)
+				if( $firstchar == '[' && substr($dataline, -1, 1) == ']' )
 				{
-					//It's a section
-					$section = substr( $dataline, 1, -1 );
+					// It's a section
+					$section = substr($dataline, 1, -1);
 				}
 				else
 				{
-					//It's a key...
-					$delimiter = strpos( $dataline, '=' );
+					// It's a key...
+					$delimiter = strpos($dataline, '=');
 					if( $delimiter > 0 )
 					{
 						//...with a value
-						$key = trim( substr( $dataline, 0, $delimiter ) );
-						$value = trim( substr( $dataline, $delimiter + 1 ) );
-						if( substr( $value, 0, 1 ) == '"' && substr( $value, -1, 1 ) == '"' )
+						$key = trim( substr($dataline, 0, $delimiter) );
+						$value = trim( substr($dataline, $delimiter + 1) );
+						if( substr($value, 0, 1) == '"' && substr($value, -1, 1) == '"' )
 						{
-							$value = substr( $value, 1, -1 );
+							$value = substr($value, 1, -1);
 						}
 						$array_out[$section][$key] = $value;
 					}
 					else
 					{
-						//...without a value
-						$array_out[$section][trim( $dataline )]='';
+						// ...without a value
+						$array_out[$section][trim($dataline)]='';
 					}
 				}
 			}
 			else
 			{
-				//It's a comment or blank line.  Ignore.
+				// It's a comment or blank line.  Ignore.
 			}
 		}
 		return $array_out;
@@ -563,41 +563,41 @@ function generate_ini_file( $array , $commenttext='' , $commentchar='#' )
 	$ini_file = '';
 	if( $commenttext!='' )
 	{
-		$comtext = $commentchar.
-		str_replace( $commentchar, "\r\n".$commentchar,
-		str_replace( "\r", $commentchar,
-		str_replace( "\n", $commentchar,
-		str_replace( "\n\r", $commentchar,
-		str_replace( "\r\n", $commentchar, $commenttext )
+		$comtext = $commentchar .
+		str_replace($commentchar, "\r\n" . $commentchar,
+		str_replace("\r", $commentchar,
+		str_replace("\n", $commentchar,
+		str_replace("\n\r", $commentchar,
+		str_replace("\r\n", $commentchar, $commenttext)
 		)
 		)
 		)
 		)
 		;
-		if( substr( $comtext, -1, 1 ) == $commentchar && substr( $commenttext, -1, 1 ) != $commentchar )
+		if( substr($comtext, -1, 1) == $commentchar && substr($commenttext, -1, 1) != $commentchar )
 		{
 			$comtext = substr($comtext, 0, -1);
 		}
-		$ini_file .= $comtext."\r\n\r\n";
+		$ini_file .= $comtext . "\r\n\r\n";
 	}
 	foreach( $array as $sections => $items )
 	{
-		//Write the section
-		if( isset( $section ) )
+		// Write the section
+		if( isset($section) )
 		{
 			$ini_file .= "\r\n";
 		}
-		$section = preg_replace( '/[\0-\37]|\177/', '-', $sections );
-		$ini_file .= '['.$section."]\r\n";
+		$section = preg_replace('/[\0-\37]|\177/', '-', $sections);
+		$ini_file .= '[' . $section . "]\r\n";
 		foreach( $items as $keys => $values )
 		{
-			//Write the key/value pairs
-			$key = preg_replace( '/[\0-\37]|=|\177/', '-', $keys );
-			if ( substr( $key, 0, 1 ) == $commentchar )
+			// Write the key/value pairs
+			$key = preg_replace('/[\0-\37]|=|\177/', '-', $keys);
+			if( substr( $key, 0, 1 ) == $commentchar )
 			{
-				$key = '-'.substr( $key, 1 );
+				$key = '-' . substr($key, 1);
 			}
-			$value = addcslashes( $values,'' );
+			$value = addcslashes($values,'');
 			switch( $value )
 			{
 				case '0':
@@ -611,7 +611,7 @@ function generate_ini_file( $array , $commenttext='' , $commentchar='#' )
 				default:
 					break;
 			}
-			$ini_file .= $key.'='.$value."\r\n";
+			$ini_file .= $key . '=' . $value . "\r\n";
 		}
 	}
 	return $ini_file;

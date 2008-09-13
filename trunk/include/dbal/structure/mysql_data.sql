@@ -19,11 +19,6 @@ INSERT INTO `uniadmin_config` (`config_name`, `config_value`, `form_type`) VALUE
 	('ua_debug', '1', 'radio{no^0|half^1|full^2'),
 	('versioncache', '', 'hidden');
 
-### Logos
-INSERT INTO `uniadmin_logos` (`filename` , `updated` , `logo_num` , `active` , `md5`) VALUES
-	('logo1.gif', , '1', '0', '$md5'),
-	('logo2.gif', , '2', '0', '$md5');
-
 ### Settings
 INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, `form_type`) VALUES
 	('LANGUAGE', 'English', '0', 'settings', 'select{English^English|Deutsch^Deutsch|French^French|Nederlands^Nederlands|Russian^Russian|Svenska^Svenska'),

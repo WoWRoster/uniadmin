@@ -70,7 +70,7 @@ function main( )
 		)
 	);
 
-	$sql = "SELECT * FROM `".$db->table('config')."` ORDER BY `config_name` ASC;";
+	$sql = "SELECT * FROM `" . $db->table('config') . "` ORDER BY `config_name` ASC;";
 	$result = $db->query($sql);
 
 	while( $row = $db->fetch_record($result) )
@@ -92,7 +92,7 @@ function main( )
 		{
 			case 'text':
 				$length = explode('|',$input_type[1]);
-				$input_field = '<input class="input" name="'.$setname.'" type="text" value="'.$setvalue.'" size="'.$length[1].'" maxlength="'.$length[0].'" />';
+				$input_field = '<input class="input" name="' . $setname . '" type="text" value="' . $setvalue . '" size="' . $length[1] . '" maxlength="' . $length[0] . '" />';
 				break;
 
 			case 'radio':
@@ -101,26 +101,26 @@ function main( )
 				foreach( $options as $value )
 				{
 					$vals = explode('^',$value);
-					$input_field .= '<input type="radio" id="'.$setname.'_'.$rad.'" name="'.$setname.'" value="'.$vals[1].'" '.( $setvalue == $vals[1] ? 'checked="checked"' : '' ).' /><label for="'.$setname.'_'.$rad.'">'.$user->lang[$vals[0]]."</label>\n";
+					$input_field .= '<input type="radio" id="' . $setname . '_' . $rad . '" name="' . $setname . '" value="' . $vals[1] . '" ' . ( $setvalue == $vals[1] ? 'checked="checked"' : '' ) . ' /><label for="' . $setname . '_' . $rad . '">' . $user->lang[$vals[0]] . "</label>\n";
 					$rad++;
 				}
 				break;
 
 			case 'select':
 				$options = explode('|',$input_type[1]);
-				$input_field .= '<select class="select" name="'.$setname.'">'."\n";
+				$input_field .= '<select class="select" name="' . $setname . '">' . "\n";
 				$select_one = 1;
 				foreach( $options as $value )
 				{
 					$vals = explode('^',$value);
 					if( $setvalue == $vals[1] && $select_one )
 					{
-						$input_field .= '  <option value="'.$vals[1].'" selected="selected">'.$vals[0].'</option>'."\n";
+						$input_field .= '  <option value="' . $vals[1] . '" selected="selected">' . $vals[0] . '</option>' . "\n";
 						$select_one = 0;
 					}
 					else
 					{
-						$input_field .= '  <option value="'.$vals[1].'">'.$vals[0].'</option>'."\n";
+						$input_field .= '  <option value="' . $vals[1] . '">' . $vals[0] . '</option>' . "\n";
 					}
 				}
 				$input_field .= '</select>';

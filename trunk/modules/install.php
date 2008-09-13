@@ -191,7 +191,7 @@ class Template_Wrap extends Template
 			$this->assign_var('S_SHOW_DEBUG',false);
 		}
 
-		$this->assign_var('UA_VER', $DEFAULTS['version']);
+		$this->assign_var('UA_VER', UA_VER);
 
 		if( is_object($db) )
 		{
@@ -224,7 +224,6 @@ if( (isset($_GET['mode'])) && ($_GET['mode'] == 'phpinfo') )
 
 // System defaults / available database abstraction layers
 $DEFAULTS = array(
-	'version'       => UA_VER,
 	'default_lang'  => 'english',
 	'default_style' => '1',
 	'table_prefix'  => 'uniadmin_',
@@ -455,7 +454,7 @@ function process_step1()
 	/**
 	 * UniAdmin versions
 	 */
-	$our_ua_version   = $DEFAULTS['version'];
+	$our_ua_version   = UA_VER;
 	$their_ua_version = 'Unknown';
 
 	$location = str_replace('http://www.wowroster.net','',UA_UPDATECHECK);
@@ -753,6 +752,7 @@ function process_step4()
 	define('CONFIG_TABLE', $config['table_prefix'] . 'config');
 	define('USERS_TABLE',  $config['table_prefix'] . 'users');
 	define('SETTINGS_TABLE',  $config['table_prefix'] . 'settings');
+	define('STATS_TABLE',  $config['table_prefix'] . 'stats');
 	define('UA_DB_DIR',  UA_BASEDIR . 'include' . DIR_SEP . 'dbal' . DIR_SEP);
 
 	define('DEBUG', 2);
@@ -794,11 +794,20 @@ function process_step4()
 	array_pop($url);
 	$url = implode('/',$url);
 
+	// Set some default values
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/upload_sv.php' WHERE `set_name` = 'PRIMARYURL';");
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/interface.php' WHERE `set_name` = 'SYNCHROURL';");
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/web_to_wow.php' WHERE `set_name` = 'RETRDATAURL';");
 
 	unset($url);
+
+
+	// Insert a stat row for installation, because it's nice to know when you installed UA
+	$ip_address = ( !empty($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
+	$user_agent = ( !empty($_SERVER['HTTP_USER_AGENT']) ) ? $_SERVER['HTTP_USER_AGENT'] : $_ENV['HTTP_USER_AGENT'];
+
+	$db->query("INSERT INTO `" . STATS_TABLE . "` ( `ip_addr` , `host_name` , `action` , `time` , `user_agent` ) VALUES"
+		. " ( '" . $db->escape($ip_address) . "', '" . $db->escape(gethostbyaddr($ip_address)) . "', 'INSTALL-" . UA_VER . "', '" . time() . "', '" . $db->escape($user_agent) . "' );");
 
 	/**
 	 * Rewrite the config file to its final form

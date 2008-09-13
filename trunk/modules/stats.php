@@ -56,7 +56,7 @@ function main( )
 		$start = '0';
 	}
 
-	$sql = "SELECT count(`id`) rows FROM `".$db->table('stats')."`;";
+	$sql = "SELECT count(`id`) rows FROM `" . $db->table('stats') . "`;";
 	$result = $db->query($sql);
 
 	$total_rows = $db->fetch_record($result);
@@ -96,7 +96,7 @@ function main( )
 			);
 		}
 
-		$sql = "SELECT * FROM `".$db->table('stats')."` ORDER BY `id` DESC LIMIT $start , $limit;";
+		$sql = "SELECT * FROM `" . $db->table('stats') . "` ORDER BY `id` DESC LIMIT $start , $limit;";
 		$result = $db->query($sql);
 
 
@@ -133,7 +133,7 @@ function main( )
 		$s_prev_link = false;
 		if( $prev_start > -1 )
 		{
-			$prev_link = UA_FORMACTION.'&amp;start='.$prev_start.'&amp;limit='.$limit;
+			$prev_link = UA_FORMACTION . '&amp;start=' . $prev_start . '&amp;limit=' . $limit;
 			$s_prev_link = true;
 		}
 
@@ -142,7 +142,7 @@ function main( )
 		$s_next_link = false;
 		if( $next_start < $total_rows )
 		{
-			$next_link = UA_FORMACTION.'&amp;start='.$next_start.'&amp;limit='.$limit;
+			$next_link = UA_FORMACTION . '&amp;start=' . $next_start . '&amp;limit=' . $limit;
 			$s_next_link = true;
 		}
 
@@ -191,7 +191,7 @@ function build_pie( $field_name )
 {
 	global $db, $uniadmin, $user;
 
-	$sql = "SELECT count(`id`) count, `$field_name` field FROM `".$db->table('stats')."` GROUP BY `$field_name` ORDER BY `count` DESC LIMIT 0,5";
+	$sql = "SELECT count(`id`) count, `$field_name` field FROM `" . $db->table('stats') . "` GROUP BY `$field_name` ORDER BY `count` DESC LIMIT 0,5";
 	$result = $db->query($sql);
 
 	while( $row = $db->fetch_record($result) )
