@@ -450,11 +450,11 @@ $lang['error_addon_not_exist'] = 'AddOn with ID:%1$s does not exist';
 $lang['error_no_ini_uploaded'] = 'settings.ini file was not uploaded';
 $lang['error_ini_file'] = 'The uploaded file <u>must</u> be settings.ini from UniUploader';
 
-$lang['error_chmod'] = 'Could not chmod [%1$s]<br />chmod Manually and/or check file persmissions';
-$lang['error_mkdir'] = 'Could not mkdir [%1$s]<br />mkdir Manually and/or check file persmissions';
-$lang['error_unlink'] = 'Could not unlink(delete) [%1$s]<br />Delete Manually and/or check file persmissions';
-$lang['error_move_uploaded_file'] = 'Could not move [%1$s] to [%2$s]<br />Check php upload settings and file persmissions';
-$lang['error_write_file'] = 'Could not write [%1$s]<br />Check persmissions';
+$lang['error_chmod'] = 'Could not chmod [%1$s]<br />chmod Manually and/or check file permissions';
+$lang['error_mkdir'] = 'Could not mkdir [%1$s]<br />mkdir Manually and/or check file permissions';
+$lang['error_unlink'] = 'Could not unlink(delete) [%1$s]<br />Delete Manually and/or check file permissions';
+$lang['error_move_uploaded_file'] = 'Could not move [%1$s] to [%2$s]<br />Check php upload settings and file permissions';
+$lang['error_write_file'] = 'Could not write [%1$s]<br />Check permissions';
 $lang['error_download_file'] = 'Could not download [%1$s]<br />$uniadmin-&gt;get_remote_contents() failed';
 
 $lang['error_no_uploaded_logo'] = 'No Logo Uploaded';
