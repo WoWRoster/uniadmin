@@ -47,7 +47,7 @@ class User
 
 		$this->ip_address = ( !empty($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
 		$this->user_agent = ( !empty($_SERVER['HTTP_USER_AGENT']) ) ? $_SERVER['HTTP_USER_AGENT'] : $_ENV['HTTP_USER_AGENT'];
-		$this->remote_host = gethostbyaddr($user->ip_address);
+		$this->remote_host = gethostbyaddr($this->ip_address);
 
 		$this->lang_path = UA_LANGDIR;
 
