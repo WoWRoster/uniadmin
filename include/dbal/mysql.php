@@ -62,7 +62,7 @@ class SQL_DB
 		$this->queries[$this->file][$this->query_count]['line'] = $this->line;
 
 		// Error message in case of failed query
-		$this->queries[$this->file][$this->query_count]['error'] = empty($this->query_id) ? $this->error : '';
+		$this->queries[$this->file][$this->query_count]['error'] = empty($this->query_id) ? $this->error() : '';
 	}
 
 	/**

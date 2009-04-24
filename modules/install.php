@@ -702,12 +702,12 @@ function process_step3()
 	$config_file  = '';
 	$config_file .= "<?php\n";
 	$config_file .= "/**\n * AUTO-GENERATED CONFIG FILE\n * DO NOT EDIT !!!\n */\n\n";
-	$config_file .= "\$config['host']         = '" . var_export($config['host'],true)         . "';\n";
-	$config_file .= "\$config['username']     = '" . var_export($config['username'],true)     . "';\n";
-	$config_file .= "\$config['password']     = '" . var_export($config['password'],true)     . "';\n";
-	$config_file .= "\$config['database']     = '" . var_export($config['database'],true)     . "';\n";
-	$config_file .= "\$config['table_prefix'] = '" . var_export($config['table_prefix'],true) . "';\n";
-	$config_file .= "\$config['dbtype']       = '" . var_export($config['dbtype'],true)       . "';\n";
+	$config_file .= "\$config['host']         = " . var_export($config['host'],true)         . ";\n";
+	$config_file .= "\$config['username']     = " . var_export($config['username'],true)     . ";\n";
+	$config_file .= "\$config['password']     = " . var_export($config['password'],true)     . ";\n";
+	$config_file .= "\$config['database']     = " . var_export($config['database'],true)     . ";\n";
+	$config_file .= "\$config['table_prefix'] = " . var_export($config['table_prefix'],true) . ";\n";
+	$config_file .= "\$config['dbtype']       = " . var_export($config['dbtype'],true)       . ";\n";
 
 	// Set our permissions to execute-only
 	@umask(0111);
@@ -798,6 +798,9 @@ function process_step4()
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/upload_sv.php' WHERE `set_name` = 'PRIMARYURL';");
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/interface.php' WHERE `set_name` = 'SYNCHROURL';");
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/web_to_wow.php' WHERE `set_name` = 'RETRDATAURL';");
+
+	// Set the UserAgent field since the sql parser will choke on the semi-colon
+	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = 'UniUploader 2.0 (UU 2.6.8; English)' WHERE `set_name` = 'USERAGENT';");
 
 	unset($url);
 
