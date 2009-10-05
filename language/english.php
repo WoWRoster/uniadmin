@@ -338,6 +338,7 @@ $lang['OPENGL'] = 'Run WoW in OpenGL mode';
 $lang['WINDOWMODE'] = 'Run WoW in window mode';
 $lang['UPLOADSCREENSHOTS'] = 'Upload Screenshots';
 $lang['UPLOADSVS'] = 'Upload SavedVariable files';
+$lang['UPLOADALLACCOUNTS'] = 'Upload ALL Accounts';
 
 // updater
 $lang['UUUPDATERCHECK'] = 'Check for UniUploader updates/upgrades';
@@ -347,6 +348,7 @@ $lang['UUSETTINGSUPDATER'] = 'Sync UniUploader settings with UniAdmin';
 $lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
 $lang['AUTOSYNCIN'] = 'Auto Sync/Update Interval';
 $lang['UPDATESURL'] = 'URL for UniUpdater updates/upgrades';
+$lang['UUAUTOUPDATERCHECK'] = 'Automatically update to latest UniUploader';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Auto upload on SavedVariable file changes';
@@ -374,6 +376,8 @@ $lang['ADDURL4CH'] = 'Additional URL 4';
 $lang['ADDURL4'] = 'Additional URL 4 location';
 $lang['HOMEURL'] = 'URL location for homepage';
 $lang['FORUMURL'] = 'URL location for forums';
+$lang['ROSTERURL'] = 'URL location for roster';
+$lang['UNIADMINURL'] = 'URL location for uniadmin';
 $lang['USERAGENT'] = 'Custom User Agent';
 $lang['UPERRPOPUP'] = 'Show Error Popup when upload fails';
 $lang['CLOSEAFUPD'] = 'Close UU after Sync/Update';
@@ -386,6 +390,7 @@ $lang['STARTWITHWINDOWS'] = 'Start UniUploader with windows';
 $lang['USELAUNCHER'] = 'Launch using WoW launcher';
 $lang['STARTMINI'] = 'Start minimized';
 $lang['SENDPWSECURE'] = 'MD5 encrypt variable 2 value (password field) before sending';
+$lang['STOREPWSECURE'] = 'Encrypt variable 2 value (password field) before saving to settings file';
 $lang['GZIP'] = 'gZip compression';
 $lang['DELAYUPLOAD'] = 'Upload delay';
 $lang['DELAYSECONDS'] = 'Upload delay seconds';
@@ -397,6 +402,7 @@ $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Initiate Before UU Uploads';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Initiate After UU Uploads';
 $lang['PURGEFIRST'] = 'Delete the Web==&gt;WoW data file before syncing';
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
+$lang['CLOSETOSYSTRAY'] = 'Close to SysTray';
 
 // END UU Sync Strings
 
