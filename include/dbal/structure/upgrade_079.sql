@@ -34,7 +34,9 @@ INSERT INTO `uniadmin_settings` (`set_name` , `set_value` , `enabled` , `section
 
 	('UPLOADSCREENSHOTS','1','0', 'settings', 'radio{yes^1|no^0'),
 	('UPLOADSVS','1','0', 'settings', 'radio{yes^1|no^0'),
-	('UPLOADALLACCOUNTS','1','0', 'settings', 'radio{yes^1|no^0');
+	('UPLOADALLACCOUNTS','1','0', 'settings', 'radio{yes^1|no^0'),
+
+	('GUILDNAME', '', '0', 'custom', 'text{250|50');
 
 # --------------------------------------------------------
 ### Alter uniadmin_addons

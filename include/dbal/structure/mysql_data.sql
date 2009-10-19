@@ -90,7 +90,9 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('DOWNLOADAFTERUPLOAD', '1', '0', 'advanced', 'radio{on^1|off^0'),
 	('PURGEFIRST','0','0', 'advanced', 'radio{yes^1|no^0'),
 	('USEAPPDATA','0','0', 'advanced', 'radio{yes^1|no^0'),
-	('CLOSETOSYSTRAY','0','0', 'advanced', 'radio{yes^1|no^0');
+	('CLOSETOSYSTRAY','0','0', 'advanced', 'radio{yes^1|no^0'),
+
+	('GUILDNAME', '', '0', 'custom', 'text{250|50');
 
 ### SV List
 INSERT INTO `uniadmin_svlist` (`sv_name`) VALUES
