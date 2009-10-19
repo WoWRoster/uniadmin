@@ -39,6 +39,8 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('AUTOSYNCIN','0','0', 'updater', 'text{250|50'),
 	('UPDATESURL', 'http://www.wowroster.net/uniuploader_updater2/update.php', '0', 'updater', 'text{250|50'),
 	('UUAUTOUPDATERCHECK','0','0', 'updater', 'radio{yes^1|no^0'),
+	('UUTIMEOUT','20000','0', 'updater', 'text{250|50'),
+	('AUTOLAUNCHTIMER','30','0', 'updater', 'text{250|50'),
 
 	('AUTOUPLOADONFILECHANGES', '1', '0', 'options', 'radio{yes^1|no^0'),
 	('ALWAYSONTOP', '1', '0', 'options', 'radio{yes^1|no^0'),
