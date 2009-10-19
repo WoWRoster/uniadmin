@@ -349,6 +349,8 @@ $lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
 $lang['AUTOSYNCIN'] = 'Auto Sync/Update Interval';
 $lang['UPDATESURL'] = 'URL for UniUpdater updates/upgrades';
 $lang['UUAUTOUPDATERCHECK'] = 'Automatically update to latest UniUploader';
+$lang['UUTIMEOUT'] = 'Default setting for UniUploader timeout (Used by doLogos, CheckForUpdates, checkLangFile functions)';
+$lang['AUTOLAUNCHTIMER'] = 'Timeout (in seconds) before update.exe autolaunches new UniUploader';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Lade SavedVariable Datei bei Änderungen automatisch hoch';
