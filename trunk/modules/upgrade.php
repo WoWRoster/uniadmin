@@ -131,7 +131,7 @@ class Upgrade
 	{
 		global $db, $config, $user;
 
-		$ver = str_replace('.','',$this->versions[$this->index]);
+		$ver = str_replace('.', '', $this->versions[$this->index]);
 
 		$db_structure_file = UA_INCLUDEDIR . 'dbal' . DIR_SEP . 'structure' . DIR_SEP . 'upgrade_' . $ver . '.sql';
 
@@ -156,6 +156,12 @@ class Upgrade
 		$sql = "INSERT INTO `" . $db->table('stats') . "` ( `ip_addr` , `host_name` , `action` , `time` , `user_agent` ) VALUES
 			( '" . $db->escape($user->ip_address) . "', '" . $db->escape($user->remote_host) . "', 'UPGRADE-" . UA_VER . "', '" . time() . "', '" . $db->escape($user->user_agent) . "' );";
 		$db->query($sql);
+
+		// Get the default locale for the USERAGENT update
+		$sql = 'SELECT `config_value` FROM ' . CONFIG_TABLE . " WHERE `config_name` = 'default_lang';";
+		$default_lang = $db->query_first($sql);
+
+		$db->query('UPDATE `' . $db->table('settings') . "` SET `set_value` = 'UniUploader 2.0 (UU " . UU_VER . "; {$default_lang})' WHERE `set_name` = 'USERAGENT';");
 
 		return;
 	}

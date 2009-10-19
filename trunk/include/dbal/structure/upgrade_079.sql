@@ -20,7 +20,6 @@ INSERT INTO `uniadmin_config` (`config_name`, `config_value`, `form_type`) VALUE
 INSERT INTO `uniadmin_settings` (`set_name` , `set_value` , `enabled` , `section` , `form_type` ) VALUES
 	('ROSTERURL', 'http://yourdomain.com/roster', '0', 'options', 'text{250|50'),
 	('UNIADMINURL', 'http://yourdomain.com/uniadmin', '0', 'options', 'text{250|50'),
-	('USERAGENT','UniUploader 2.0 (UU 2.6.9; English)','0', 'options', 'text{250|50'),
 	('UPERRPOPUP','1','0', 'options', 'radio{yes^1|no^0'),
 	('CLOSEAFUPD','0','0', 'options', 'radio{yes^1|no^0'),
 	('CLOSEAFLAU','0','0', 'options', 'radio{yes^1|no^0'),

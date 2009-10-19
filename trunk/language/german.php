@@ -71,8 +71,8 @@ oder
 <p>With this you can set addon directories to be removed when UniUploader syncs with UniAdmin<br />
 Specify the directory name you wish to have removed</p>'),
 
-array(	'header' => 'WoWAce',
-'text'   => '
+	array(	'header' => 'WoWAce',
+			'text'   => '
 <p>Diese Einstellung erlaubt dir, Addons aus dem WoWAce.com SVN Repository herunterzuladen.</p>
 <p>Nur der UniAdmin Admin hat Zugriff auf dieses Modul.</p>'),
 
@@ -338,6 +338,7 @@ $lang['OPENGL'] = 'Starte WoW im OpenGL Modus';
 $lang['WINDOWMODE'] = 'Starte WoW im Fenster Modus';
 $lang['UPLOADSCREENSHOTS'] = 'Upload Screenshots';
 $lang['UPLOADSVS'] = 'Upload SavedVariable files';
+$lang['UPLOADALLACCOUNTS'] = 'Upload ALL Accounts';
 
 // updater
 $lang['UUUPDATERCHECK'] = 'Überprüfe auf UniUploader Aktualisierungen';
@@ -347,6 +348,7 @@ $lang['UUSETTINGSUPDATER'] = 'Synchronisiere UniUploader Einstellungen mit UniAd
 $lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
 $lang['AUTOSYNCIN'] = 'Auto Sync/Update Interval';
 $lang['UPDATESURL'] = 'URL for UniUpdater updates/upgrades';
+$lang['UUAUTOUPDATERCHECK'] = 'Automatically update to latest UniUploader';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Lade SavedVariable Datei bei Änderungen automatisch hoch';
@@ -374,6 +376,8 @@ $lang['ADDURL4CH'] = 'Zusätzliche URL 4';
 $lang['ADDURL4'] = 'Zusätzliche URL 4 Lokation';
 $lang['HOMEURL'] = 'URL der Webseite';
 $lang['FORUMURL'] = 'URL des Forums';
+$lang['ROSTERURL'] = 'URL location for Roster';
+$lang['UNIADMINURL'] = 'URL location for UniAdmin';
 $lang['USERAGENT'] = 'Custom User Agent';
 $lang['UPERRPOPUP'] = 'Show Error Popup when upload fails';
 $lang['CLOSEAFUPD'] = 'Close UU after Sync/Update';
@@ -386,6 +390,7 @@ $lang['STARTWITHWINDOWS'] = 'Starte UniUploader mit Windows';
 $lang['USELAUNCHER'] = 'Starte WoW mit dem UU-Launcher';
 $lang['STARTMINI'] = 'Starte minimiert';
 $lang['SENDPWSECURE'] = 'MD5 Wert vor dem Abschicken verschlüsseln';
+$lang['STOREPWSECURE'] = 'Encrypt variable 2 value (password field) before saving to settings file';
 $lang['GZIP'] = 'gZip Kompression';
 $lang['DELAYUPLOAD'] = 'Verzögerung beim hochladen';
 $lang['DELAYSECONDS'] = 'Zeitverzögerung in Sekunden';
@@ -397,6 +402,7 @@ $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Bevor UU hochlädt, initiieren';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Nachdem UU hochgeladen hat, initiieren';
 $lang['PURGEFIRST'] = 'Lösche die Web==&gt;WoW Daten vor der Synchronisation';
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
+$lang['CLOSETOSYSTRAY'] = 'Close to System Tray';
 
 // END UU Sync Strings
 

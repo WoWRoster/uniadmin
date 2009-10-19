@@ -694,7 +694,7 @@ function process_step3()
 	/**
 	 * Update some config settings
 	 */
-	$db->query("UPDATE `" . CONFIG_TABLE . "` SET `config_value` = '".$default_lang."' WHERE `config_name` = 'default_lang';");
+	$db->query("UPDATE `" . CONFIG_TABLE . "` SET `config_value` = '{$default_lang}' WHERE `config_name` = 'default_lang';");
 
 	/**
 	 * Write the config file
@@ -800,7 +800,7 @@ function process_step4()
 	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = '$url/web_to_wow.php' WHERE `set_name` = 'RETRDATAURL';");
 
 	// Set the UserAgent field since the sql parser will choke on the semi-colon
-	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = 'UniUploader 2.0 (UU 2.6.8; English)' WHERE `set_name` = 'USERAGENT';");
+	$db->query('UPDATE `' . SETTINGS_TABLE . "` SET `set_value` = 'UniUploader 2.0 (UU " . UU_VER . "; {$default_lang})' WHERE `set_name` = 'USERAGENT';");
 
 	unset($url);
 
