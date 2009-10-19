@@ -404,6 +404,9 @@ $lang['PURGEFIRST'] = 'Supprimer le fichier de données Web==&gt;WoW avant synchr
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
 $lang['CLOSETOSYSTRAY'] = 'Close to System Tray';
 
+// custom (for custom guild uniuploader options
+$lang['GUILDNAME'] = 'Guild Name for custom UniUploader title';
+
 // END UU Sync Strings
 
 
