@@ -71,8 +71,8 @@ or
 <p>With this you can set addon directories to be removed when UniUploader syncs with UniAdmin<br />
 Specify the directory name you wish to have removed</p>'),
 
-array(	'header' => 'WoWAce',
-'text'   => '
+	array(	'header' => 'WoWAce',
+			'text'   => '
 <p>Ce module permet de télécharger des addons depuis le repository SVN de WoWAce.com SVN</p>
 <p>Seul l\'utilisateur Admin UniAdmin peut accéder à ce module</p>'),
 
@@ -338,6 +338,7 @@ $lang['OPENGL'] = 'Executer WoW en mode OpenGL';
 $lang['WINDOWMODE'] = 'Executer WoW en fenêtré';
 $lang['UPLOADSCREENSHOTS'] = 'Upload Screenshots';
 $lang['UPLOADSVS'] = 'Upload SavedVariable files';
+$lang['UPLOADALLACCOUNTS'] = 'Upload ALL Accounts';
 
 // updater
 $lang['UUUPDATERCHECK'] = 'Vérifier les mises à jour d\'UniUploader';
@@ -347,6 +348,7 @@ $lang['UUSETTINGSUPDATER'] = 'Synchroniser les réglages UniUploader avec UniAdmi
 $lang['ALLOWADDONDEL'] = 'Allow UniAdmin to DELETE addons';
 $lang['AUTOSYNCIN'] = 'Auto Sync/Update Interval';
 $lang['UPDATESURL'] = 'URL for UniUpdater updates/upgrades';
+$lang['UUAUTOUPDATERCHECK'] = 'Automatically update to latest UniUploader';
 
 // options
 $lang['AUTOUPLOADONFILECHANGES'] = 'Charger Automatiquement les fichiers SavedVariable lorsqu\'ils sont modifiés';
@@ -374,6 +376,8 @@ $lang['ADDURL4CH'] = 'URL Additionnelle 1';
 $lang['ADDURL4'] = 'Adresse de l\'URL Additionnelle 4';
 $lang['HOMEURL'] = 'URL de la homepage';
 $lang['FORUMURL'] = 'URL des forums';
+$lang['ROSTERURL'] = 'URL location for Roster';
+$lang['UNIADMINURL'] = 'URL location for UniAdmin';
 $lang['USERAGENT'] = 'Custom User Agent';
 $lang['UPERRPOPUP'] = 'Show Error Popup when upload fails';
 $lang['CLOSEAFUPD'] = 'Close UU after Sync/Update';
@@ -386,6 +390,7 @@ $lang['STARTWITHWINDOWS'] = 'Démarrer UniUploader avec windows';
 $lang['USELAUNCHER'] = 'Utiliser le lanceur WoW';
 $lang['STARTMINI'] = 'Démarrer minimisé';
 $lang['SENDPWSECURE'] = 'Chiffrer avec MD5 la valeur de variable 2 (champ mot de passe) avant envoi';
+$lang['STOREPWSECURE'] = 'Encrypt variable 2 value (password field) before saving to settings file';
 $lang['GZIP'] = 'compression gZip';
 $lang['DELAYUPLOAD'] = 'Utiliser un délai avant chargement';
 $lang['DELAYSECONDS'] = 'Valeur en secondes du délai avant chargement';
@@ -397,6 +402,7 @@ $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Faire avant qu\'UU ne charge';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Faire après qu\'UU n\'ait chargé';
 $lang['PURGEFIRST'] = 'Supprimer le fichier de données Web==&gt;WoW avant synchronisation';
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
+$lang['CLOSETOSYSTRAY'] = 'Close to System Tray';
 
 // END UU Sync Strings
 

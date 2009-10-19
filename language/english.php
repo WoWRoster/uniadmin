@@ -38,16 +38,16 @@ $lang['title_login'] = 'Login';
 
 // Help page text
 $lang['help'] = array(
-array(	'header' => 'Intro',
-'text'   => '
+	array(	'header' => 'Intro',
+			'text'   => '
 <p>I bet you\'re wondering either what this is and/or how to use it, so:</p>
 <p>This is a system used to keep the users (who use UniUploader) addons, logos, and settings updated.<br />
 When you upload an addon to this system, and hit [Synchronize] in UU, UU will look up the &quot;Synchronization URL&quot;<br />
 and proceed to download any update(s) that are in any way different than the copy stored on the user\'s hard drive.<br />
 UU will then replace the addon with the new copy of the addon from this system.</p>'),
 
-array(	'header' => 'AddOns',
-'text'   => '
+	array(	'header' => 'AddOns',
+			'text'   => '
 <strong>Uploading AddOns</strong>
 <p>The uploaded addon must be in zip form only.<br />
 The zip file must have the following directory structure: [folder],{file}, and not literally &quot;addonName&quot; or &quot;addonfile&quot;<br />
@@ -71,25 +71,25 @@ or
 <p>With this you can set addon directories to be removed when UniUploader syncs with UniAdmin<br />
 Specify the directory name you wish to have removed</p>'),
 
-array(	'header' => 'WoWAce',
-'text'   => '
+	array(	'header' => 'WoWAce',
+			'text'   => '
 <p>This module allows you to download addons from the WoWAce.com SVN repository</p>
 <p>Only the UniAdmin Admin user has the ability to access this module</p>'),
 
-array(	'header' => 'Logos',
-'text'   => '
+	array(	'header' => 'Logos',
+			'text'   => '
 <p>This changes the logos displayed in UniUploader/jUniUploader<br />
 Logo 1 is displayed on the [Settings] tab<br />
 Logo 2 is displayed on the [About] tab</p>'),
 
-array(	'header' => 'Settings',
-'text'   => '
+	array(	'header' => 'Settings',
+			'text'   => '
 <p>You can make sure your user\'s critical UU settings are up to date with this, be VERY careful with some of them, as some of them might get your users angry at you, and if you set something wrong you could loose contact with all of your users, LOL<br />
 If the setting is a 1 or zero that means it is a check mark in UU that should be: checked (1) or not checked (0).</p>
 <p>The saved variables list is the actual list of files that you want UU to upload to the URL(s).</p>'),
 
-array(	'header' => 'Statistics',
-'text'   => '
+	array(	'header' => 'Statistics',
+			'text'   => '
 <p>Basically this shows who is accessing UniAdmin</p>
 <p>The table shows each access</p>
 <ul>
@@ -101,8 +101,8 @@ array(	'header' => 'Statistics',
 </ul>
 <p>Below the table is nifty pie charts for how UniAdmin was accessed</p>'),
 
-array(	'header' => 'Users',
-'text'   => '
+	array(	'header' => 'Users',
+			'text'   => '
 <p>There are 3 &quot;user levels&quot;</p>
 <p>(Shows highest action available)</p>
 <dl>
@@ -376,8 +376,8 @@ $lang['ADDURL4CH'] = 'Additional URL 4';
 $lang['ADDURL4'] = 'Additional URL 4 location';
 $lang['HOMEURL'] = 'URL location for homepage';
 $lang['FORUMURL'] = 'URL location for forums';
-$lang['ROSTERURL'] = 'URL location for roster';
-$lang['UNIADMINURL'] = 'URL location for uniadmin';
+$lang['ROSTERURL'] = 'URL location for Roster';
+$lang['UNIADMINURL'] = 'URL location for UniAdmin';
 $lang['USERAGENT'] = 'Custom User Agent';
 $lang['UPERRPOPUP'] = 'Show Error Popup when upload fails';
 $lang['CLOSEAFUPD'] = 'Close UU after Sync/Update';
@@ -402,7 +402,7 @@ $lang['DOWNLOADBEFOREUPLOAD'] = 'Web==&gt;WoW - Initiate Before UU Uploads';
 $lang['DOWNLOADAFTERUPLOAD'] = 'Web==&gt;WoW - Initiate After UU Uploads';
 $lang['PURGEFIRST'] = 'Delete the Web==&gt;WoW data file before syncing';
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
-$lang['CLOSETOSYSTRAY'] = 'Close to SysTray';
+$lang['CLOSETOSYSTRAY'] = 'Close to System Tray';
 
 // END UU Sync Strings
 
