@@ -160,6 +160,7 @@ If the setting is a 1 or zero that means it is a check mark in UU that should be
 $lang['name'] = 'Name';
 $lang['toc'] = 'TOC';
 $lang['required'] = 'Required';
+$lang['requiredoff'] = 'Required Officer';
 $lang['version'] = 'Version';
 $lang['uploaded'] = 'Uploaded';
 $lang['enabled'] = 'Enabled';
@@ -242,6 +243,7 @@ $lang['addon_uploaded'] = '%1$s was uploaded successfully';
 $lang['addon_edited'] = '%1$s was edited';
 $lang['view_addons'] = 'View AddOns';
 $lang['required_addon'] = 'Required AddOn';
+$lang['requiredoff_addon'] = 'Required Officer AddOn';
 $lang['homepage'] = 'Homepage';
 $lang['logged_in_as'] = 'Logged in as [%1$s]';
 $lang['logo_table'] = 'Logo %1$d';
@@ -268,6 +270,7 @@ $lang['fullpath_addon'] = 'Full Path Addon';
 $lang['addon_details'] = 'AddOn Details';
 $lang['manage'] = 'Manage';
 $lang['optional'] = 'Optional';
+$lang['optionaloff'] = 'Optional Officer';
 $lang['notes'] = 'Notes';
 $lang['half'] = 'Half';
 $lang['full'] = 'Full';
@@ -298,6 +301,7 @@ $lang['last_updated'] = 'Last Updated';
 
 // Addon Management
 $lang['addon_required_tip'] = 'When checked, UniUploader will require this addon for download';
+$lang['addon_requiredoff_tip'] = 'When checked, UniUploader will require this Officer addon for download';
 $lang['addon_fullpath_tip'] = 'This is for addons that extract directly to the World of Warcraft directory<br /><br />- [yes] Extract addon to WoW/<br />- [no] Extract to WoW/Interface/AddOns/<br />- [Automatic] Auto-detect location';
 $lang['addon_selectfile_tip'] = 'Select an addon to upload';
 $lang['confirm_addons_delete'] = 'This will remove ALL addons from the database and the web server. Are you sure?';
@@ -406,8 +410,12 @@ $lang['PURGEFIRST'] = 'Delete the Web==&gt;WoW data file before syncing';
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
 $lang['CLOSETOSYSTRAY'] = 'Close to System Tray';
 
-// custom (for custom guild uniuploader options
+// custom (for custom guild uniuploader options)
 $lang['GUILDNAME'] = 'Guild Name for custom UniUploader title';
+$lang['ENABLEOFFICERBUILD'] = 'Allows for two builds of UniUploader for custom options for Officers/Leader';
+$lang['OFFICERSTR'] = 'Optional additional string for post UniUploader title';
+$lang['MEMBERUUVAL'] = 'Password for Guild Member access level of the Roster (Only used if Officer Build Enabled)';
+$lang['OFFICERUUVAL'] = 'Password for Guild Officer/Leader access level of the Roster (Only used if Officer Build Enabled)';
 
 // END UU Sync Strings
 
@@ -447,6 +455,8 @@ $lang['error_enable_addon'] = 'Enable AddOn Error';
 $lang['error_disable_addon'] = 'Disable AddOn Error';
 $lang['error_require_addon'] = 'Require AddOn Error';
 $lang['error_optional_addon'] = 'Optional AddOn Error';
+$lang['error_requireoff_addon'] = 'Require Officer AddOn Error';
+$lang['error_optionaloff_addon'] = 'Optional Officer AddOn Error';
 $lang['error_no_addon_in_db'] = 'No AddOns in Database';
 $lang['error_no_addon_uploaded'] = 'No AddOn Uploaded';
 $lang['error_no_files_addon'] = 'No files were detected in the uploaded AddOn';
@@ -490,6 +500,8 @@ $lang['sql_error_addons_disable'] = 'AddOn with ID:%1$d could not be disabled';
 $lang['sql_error_addons_enable'] = 'AddOn with ID:%1$d could not be enabled';
 $lang['sql_error_addons_require'] = 'AddOn with ID:%1$d could not be set to required';
 $lang['sql_error_addons_optional'] = 'AddOn with ID:%1$d could not be set to optional';
+$lang['sql_error_addons_requireoff'] = 'AddOn with ID:%1$d could not be set to required Officer';
+$lang['sql_error_addons_optionaloff'] = 'AddOn with ID:%1$d could not be set to optional Officer';
 $lang['sql_error_addons_delete'] = 'AddOn with ID:%1$d could not be deleted from the database<br />Remove Manually';
 $lang['sql_error_addons_insert'] = 'Could not insert main addon data';
 $lang['sql_error_addons_files_insert'] = 'Could not insert addon file\'s data';

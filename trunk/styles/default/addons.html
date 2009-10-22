@@ -113,6 +113,32 @@
 		<!-- ENDIF -->
 	<!-- ENDIF -->
 
+	<!-- IF SHOWOFF -->
+	<!-- IF addons_row.REQUIREDOFF -->
+		<!-- IF S_ADDON_ADD_DEL -->
+				<form name="ua_optionaloffaddon_{addons_row.ID}" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+					<input type="hidden" name="{A_OPERATION}" value="{A_OPTOFF}" />
+					<input type="hidden" name="{A_ID}" value="{addons_row.ID}" />
+					<input class="icon" src="{TEMPLATE_PATH}/images/requiredoff_mini.png" type="image" value="{L_REQUIREDOFF}" alt="" onmouseover="return overlib('{L_REQUIREDOFF}');" onmouseout="return nd();" />
+				</form>
+		<!-- ELSE -->
+				<img src="{TEMPLATE_PATH}/images/requiredoff_mini.png" class="icon" alt="" onmouseover="return overlib('{L_REQUIREDOFF}');" onmouseout="return nd();" />
+		<!-- ENDIF -->
+
+	<!-- ELSE -->
+
+		<!-- IF S_ADDON_ADD_DEL -->
+				<form name="ua_requireoffaddon_{addons_row.ID}" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+					<input type="hidden" name="{A_OPERATION}" value="{A_REQOFF}" />
+					<input type="hidden" name="{A_ID}" value="{addons_row.ID}" />
+					<input class="icon" src="{TEMPLATE_PATH}/images/optionaloff_mini.png" type="image" value="{L_OPTIONALOFF}" alt="" onmouseover="return overlib('{L_OPTIONALOFF}');" onmouseout="return nd();" />
+				</form>
+		<!-- ELSE -->
+				<img src="{TEMPLATE_PATH}/images/optionaloff_mini.png" class="icon" alt="" onmouseover="return overlib('{L_OPTIONALOFF}');" onmouseout="return nd();" />
+		<!-- ENDIF -->
+	<!-- ENDIF -->
+	<!-- ENDIF -->
+
 				<!-- IF S_ADDON_ADD_DEL --><form name="ua_deleteaddon_{addons_row.ID}" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
 					<input type="hidden" name="{A_OPERATION}" value="{A_DELETE}" />
 					<input type="hidden" name="{A_ID}" value="{addons_row.ID}" />
@@ -146,6 +172,13 @@
 				{L_REQUIRED}:</td>
 			<td><input type="checkbox" id="required" name="required" value="1" checked="checked" /><label for="required">&nbsp;</label></td>
 		</tr>
+	<!-- IF SHOWOFF -->
+		<tr>
+			<td><img src="{TEMPLATE_PATH}/images/help_mini.png" alt="" onmouseover="return overlib('{L_REQUIREDOFF_TIP}',CAPTION,'{L_REQUIREDOFF}');" onmouseout="return nd();" />
+				{L_REQUIREDOFF}:</td>
+			<td><input type="checkbox" id="requiredoff" name="requiredoff" value="1" /><label for="requiredoff">&nbsp;</label></td>
+		</tr>
+	<!-- ENDIF -->
 		<tr>
 			<td class="data2"><img src="{TEMPLATE_PATH}/images/help_mini.png" alt="" onmouseover="return overlib('{L_FULLPATH_TIP}',CAPTION,'{L_FULLPATH}');" onmouseout="return nd();" />
 				{L_FULLPATH}:</td>

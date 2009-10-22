@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `uniadmin_addons` (
   `notes` mediumtext,
   `toc` mediumint(9) NOT NULL DEFAULT '0',
   `required` tinyint(1) NOT NULL DEFAULT '0',
+  `requiredoff` tinyint(1) NOT NULL DEFAULT '0',
   `filesize` int(10) unsigned NOT NULL DEFAULT '0',
   `full_path` tinyint(1) NOT NULL DEFAULT '0',
   `ace_title` varchar(64) NOT NULL DEFAULT '',

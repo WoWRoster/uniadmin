@@ -100,6 +100,34 @@
 		<!-- ENDIF -->
 	<!-- ENDIF -->
 
+	<!-- IF SHOWOFF -->
+	<!-- IF REQUIREDOFF -->
+		<!-- IF S_ADDON_ADD_DEL -->
+			<form name="ua_optionaloffaddon" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+				<input type="hidden" name="{A_DETAIL}" value="{ID}" />
+				<input type="hidden" name="{A_OPERATION}" value="{A_OPTOFF}" />
+				<input type="hidden" name="{A_ID}" value="{ID}" />
+				<input class="icon" src="{TEMPLATE_PATH}/images/requiredoff.png" type="image" value="{L_REQUIREDOFF}" alt="" onmouseover="return overlib('{L_REQUIREDOFF}');" onmouseout="return nd();" />
+			</form>
+		<!-- ELSE -->
+			<img src="{TEMPLATE_PATH}/images/requiredoff.png" class="icon" alt="" onmouseover="return overlib('{L_REQUIREDOFF}');" onmouseout="return nd();" />
+		<!-- ENDIF -->
+
+	<!-- ELSE -->
+
+		<!-- IF S_ADDON_ADD_DEL -->
+			<form name="ua_requireoffaddon" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
+				<input type="hidden" name="{A_DETAIL}" value="{ID}" />
+				<input type="hidden" name="{A_OPERATION}" value="{A_REQOFF}" />
+				<input type="hidden" name="{A_ID}" value="{ID}" />
+				<input class="icon" src="{TEMPLATE_PATH}/images/optionaloff.png" type="image" value="{L_OPTIONALOFF}" alt="" onmouseover="return overlib('{L_OPTIONALOFF}');" onmouseout="return nd();" />
+			</form>
+		<!-- ELSE -->
+			<img src="{TEMPLATE_PATH}/images/optionaloff.png" class="icon" alt="" onmouseover="return overlib('{L_OPTIONALOFF}');" onmouseout="return nd();" />
+		<!-- ENDIF -->
+	<!-- ENDIF -->
+	<!-- ENDIF -->
+
 	<!-- IF S_ADDON_ADD_DEL -->
 				<form name="ua_deleteaddon" style="display:inline;" method="post" enctype="multipart/form-data" action="{UA_FORMACTION}">
 					<input type="hidden" name="{A_OPERATION}" value="{A_DELETE}" />

@@ -160,6 +160,7 @@ Mit 1 oder 0 kannst du die Einstellung im UU aktivieren (1), bzw. deaktivieren (
 $lang['name'] = 'Name';
 $lang['toc'] = 'TOC';
 $lang['required'] = 'Erforderlich';
+$lang['requiredoff'] = 'Required Officer';
 $lang['version'] = 'Version';
 $lang['uploaded'] = 'Hochgeladen';
 $lang['enabled'] = 'Aktiviert';
@@ -242,6 +243,7 @@ $lang['addon_uploaded'] = '%1$s wurde erfolgreich hochgeladen';
 $lang['addon_edited'] = '%1$s was edited';
 $lang['view_addons'] = 'Addons anzeigen';
 $lang['required_addon'] = 'Benötigtes Addon';
+$lang['requiredoff_addon'] = 'Required Officer AddOn';
 $lang['homepage'] = 'Homepage';
 $lang['logged_in_as'] = 'Eingeloggt als [%1$s]';
 $lang['logo_table'] = 'Logo %1$d';
@@ -268,6 +270,7 @@ $lang['fullpath_addon'] = 'Voll Pfad Addon';
 $lang['addon_details'] = 'Addon Details';
 $lang['manage'] = 'Verwalten';
 $lang['optional'] = 'Optional';
+$lang['optionaloff'] = 'Optional Officer';
 $lang['notes'] = 'Kommentare';
 $lang['half'] = 'Halb';
 $lang['full'] = 'Voll';
@@ -298,6 +301,7 @@ $lang['last_updated'] = 'Zuletzt aktualisiert';
 
 // Addon Management
 $lang['addon_required_tip'] = 'Wenn aktiviert, UniUploader betrachted das Addon als obligatorischen Download';
+$lang['addon_requiredoff_tip'] = 'When checked, UniUploader will require this Officer addon for download';
 $lang['addon_fullpath_tip'] = 'Für Addons die direkt ins World of Warcraft Verzeichnis entpackt werden<br /><br />- [ja] Entpacke Addon in WoW/<br />- [nein] Entpacke Addon in WoW/Interface/Addons/<br />- [Automatisch] Finde Ziel automatisch';
 $lang['addon_selectfile_tip'] = 'Wähle ein Addon zum Hochladen aus';
 $lang['confirm_addons_delete'] = 'Dies wird ALLE Addons aus der Datenbank und vom Webserver löschen. Bist du sicher?';
@@ -406,8 +410,12 @@ $lang['PURGEFIRST'] = 'Lösche die Web==&gt;WoW Daten vor der Synchronisation';
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
 $lang['CLOSETOSYSTRAY'] = 'Close to System Tray';
 
-// custom (for custom guild uniuploader options
+// custom (for custom guild uniuploader options)
 $lang['GUILDNAME'] = 'Guild Name for custom UniUploader title';
+$lang['ENABLEOFFICERBUILD'] = 'Allows for two builds of UniUploader for custom options for Officers/Leader';
+$lang['OFFICERSTR'] = 'Optional additional string for post UniUploader title';
+$lang['MEMBERUUVAL'] = 'Password for Guild Member access level of the Roster (Only used if Officer Build Enabled)';
+$lang['OFFICERUUVAL'] = 'Password for Guild Officer/Leader access level of the Roster (Only used if Officer Build Enabled)';
 
 // END UU Sync Strings
 
@@ -447,6 +455,8 @@ $lang['error_enable_addon'] = 'Fehler bei Aktivierung des Addons';
 $lang['error_disable_addon'] = 'Fehler bei Deaktivierung des Addons';
 $lang['error_require_addon'] = 'Fehler bei Benötigung des Addons';
 $lang['error_optional_addon'] = 'Optionaler Addon Fehler';
+$lang['error_requireoff_addon'] = 'Require Officer AddOn Error';
+$lang['error_optionaloff_addon'] = 'Optional Officer AddOn Error';
 $lang['error_no_addon_in_db'] = 'Keine Addons in der Datenbank';
 $lang['error_no_addon_uploaded'] = 'Keine Addons hochgeladen';
 $lang['error_no_files_addon'] = 'Es wurden keine Dateien im hochgeladenen Addon gefunden.';
@@ -490,6 +500,8 @@ $lang['sql_error_addons_disable'] = 'Addon mit ID:%1$d konnte nicht deaktiviert 
 $lang['sql_error_addons_enable'] = 'Addon mit ID:%1$d konnte nicht aktiviert.';
 $lang['sql_error_addons_require'] = 'Addon mit ID:%1$d konnte nicht als erforderlich gesetzt werden.';
 $lang['sql_error_addons_optional'] = 'Addon mit ID:%1$d konnte nicht als optional gesetzt werden.';
+$lang['sql_error_addons_requireoff'] = 'AddOn with ID:%1$d could not be set to required Officer';
+$lang['sql_error_addons_optionaloff'] = 'AddOn with ID:%1$d could not be set to optional Officer';
 $lang['sql_error_addons_delete'] = 'Addon mit ID:%1$d konnte nicht aus der Datenbank gelöscht werden<br />Entferne manuell.';
 $lang['sql_error_addons_insert'] = 'Konnte Addon-Hauptinformationen nicht setzen.';
 $lang['sql_error_addons_files_insert'] = 'Konnte Daten einer Addon-Dateien nicht hinzufügen';
