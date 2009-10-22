@@ -38,10 +38,15 @@ INSERT INTO `uniadmin_settings` (`set_name` , `set_value` , `enabled` , `section
 	('UPLOADSVS','1','0', 'settings', 'radio{yes^1|no^0'),
 	('UPLOADALLACCOUNTS','1','0', 'settings', 'radio{yes^1|no^0'),
 
-	('GUILDNAME', '', '0', 'custom', 'text{250|50');
+	('GUILDNAME', '', '0', 'custom', 'text{250|50'),
+	('ENABLEOFFICERBUILD','0','0', 'custom', 'radio{yes^1|no^0'),
+	('OFFICERSTR', '', '0', 'custom', 'text{250|50'),
+	('MEMBERUUVAL', '', '0', 'custom', 'password{250|50'),
+	('OFFICERUUVAL', '', '0', 'custom', 'password{250|50');
 
 # --------------------------------------------------------
 ### Alter uniadmin_addons
 
 ALTER TABLE `uniadmin_addons`
+  ADD `requiredoff` tinyint(1) NOT NULL DEFAULT '0',
   ADD `ace_title` VARCHAR(64) NOT NULL DEFAULT '';

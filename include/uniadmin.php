@@ -485,6 +485,8 @@ class UniAdmin
 			'A_ENABLE'         => UA_URI_ENABLE,
 			'A_OPT'            => UA_URI_OPT,
 			'A_REQ'            => UA_URI_REQ,
+			'A_OPTOFF'         => UA_URI_OPTOFF,
+			'A_REQOFF'         => UA_URI_REQOFF,
 			'A_PROCESS'        => UA_URI_PROCESS,
 			'A_UPDATE_ALL'     => UA_URI_UPDATE_ALL,
 			'A_UPDATE_ONE'     => UA_URI_UPDATE_ONE,

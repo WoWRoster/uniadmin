@@ -94,7 +94,11 @@ INSERT INTO `uniadmin_settings` (`set_name`, `set_value`, `enabled`, `section`, 
 	('USEAPPDATA','0','0', 'advanced', 'radio{yes^1|no^0'),
 	('CLOSETOSYSTRAY','0','0', 'advanced', 'radio{yes^1|no^0'),
 
-	('GUILDNAME', '', '0', 'custom', 'text{250|50');
+	('GUILDNAME', '', '0', 'custom', 'text{250|50'),
+	('ENABLEOFFICERBUILD','0','0', 'custom', 'radio{yes^1|no^0'),
+	('OFFICERSTR', '', '0', 'custom', 'text{250|50'),
+	('MEMBERUUVAL', '', '0', 'custom', 'password{250|50'),
+	('OFFICERUUVAL', '', '0', 'custom', 'password{250|50');
 
 ### SV List
 INSERT INTO `uniadmin_svlist` (`sv_name`) VALUES

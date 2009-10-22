@@ -52,6 +52,12 @@ switch( $op )
 			toggle_addon($op,$id);
 		break;
 
+	case UA_URI_REQOFF:
+	case UA_URI_OPTOFF:
+		if( $user->data['level'] >= UA_ID_POWER )
+			toggle_addon($op,$id);
+		break;
+
 	case UA_URI_DISABLE:
 	case UA_URI_ENABLE:
 		if( $user->data['level'] >= UA_ID_POWER )
@@ -117,6 +123,8 @@ function main( )
 		'L_TOC'            => $user->lang['toc'],
 		'L_REQUIRED'       => $user->lang['required'],
 		'L_OPTIONAL'       => $user->lang['optional'],
+		'L_REQUIREDOFF'    => $user->lang['requiredoff'],
+		'L_OPTIONALOFF'    => $user->lang['optionaloff'],
 		'L_VERSION'        => $user->lang['version'],
 		'L_UPLOADED'       => $user->lang['uploaded'],
 		'L_ENABLED'        => $user->lang['enabled'],
@@ -130,6 +138,7 @@ function main( )
 		'L_ADD_UPDATE'     => $user->lang['add_update_addon'],
 		'L_ADD'            => $user->lang['add'],
 		'L_REQUIRED_ADDON' => $user->lang['required_addon'],
+		'L_REQUIREDOFF_ADDON' => $user->lang['requiredoff_addon'],
 		'L_SELECT_FILE'    => $user->lang['select_file'],
 		'L_HOMEPAGE'       => $user->lang['homepage'],
 		'L_GO'             => $user->lang['go'],
@@ -146,6 +155,7 @@ function main( )
 		'L_CONFIRM_DELETE' => $user->lang['confirm_addons_delete'],
 
 		'L_REQUIRED_TIP'   => $user->lang['addon_required_tip'],
+		'L_REQUIREDOFF_TIP'   => $user->lang['addon_requiredoff_tip'],
 		'L_FULLPATH_TIP'   => $user->lang['addon_fullpath_tip'],
 		'L_SELECTFILE_TIP' => $user->lang['addon_selectfile_tip'],
 
@@ -156,14 +166,20 @@ function main( )
 		'L_NO_DEL_ADDONS'  => $user->lang['addon_delete_none'],
 
 		'S_ADDONS'         => true,
+		'SHOWOFF'          => false,
 		'S_ADDON_ADD_DEL'  => false
 		)
 	);
 
+	$resultoff = false;
 	// Check admin
 	if( $user->data['level'] == UA_ID_ADMIN )
 	{
 		$tpl->assign_var('S_ADDON_ADD_DEL',true);
+		// Check if ENABLEOFFICERBUILD is actually enabled or not, if not we hide the officer stuff
+		$sqloff = 'SELECT `set_value` FROM `' . $db->table('settings') . "` WHERE `set_name` = 'ENABLEOFFICERBUILD'";
+		$resultoff = $db->query_first($sqloff);
+		$tpl->assign_var('SHOWOFF',$resultoff);
 		$tpl->assign_var('ONLOAD'," onload=\"initARC('ua_updateaddon','radioOn', 'radioOff','checkboxOn', 'checkboxOff'); initARC('ua_orphan_addon','radioOn', 'radioOff','checkboxOn', 'checkboxOff');\"");
 	}
 
@@ -195,22 +211,45 @@ function main( )
 				$addon_in_db[] = $row['file_name'];
 			}
 
-			// Assign template vars
-			$tpl->assign_block_vars('addons_row', array(
-				'ROW_CLASS'   => $uniadmin->switch_row_class(),
-				'ID'          => $row['id'],
-				'HOMEPAGE'    => $row['homepage'],
-				'ADDONNAME'   => $row['name'],
-				'TOC'         => $row['toc'],
-				'REQUIRED'    => $row['required'],
-				'VERSION'     => $row['version'],
-				'TIME'        => date($user->lang['time_format'],$row['time_uploaded']),
-				'ENABLED'     => $row['enabled'],
-				'DOWNLOAD'    => $download,
-				'FILESIZE'    => $uniadmin->filesize_readable($row['filesize']),
-				'NOTE'        => addslashes(htmlentities($row['notes']))
-				)
-			);
+			if ($resultoff == true)
+			{
+				// Assign template vars (show everything)
+				$tpl->assign_block_vars('addons_row', array(
+					'ROW_CLASS'   => $uniadmin->switch_row_class(),
+					'ID'          => $row['id'],
+					'HOMEPAGE'    => $row['homepage'],
+					'ADDONNAME'   => $row['name'],
+					'TOC'         => $row['toc'],
+					'REQUIRED'    => $row['required'],
+					'REQUIREDOFF' => $row['requiredoff'],
+					'VERSION'     => $row['version'],
+					'TIME'        => date($user->lang['time_format'],$row['time_uploaded']),
+					'ENABLED'     => $row['enabled'],
+					'DOWNLOAD'    => $download,
+					'FILESIZE'    => $uniadmin->filesize_readable($row['filesize']),
+					'NOTE'        => addslashes(htmlentities($row['notes']))
+					)
+				);
+			}
+			else
+			{
+				// Assign template vars (don't show officer stuff)
+				$tpl->assign_block_vars('addons_row', array(
+					'ROW_CLASS'   => $uniadmin->switch_row_class(),
+					'ID'          => $row['id'],
+					'HOMEPAGE'    => $row['homepage'],
+					'ADDONNAME'   => $row['name'],
+					'TOC'         => $row['toc'],
+					'REQUIRED'    => $row['required'],
+					'VERSION'     => $row['version'],
+					'TIME'        => date($user->lang['time_format'],$row['time_uploaded']),
+					'ENABLED'     => $row['enabled'],
+					'DOWNLOAD'    => $download,
+					'FILESIZE'    => $uniadmin->filesize_readable($row['filesize']),
+					'NOTE'        => addslashes(htmlentities($row['notes']))
+					)
+				);
+			}
 		}
 
 
@@ -289,6 +328,8 @@ function addon_detail( $addon_id )
 		'L_TOC'            => $user->lang['toc'],
 		'L_REQUIRED'       => $user->lang['required'],
 		'L_OPTIONAL'       => $user->lang['optional'],
+		'L_REQUIREDOFF'    => $user->lang['requiredoff'],
+		'L_OPTIONALOFF'    => $user->lang['optionaloff'],
 		'L_VERSION'        => $user->lang['version'],
 		'L_UPLOADED'       => $user->lang['uploaded'],
 		'L_ENABLED'        => $user->lang['enabled'],
@@ -301,6 +342,7 @@ function addon_detail( $addon_id )
 		'L_ADD_UPDATE'     => $user->lang['add_update_addon'],
 		'L_UPDATE'         => $user->lang['update_addon'],
 		'L_REQUIRED_ADDON' => $user->lang['required_addon'],
+		'L_REQUIREDOFF_ADDON' => $user->lang['requiredoff_addon'],
 		'L_SELECT_FILE'    => $user->lang['select_file'],
 		'L_HOMEPAGE'       => $user->lang['homepage'],
 		'L_GO'             => $user->lang['go'],
@@ -312,14 +354,20 @@ function addon_detail( $addon_id )
 		'L_CANCEL'         => $user->lang['cancel'],
 
 		'S_ADDON_ADD_DEL'  => false,
+		'SHOWOFF'          => false,
 		'S_FILES'          => false,
 		)
 	);
 
+	$resultoff = false;
 	// Check admin
 	if( $user->data['level'] == UA_ID_ADMIN )
 	{
 		$tpl->assign_var('S_ADDON_ADD_DEL',true);
+		// Check if ENABLEOFFICERBUILD is actually enabled or not, if not we hide the officer stuff
+		$sqloff = 'SELECT `set_value` FROM `' . $db->table('settings') . "` WHERE `set_name` = 'ENABLEOFFICERBUILD'";
+		$resultoff = $db->query_first($sqloff);
+		$tpl->assign_var('SHOWOFF',$resultoff);
 	}
 
 	// If anonymous, change to "View Addons"
@@ -383,22 +431,45 @@ function addon_detail( $addon_id )
 			$download = $uniadmin->url_path . $uniadmin->config['addon_folder'] . '/' . $row['file_name'];
 		}
 
-		// Assign template vars
-		$tpl->assign_vars(array(
-			'ID'          => $row['id'],
-			'HOMEPAGE'    => $row['homepage'],
-			'ADDONNAME'   => $row['name'],
-			'TOC'         => $row['toc'],
-			'REQUIRED'    => $row['required'],
-			'VERSION'     => $row['version'],
-			'TIME'        => date($user->lang['time_format'],$row['time_uploaded']),
-			'ENABLED'     => $row['enabled'],
-			'NUMFILES'    => $num_files,
-			'DOWNLOAD'    => $download,
-			'FILESIZE'    => $uniadmin->filesize_readable($row['filesize']),
-			'NOTES'       => htmlentities($row['notes'])
-			)
-		);
+		if ($resultoff == true)
+		{
+			// Assign template vars (show everything)
+			$tpl->assign_vars(array(
+				'ID'          => $row['id'],
+				'HOMEPAGE'    => $row['homepage'],
+				'ADDONNAME'   => $row['name'],
+				'TOC'         => $row['toc'],
+				'REQUIRED'    => $row['required'],
+				'REQUIREDOFF'    => $row['requiredoff'],
+				'VERSION'     => $row['version'],
+				'TIME'        => date($user->lang['time_format'],$row['time_uploaded']),
+				'ENABLED'     => $row['enabled'],
+				'NUMFILES'    => $num_files,
+				'DOWNLOAD'    => $download,
+				'FILESIZE'    => $uniadmin->filesize_readable($row['filesize']),
+				'NOTES'       => htmlentities($row['notes'])
+				)
+			);
+		}
+		else
+		{
+			// Assign template vars (don't show officer stuff)
+			$tpl->assign_vars(array(
+				'ID'          => $row['id'],
+				'HOMEPAGE'    => $row['homepage'],
+				'ADDONNAME'   => $row['name'],
+				'TOC'         => $row['toc'],
+				'REQUIRED'    => $row['required'],
+				'VERSION'     => $row['version'],
+				'TIME'        => date($user->lang['time_format'],$row['time_uploaded']),
+				'ENABLED'     => $row['enabled'],
+				'NUMFILES'    => $num_files,
+				'DOWNLOAD'    => $download,
+				'FILESIZE'    => $uniadmin->filesize_readable($row['filesize']),
+				'NOTES'       => htmlentities($row['notes'])
+				)
+			);
+		}
 	}
 	else
 	{
@@ -446,6 +517,16 @@ function toggle_addon( $op , $addon_id )
 			case UA_URI_REQ:
 				$sql = "UPDATE `" . $db->table('addons') . "` SET `required` = '1' WHERE `id` = '$addon_id';";
 				$error = 'require';
+				break;
+
+			case UA_URI_OPTOFF:
+				$sql = "UPDATE `" . $db->table('addons') . "` SET `requiredoff` = '0' WHERE `id` = '$addon_id';";
+				$error = 'optionaloff';
+				break;
+
+			case UA_URI_REQOFF:
+				$sql = "UPDATE `" . $db->table('addons') . "` SET `requiredoff` = '1' WHERE `id` = '$addon_id';";
+				$error = 'requireoff';
 				break;
 
 			default:

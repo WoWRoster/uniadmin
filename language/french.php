@@ -160,6 +160,7 @@ Si le réglage est un 1 ou zéro cela signifie que c\'est une case à cocher dans U
 $lang['name'] = 'Nom';
 $lang['toc'] = 'TOC';
 $lang['required'] = 'Requis';
+$lang['requiredoff'] = 'Required Officer';
 $lang['version'] = 'Version';
 $lang['uploaded'] = 'Chargé';
 $lang['enabled'] = 'Activé';
@@ -242,6 +243,7 @@ $lang['addon_uploaded'] = '%1$s a été chargé avec succès';
 $lang['addon_edited'] = '%1$s a été modifié';
 $lang['view_addons'] = 'Voir AddOns';
 $lang['required_addon'] = 'AddOns Obligatoires';
+$lang['requiredoff_addon'] = 'Required Officer AddOn';
 $lang['homepage'] = 'Site Web';
 $lang['logged_in_as'] = 'Connecté en tant que [%1$s]';
 $lang['logo_table'] = 'Logo %1$d';
@@ -268,6 +270,7 @@ $lang['fullpath_addon'] = 'Chemin Complet Addon';
 $lang['addon_details'] = 'Détails AddOn';
 $lang['manage'] = 'Gérer';
 $lang['optional'] = 'Facultatif';
+$lang['optionaloff'] = 'Optional Officer';
 $lang['notes'] = 'Notes';
 $lang['half'] = 'Demi';
 $lang['full'] = 'Complet';
@@ -298,6 +301,7 @@ $lang['last_updated'] = 'Dernière Mise à Jour';
 
 // Addon Management
 $lang['addon_required_tip'] = 'Quand coché, UniUploader exigera le téléchargement de cet addon';
+$lang['addon_requiredoff_tip'] = 'When checked, UniUploader will require this Officer addon for download';
 $lang['addon_fullpath_tip'] = 'Ce paramètre est pour les addons qui extraient directement dans le répertoire de World of Warcraft<br /><br />- [oui] Extraire addon dans WoW/<br />- [non] Extraire dans WoW/Interface/AddOns/<br />- [Automatique]Détection automatique de l\'emplacement';
 $lang['addon_selectfile_tip'] = 'Selectionner un addon à charger';
 $lang['confirm_addons_delete'] = 'Ceci supprimera TOUS les addons de la base de donnée et du serveur web. Etes-vous sûr ?';
@@ -406,8 +410,12 @@ $lang['PURGEFIRST'] = 'Supprimer le fichier de données Web==&gt;WoW avant synchr
 $lang['USEAPPDATA'] = 'Use Application Data Folder';
 $lang['CLOSETOSYSTRAY'] = 'Close to System Tray';
 
-// custom (for custom guild uniuploader options
+// custom (for custom guild uniuploader options)
 $lang['GUILDNAME'] = 'Guild Name for custom UniUploader title';
+$lang['ENABLEOFFICERBUILD'] = 'Allows for two builds of UniUploader for custom options for Officers/Leader';
+$lang['OFFICERSTR'] = 'Optional additional string for post UniUploader title';
+$lang['MEMBERUUVAL'] = 'Password for Guild Member access level of the Roster (Only used if Officer Build Enabled)';
+$lang['OFFICERUUVAL'] = 'Password for Guild Officer/Leader access level of the Roster (Only used if Officer Build Enabled)';
 
 // END UU Sync Strings
 
@@ -447,6 +455,8 @@ $lang['error_enable_addon'] = 'Erreur Activation d\'AddOn';
 $lang['error_disable_addon'] = 'Erreur Désactivation d\'AddOn';
 $lang['error_require_addon'] = 'Erreur Addon Obligatoire';
 $lang['error_optional_addon'] = 'Erreur Addon Facultatif';
+$lang['error_requireoff_addon'] = 'Require Officer AddOn Error';
+$lang['error_optionaloff_addon'] = 'Optional Officer AddOn Error';
 $lang['error_no_addon_in_db'] = 'Aucun AddOn dans la Base de Données';
 $lang['error_no_addon_uploaded'] = 'Aucun Addon Chargé';
 $lang['error_no_files_addon'] = 'Aucun fichier detecté dans l\'AddOn chargé';
@@ -490,6 +500,8 @@ $lang['sql_error_addons_disable'] = 'AddOn d\'ID:%1$d n\'a pas pu être desactivé
 $lang['sql_error_addons_enable'] = 'AddOn d\'ID:%1$d n\'a pas pu être activé';
 $lang['sql_error_addons_require'] = 'AddOn d\'ID:%1$d n\'a pas pu être rendu Obligatoire';
 $lang['sql_error_addons_optional'] = 'AddOn d\'ID:%1$d n\'a pas pu être rendu Facultatif';
+$lang['sql_error_addons_requireoff'] = 'AddOn with ID:%1$d could not be set to required Officer';
+$lang['sql_error_addons_optionaloff'] = 'AddOn with ID:%1$d could not be set to optional Officer';
 $lang['sql_error_addons_delete'] = 'AddOn d\'ID:%1$d n\'a pas pu être supprimé de la base de données<br />Supprimer Manuellement';
 $lang['sql_error_addons_insert'] = 'Impossible d\'insérer les données de l\'addon';
 $lang['sql_error_addons_files_insert'] = 'Impossible d\'insérer les données sur les fichiers de l\'addon';
