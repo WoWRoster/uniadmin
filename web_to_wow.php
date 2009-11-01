@@ -25,7 +25,7 @@ if (file_exists("SavedVariables.lua")) {
 else {  // File doesn't exist, use internal system instead
 	// If you use this option and have it all internal to the php file make sure to change the
 	// LUA code to php (eg instead of " you put \") for correct parsing
-	$svlua = ""
+	$svlua = "";
 	}
 
 // Now lets send the data to UniUploader for output to WoW's SavedVariables.lua file
