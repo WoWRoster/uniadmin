@@ -18,9 +18,9 @@
 */
 
 // Enter the data you wish to output to WoW's SavedVariables.lua file here
-if (file_exists("Savedvariables.lua")) {
+if (file_exists("SavedVariables.lua")) {
 	// This allows you to create and use a local file on your website that is pure LUA code (rather than a PHP files code)
-	$svlua = include "Savedvariables.lua";
+	$svlua = include "SavedVariables.lua";
 	}
 else {  // File doesn't exist, use internal system instead
 	// If you use this option and have it all internal to the php file make sure to change the
