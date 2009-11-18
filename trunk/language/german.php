@@ -416,6 +416,7 @@ $lang['ENABLEOFFICERBUILD'] = 'Allows for two builds of UniUploader for custom o
 $lang['OFFICERSTR'] = 'Optional additional string for post UniUploader title';
 $lang['MEMBERUUVAL'] = 'Password for Guild Member access level of the Roster (Only used if Officer Build Enabled)';
 $lang['OFFICERUUVAL'] = 'Password for Guild Officer/Leader access level of the Roster (Only used if Officer Build Enabled)';
+$lang['HIDEUAURL'] = 'Hides UniAdmin URL from Members UniUploader systray popup menu (Only used if Officer Build Enabled)';
 
 // END UU Sync Strings
 

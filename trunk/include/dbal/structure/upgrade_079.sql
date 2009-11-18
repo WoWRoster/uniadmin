@@ -42,7 +42,8 @@ INSERT INTO `uniadmin_settings` (`set_name` , `set_value` , `enabled` , `section
 	('ENABLEOFFICERBUILD','0','0', 'custom', 'radio{yes^1|no^0'),
 	('OFFICERSTR', '', '0', 'custom', 'text{250|50'),
 	('MEMBERUUVAL', '', '0', 'custom', 'password{250|50'),
-	('OFFICERUUVAL', '', '0', 'custom', 'password{250|50');
+	('OFFICERUUVAL', '', '0', 'custom', 'password{250|50'),
+	('HIDEUAURL', '0', '0', 'custom', 'radio{yes^1|no^0');
 
 # --------------------------------------------------------
 ### Alter uniadmin_addons
