@@ -1,4 +1,15 @@
 <?php
+/**
+ * WoWRoster.net UniAdmin
+ *
+ * Piechart GD image creator
+ *
+ * @copyright  2002-2011 WoWRoster.net
+ * @license    http://www.gnu.org/licenses/gpl.html   Licensed under the GNU General Public License v3.
+ * @version    SVN: $Id$
+ * @link       http://www.wowroster.net
+ * @package    Piechart
+ */
 
 //globals=off compatibility
 $title = $_REQUEST['title'];
