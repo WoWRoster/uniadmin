@@ -116,64 +116,8 @@ please go to the support forums here - http://www.wowroster.net/Forums/viewforum
 
 8 - License
 ===========
-UniAdmin is licensed under a Creative Commons
-"Attribution-NonCommercial-ShareAlike 2.5" license.
-Short summary: http://creativecommons.org/licenses/by-nc-sa/2.5
-Full License: http://creativecommons.org/licenses/by-nc-sa/2.5/legalcode
-
-Regarding Attribution:
-- Keep the credits in the footer of the UniAdmin pages.
-- Include this license with all modified versions of UniAdmin.
-
-Regarding ShareAlike:
-- Any changes made to the code (including, but not limited to,
-  HTML, PHP, CSS, SQL, images, and Javascript) must be archived
-  and accessible for public download. You may, of course, remove
-  username, password, and database host information from the archive.
-
-For any reuse or distribution, you must make clear to others the
-license terms of this work. Any of these conditions can be waived if
-you get permission from the dev team at wowroster.net.
-
-
-
-UniAdmin uses the following libraries as well
-
-- PclZip Library -  PHP Class to create and manage ZIP files
-  http://www.phpconcept.net
-  Licensed under GNU/LGPL - http://www.gnu.org/licenses/lgpl.html
-  File located at [include/pcl.lib.php]
-  You may upgrade this file at anytime with the release version
-
-
-- The Overlib tooltip library by Erik Bosrup
-  http://www.bosrup.com/web/overlib
-  An unnamed license applies, available at http://www.bosrup.com/web/overlib/?License
-  File located at [overlib/overlib.js]
-
-
-- Table sorting and pagination javascript by Brian
-  http://www.frequency-decoder.com
-  Licensed under a Creative Commons Attribution-ShareAlike 2.5 license - http://creativecommons.org/licenses/by-sa/2.5
-  File located at [styles/default/tablesort.js]
-
-
-- The installer and upgrader is based on EQdkp's
-  This concerns the files:
-    modules/install.php
-    modules/upgrade.php
-
-- The templating system is based on EQdkp's
-  File located at [include/template.php]
-
-  These 3 files are licensed under the GNU General Public License,
-  which is available at http://gnu.org/copyleft/gpl.html
-
-
-- MiniXML - http://minixml.psychogenic.com
-  PHP class for generating and parsing XML
-  Licensed under the GNU General Public License - http://gnu.org/copyleft/gpl.html
-  Files are located at [include/minixml/]
+UniAdmin is licensed under the GNU General Public License v3.
+Please see LICENCE.TXT for more info.
 
 
 9 - Known Bugs / Gotchyas
