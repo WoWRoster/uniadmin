@@ -1,142 +1,14 @@
-UniAdmin 0.8.0 (updated 30th September 2008)
-===============================================
-UniAdmin is a back-end web-based tool for managing the configuration of and logos in UniUploader and
-auto-updating WoW addons.
+UniAdmin Changelog
 
-If you don't know what UniUploader is, then... well... you're a bit ahead of yourself then aren't you? ;-)
-
-
-Table of Contents
-=================
-   1 - Requirements
-   2 - Recommended Tools
-   3 - Installation
-   4 - Upgrading
-   5 - Thanks
-   6 - FAQ
-   7 - Support
-   8 - License
-   9 - Known Bugs / Gotchyas
-  10 - Change Log
-  11 - The Future
-
-
-1 - Requirements
-================
-- A web server (Apache, IIS, or any software able to run php)
-- PHP 4.3 or higher (http://www.php.net)
-- MySQL Database 4.0 or higher (http://www.mysql.com)
-
-
-2 - Recommended Tools
-=====================
-- phpMyAdmin for managing MySQL databases
-
-
-3 - Installation
-================
-1. Create a new database (eg. uniadmin)
-2. Upload the contents of the zip file to your webserver
-3. After FTPing, CHMOD the following folders to 0777, or change NTFS file permissions for these folders
-   to make them available as "Everyone - Write" on a Windows machine.
-
-[uniadmin]
-  addon_temp
-  addon_zips
-  cache
-  logos
-
-4. Go to your UniAdmin install on the web and follow the instructions
-
-The admin user is created on installation
-Read the help page for additional info.
-
-
-4 - Upgrading
-=============
-   4a - Standard Upgrade Instructions
-   ==================================
-   Run index.php?p=upgrade and follow the instructions
-
-
-   4b - Upgrade from v0.7.0
-   ========================
-   There is no upgrade from v0.7.0
-   Upgrading from v0.7.0 to a higher version will force you to install fresh
-
-
-   4c - Upgrade from v0.7.5
-   ========================
-   It is suggested that you clear all your addons after upgrading
-   This is because the auto "Full Path" scanner has been implemented
-   javaUniUploader and phpUniUploader require this new setting to function properly
-
-
-5 - Thanks
-==========
-sturmy     -|
-fubu2k     - French localization
-Carasak    -|
-Shadowsong - German localization
-Exerladan  - WoWAce file list XML format parsing
-Zajsoft    - Great modifications to AddOn uploading, providing a better .toc file scanner
-Zeryl      - Thanks for help with parsing strings into multi-dimensional arrays
-             o Thanks for the WoWAce module code
-Exerladan  - Thanks for the code to parse the new WoWAce XML file list
-
-
-6 - FAQ
-======
-Q. I'm not sure what I set SYNCHROURL and PRIMARYURL to in the Settings Management page.
-A. SYNCHROURL is the URL path to the UniAdmin interface.php, eg. http://www.myserver.com/uniadmin/interface.php
-   PRIMARYURL is the URL path to the upload page of the system you are sending data to, eg. for the WoW Roster
-   it would be http://www.myserver.com/roster/update.php . For other systems, please check with the site
-   owner or their on-line help for the appropriate URL.
-
-Q. I'm still confused about the settings in the Settings Management page and how to configure them.
-A. 1. First, hover your mouse over each setting, you'll get a tooltip with the corresponding part of the
-UniUploader interface.
-   2. If you are still confused
-     a. Manually configure UniUploader with the settings needed for your config.
-       - Open the settings.ini and you'll see all the settings just like in the Settings Management page.
-     b. Or just upload your copy of settings.ini to the settings page in UniAdmin.
-
-Q. How do I reset a password
-A. 1. Go to http://gdataonline.com/makehash.php
-   2. Type desired password in
-   3. Generate the hash
-   4. Put the hash in the password field of users table in UniAdmin database - for the correct user(s)
-
-
-7 - Support
-===========
-For any support issues, questions, comments, feedback, or suggestions
-please go to the support forums here - http://www.wowroster.net/Forums/viewforum/f=24.html
-
-
-8 - License
-===========
-UniAdmin is licensed under the GNU General Public License v3.
-Please see LICENCE.TXT for more info.
-
-
-9 - Known Bugs / Gotchyas
-=========================
-Bug: Addon zip files that have more than one addon in them may not show correctly
-Solution: After you upload an addon zip, edit the info on the addon details page
-
-
-10 - Change Log
-===============
 [~] Fixed
 [+] Added
 [!] Changed
 
-
-v0.7.9
+0.7.9
+----------------
 [~] WoWAce addon list works again
     WoWAce changed the addon list format to XML and removed the old format
-	Thanks to Exerladan for the code
+    Thanks to Exerladan for the code
 [~] HTML fixes and changes
 [!] All the comment headers to our new format
 [!] The updater has been slightly modified, shouldn't affect anyone
@@ -147,14 +19,14 @@ v0.7.9
 [+] Message when an addon is deleted
 [+] Images for new settings
 
-
-v0.7.8
+0.7.8
+----------------
 [~] Upgrader had a typo
 [~] GETDELETEADDONS wasn't quite working correctly, it should be ok now
     I changed some of the variables around and didn't test, I'm sorry
 
-
-v0.7.7
+0.7.7
+----------------
 [~] Addon processing now checks if the addon zip exists before trying to unlink it
 [~] UA does not attempt to delete temp upload file, move_uploaded_file already does this
 [~] addon xml output htmlspecialchars() encoded
@@ -169,8 +41,8 @@ v0.7.7
 [+] Addon removal settings
 [+] Two new settings for jUU HOMEURL and FORUMURL
 
-
-v0.7.6
+0.7.6
+----------------
 [~] slashes are now stripped in the stats module
 [~] ADDVARVAL2 is now a password field since it's usually a password
 [~] Edited pclzip.lib.php detection of windows to something that servers don't block
@@ -234,8 +106,8 @@ v0.7.6
     Catchable PHP errors are now displayed at the bottom of the page above sql queries
 [+] is_ua_admin() for an easier way to check if the user is an admin
 
-
-v0.7.5
+0.7.5
+----------------
 [~] Removed all dead files
 [~] Massive code cleanup
 [!] Overhauled the addons page
@@ -295,8 +167,8 @@ v0.7.5
     Using "title|tootip" format now
 [!] Changed menu generation to give more variables so menu can be styled easily in themes
 
-
-Beta 0.7.0
+0.7.0b
+----------------
 [~] UA is now mySQL 5 compatible
 [~] Areas that were not using the dynamic database table names
     Thanks DreadPickle  http://www.wowroster.net/Forums/viewtopic/t=260.html
@@ -344,27 +216,27 @@ Beta 0.7.0
 [!] Improved messages display
 [!] Removed even more outdated settings from the db
 
-
-Beta 0.6.1
+0.6.1b
+----------------
 [~] Support systems with short_open_tags set to Off in the PHP config
 
-
-Beta 0.6.0
+0.6.0b
+----------------
 [~] Security cookie bug
 [+] Support for new UU functionality
 [+] A new setting
 [+] Overlib tooltips w/pics for each setting
 [+] view.php unsecure file for viewing addon list
 
-
-Beta .50
+.50b
+----------------
 [+] Support for UniUploader 2.0, and removed support for previous versions of UU
 [+] A couple minor things to the help screen.
 [+] "sv management" to the settings screen
 [!] Removed a bunch of outdated settings from the db
 
-
-Beta .40
+.40b
+----------------
 [~] Addon Updater and interface including index.htm and index.html
 [+] User management
 [+] setting descriptions
@@ -372,13 +244,8 @@ Beta .40
 [!] Cosmetic Changes
 [!] Deleted obsolete settings from database
 
-
-Beta .31
+.31b
+----------------
 [~] Default 'PARSEVAR1' in uniadmin.sql.
     This was being set as 'MyProfile' which would break UniUploader Pre-Parse. Corrected to 'myProfile'
 [!] Updated this install.txt file
-
-
-11 - The Future
-===============
-To-do list for future versions of UA
